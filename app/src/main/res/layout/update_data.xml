@@ -2,20 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Update your task"
-        android:gravity="center"
         android:background="@drawable/background_design"
-        android:textColor="#fff"
+        android:gravity="center"
         android:padding="10dp"
+        android:text="Update your task"
+        android:textColor="#fff"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,10 +30,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textColor="#000"/>
+                android:text="Task"
+                android:textColor="#000"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -46,11 +45,11 @@
                 android:id="@+id/mEditTextTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Task"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
+                android:hint="Task"
                 android:textColor="#000"
-                android:textColorHint="#000"/>
+                android:textColorHint="#000"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -69,10 +68,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textColor="#000"/>
+                android:text="Description"
+                android:textColor="#000"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -84,21 +83,54 @@
                 android:id="@+id/mEditTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Description"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
+                android:hint="Description"
                 android:textColor="#000"
-                android:textColorHint="#000"/>
+                android:textColorHint="#000"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Description"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4">
+
+            <Spinner
+                android:id="@+id/taskTypeDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -106,17 +138,16 @@
             android:layout_weight="2">
 
             <Button
+                android:id="@+id/btnDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnDelete"
+                android:layout_margin="10dp"
+                android:backgroundTint="#0086c3"
                 android:text="Delete"
                 android:textAllCaps="false"
-                android:backgroundTint="#0086c3"
                 android:textColor="#fff"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_margin="10dp"
-                />
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -125,17 +156,16 @@
             android:layout_weight="2">
 
             <Button
+                android:id="@+id/btnUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnUpdate"
+                android:layout_margin="10dp"
+                android:backgroundTint="#29b6f6"
                 android:text="Update"
                 android:textAllCaps="false"
-                android:backgroundTint="#29b6f6"
                 android:textColor="#fff"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_margin="10dp"
-                />
+                android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

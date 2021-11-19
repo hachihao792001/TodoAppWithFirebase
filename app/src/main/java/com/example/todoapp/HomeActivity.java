@@ -17,8 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -145,6 +148,22 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 dialog.dismiss();
+            }
+        });
+
+        final Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
+        String[] taskTypes = getResources().getStringArray(R.array.task_types);
+        taskTypeDropdown.setAdapter(
+                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, taskTypes));
+        taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //do stuff
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -277,6 +296,22 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         dialog.show();
+
+        final Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
+        String[] taskTypes = getResources().getStringArray(R.array.task_types);
+        taskTypeDropdown.setAdapter(
+                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, taskTypes));
+        taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //do stuff
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
