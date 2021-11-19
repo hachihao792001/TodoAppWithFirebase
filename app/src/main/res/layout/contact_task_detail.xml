@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:drawableLeft="@drawable/contact_icon"
+        android:drawableLeft="@drawable/white_contact_icon"
         android:padding="10dp"
         android:text="My task detail"
         android:gravity="center"

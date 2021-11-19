@@ -92,12 +92,12 @@ public class HomeActivity extends AppCompatActivity {
 
         String[] taskTypeNames = getResources().getStringArray(R.array.task_types);
         taskTypeList = new ArrayList<TaskType>(Arrays.asList(
-                new TaskType(taskTypeNames[0], R.drawable.meeting_icon),
-                new TaskType(taskTypeNames[1], R.drawable.shopping_icon),
-                new TaskType(taskTypeNames[2], R.drawable.office_icon),
-                new TaskType(taskTypeNames[3], R.drawable.contact_icon),
-                new TaskType(taskTypeNames[4], R.drawable.travel_icon),
-                new TaskType(taskTypeNames[5], R.drawable.relax_icon)
+                new TaskType(taskTypeNames[0], R.drawable.black_meeting_icon),
+                new TaskType(taskTypeNames[1], R.drawable.black_shopping_icon),
+                new TaskType(taskTypeNames[2], R.drawable.black_office_icon),
+                new TaskType(taskTypeNames[3], R.drawable.black_contact_icon),
+                new TaskType(taskTypeNames[4], R.drawable.black_travelling_icon),
+                new TaskType(taskTypeNames[5], R.drawable.black_relaxing_icon)
         ));
     }
 
