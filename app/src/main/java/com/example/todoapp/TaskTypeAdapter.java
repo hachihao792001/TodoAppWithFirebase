@@ -16,6 +16,10 @@ class TaskType {
     public String name;
     public int iconResource;
 
+    public TaskType() {
+
+    }
+
     public TaskType(String name, int iconResource) {
         this.name = name;
         this.iconResource = iconResource;

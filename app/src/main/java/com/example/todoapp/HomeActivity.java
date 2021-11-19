@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     private String key = "";
     private String task;
     private String description;
+    private TaskType taskType;
 
     ArrayList<TaskType> taskTypeList;
 
@@ -116,55 +118,48 @@ public class HomeActivity extends AppCompatActivity {
         final EditText description = myView.findViewById(R.id.description);
         Button save = myView.findViewById(R.id.saveBtn);
         Button cancel = myView.findViewById(R.id.cancelBtn);
+        Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        cancel.setOnClickListener(v -> dialog.dismiss());
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mTask = task.getText().toString().trim();
-                String mDescription = description.getText().toString().trim();
-                String id = reference.push().getKey();
-                String date = DateFormat.getDateInstance().format(new Date());
+        save.setOnClickListener(v -> {
+            String mTask = task.getText().toString().trim();
+            String mDescription = description.getText().toString().trim();
+            String id = reference.push().getKey();
+            String date = DateFormat.getDateInstance().format(new Date());
+            TaskType taskType = (TaskType) taskTypeDropdown.getSelectedItem();
 
-                if (TextUtils.isEmpty(mTask)) {
-                    task.setError("Task is required!");
-                    return;
-                } else if (TextUtils.isEmpty(mDescription)) {
-                    task.setError("Description is required!");
-                    return;
-                } else {
-                    loader.setMessage("Adding your task...");
-                    loader.setCanceledOnTouchOutside(false);
-                    loader.show();
+            if (TextUtils.isEmpty(mTask)) {
+                task.setError("Task is required!");
+                return;
+            } else if (TextUtils.isEmpty(mDescription)) {
+                task.setError("Description is required!");
+                return;
+            } else {
+                loader.setMessage("Adding your task...");
+                loader.setCanceledOnTouchOutside(false);
+                loader.show();
 
-                    Model model = new Model(mTask, mDescription, id, date);
-                    reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
-                                loader.dismiss();
-                            } else {
-                                //String error = task.getException().toString();
-                                Toast.makeText(HomeActivity.this, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
-                                loader.dismiss();
-                            }
-
+                Model model = new Model(mTask, mDescription, id, date, taskType);
+                reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task1) {
+                        if (task1.isSuccessful()) {
+                            Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
+                            loader.dismiss();
+                        } else {
+                            //String error = task.getException().toString();
+                            Toast.makeText(HomeActivity.this, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
+                            loader.dismiss();
                         }
-                    });
-                }
 
-                dialog.dismiss();
+                    }
+                });
             }
+
+            dialog.dismiss();
         });
 
-        final Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -192,6 +187,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setDate(model.getDate());
                 holder.setTask(model.getTask());
                 holder.setDescription(model.getDescription());
+                holder.setTaskType(model.getTaskType());
 
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -199,6 +195,7 @@ public class HomeActivity extends AppCompatActivity {
                         key = getRef(position).getKey();
                         task = model.getTask();
                         description = model.getDescription();
+                        taskType = model.getTaskType();
 
                         updateTask();
 
@@ -240,6 +237,11 @@ public class HomeActivity extends AppCompatActivity {
             TextView dateTextView = mView.findViewById(R.id.dateTv);
             dateTextView.setText(date);
         }
+
+        public void setTaskType(TaskType taskType) {
+            ImageView icon = mView.findViewById(R.id.taskTypeIcon);
+            icon.setImageResource(taskType.iconResource);
+        }
     }
 
     private void updateTask() {
@@ -261,15 +263,17 @@ public class HomeActivity extends AppCompatActivity {
 
         Button delButton = view.findViewById(R.id.btnDelete);
         Button updateButton = view.findViewById(R.id.btnUpdate);
+        Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 task = mTask.getText().toString().trim();
                 description = mDescription.getText().toString().trim();
+                taskType = (TaskType) taskTypeDropdown.getSelectedItem();
                 String date = DateFormat.getDateInstance().format(new Date());
 
-                Model model = new Model(task, description, key, date);
+                Model model = new Model(task, description, key, date, taskType);
 
                 reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -308,7 +312,6 @@ public class HomeActivity extends AppCompatActivity {
 
         dialog.show();
 
-        final Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

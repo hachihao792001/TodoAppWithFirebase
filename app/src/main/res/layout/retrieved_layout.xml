@@ -1,63 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:elevation="10dp"
-    app:cardElevation="10dp"
-    android:layout_margin="10dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_margin="10dp"
+    android:elevation="10dp"
+    android:orientation="vertical"
+    app:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/dateTv"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:text="June 18, 2020"
-                android:gravity="center"
                 android:background="@drawable/background_design"
+                android:gravity="center"
                 android:padding="10dp"
+                android:text="June 18, 2020"
+                android:textColor="#fff"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/taskTv"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:padding="5dp"
-                android:maxLines="1"
-                android:textColor="#000"/>
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/descriptionTv"
+                <TextView
+                    android:id="@+id/taskTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:padding="5dp"
+                    android:text="Task"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/descriptionTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:maxLines="3"
+                    android:text="Description"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/taskTypeIcon"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textColor="#000"
-                android:text="Description"
-                android:textSize="15sp"
-                android:maxLines="3"/>
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:padding="10dp"
+                android:src="@drawable/black_contact_icon" />
         </LinearLayout>
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>
