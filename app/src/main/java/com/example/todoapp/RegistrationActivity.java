@@ -27,7 +27,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button regBtn;
     private TextView regQn;
     private FirebaseAuth mAuth;
-
     private ProgressDialog loader;
 
     @Override

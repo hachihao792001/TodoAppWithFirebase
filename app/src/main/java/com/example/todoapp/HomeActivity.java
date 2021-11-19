@@ -111,28 +111,26 @@ public class HomeActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               String mTask = task.getText().toString().trim();
-               String mDescription = description.getText().toString().trim();
-               String id = reference.push().getKey();
-               String date = DateFormat.getDateInstance().format(new Date());
+                String mTask = task.getText().toString().trim();
+                String mDescription = description.getText().toString().trim();
+                String id = reference.push().getKey();
+                String date = DateFormat.getDateInstance().format(new Date());
 
-               if (TextUtils.isEmpty(mTask)) {
-                   task.setError("Task is required!");
-                   return;
-               }
-               else if (TextUtils.isEmpty(mDescription)) {
+                if (TextUtils.isEmpty(mTask)) {
+                    task.setError("Task is required!");
+                    return;
+                } else if (TextUtils.isEmpty(mDescription)) {
                     task.setError("Description is required!");
                     return;
-               }
-               else {
+                } else {
                     loader.setMessage("Adding your task...");
                     loader.setCanceledOnTouchOutside(false);
                     loader.show();
 
                     Model model = new Model(mTask, mDescription, id, date);
                     reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                       @Override
-                       public void onComplete(@NonNull Task<Void> task) {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
                                 loader.dismiss();
@@ -142,9 +140,9 @@ public class HomeActivity extends AppCompatActivity {
                                 loader.dismiss();
                             }
 
-                       }
-                   });
-               }
+                        }
+                    });
+                }
 
                 dialog.dismiss();
             }
@@ -246,10 +244,9 @@ public class HomeActivity extends AppCompatActivity {
                 reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             Toast.makeText(HomeActivity.this, "Task has been updated", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             //String err = task.getException().toString();
                             Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
                         }
@@ -268,8 +265,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             String err = task.getException().toString();
                             Toast.makeText(HomeActivity.this, "Delete task failed!", Toast.LENGTH_SHORT).show();
                         }
