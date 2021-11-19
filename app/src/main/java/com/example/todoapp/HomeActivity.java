@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,6 +35,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
@@ -53,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
     private String key = "";
     private String task;
     private String description;
+
+    ArrayList<TaskType> taskTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,16 @@ public class HomeActivity extends AppCompatActivity {
                 addTask();
             }
         });
+
+        String[] taskTypeNames = getResources().getStringArray(R.array.task_types);
+        taskTypeList = new ArrayList<TaskType>(Arrays.asList(
+                new TaskType(taskTypeNames[0], R.drawable.meeting_icon),
+                new TaskType(taskTypeNames[1], R.drawable.shopping_icon),
+                new TaskType(taskTypeNames[2], R.drawable.office_icon),
+                new TaskType(taskTypeNames[3], R.drawable.contact_icon),
+                new TaskType(taskTypeNames[4], R.drawable.travel_icon),
+                new TaskType(taskTypeNames[5], R.drawable.relax_icon)
+        ));
     }
 
     private void addTask() {
@@ -152,9 +165,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         final Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
-        String[] taskTypes = getResources().getStringArray(R.array.task_types);
-        taskTypeDropdown.setAdapter(
-                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, taskTypes));
+        taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -298,9 +309,7 @@ public class HomeActivity extends AppCompatActivity {
         dialog.show();
 
         final Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
-        String[] taskTypes = getResources().getStringArray(R.array.task_types);
-        taskTypeDropdown.setAdapter(
-                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, taskTypes));
+        taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
