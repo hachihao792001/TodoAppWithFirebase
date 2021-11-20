@@ -1,6 +1,8 @@
 package com.example.todoapp;
 
-public class TaskModel {
+import java.io.Serializable;
+
+public class TaskModel implements Serializable {
     private String task, description, id, date;
     private TaskType taskType;
 

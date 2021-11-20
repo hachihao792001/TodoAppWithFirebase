@@ -12,7 +12,7 @@
         android:drawableLeft="@drawable/white_contact_icon"
         android:gravity="center"
         android:padding="10dp"
-        android:text="My task detail"
+        android:text="Contact task detail"
         android:textColor="#fff"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -118,26 +118,61 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/phoneNumberText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="Contact:"
+            android:text="Phone number:"
             android:textSize="13sp"
             android:textStyle="bold" />
 
 
         <Button
-            android:id="@+id/relaxButton"
+            android:id="@+id/callButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1.5"
+            android:backgroundTint="#29b6f6"
+            android:onClick="callOnClick"
+            android:text="Make a call"
+            android:textColor="#fff"
+            android:textColorHint="#000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/emailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:text="Email:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/emailButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1.5"
             android:backgroundTint="#29b6f6"
-            android:text="Make a call"
+            android:onClick="emailOnClick"
+            android:text="Send an email"
             android:textColor="#fff"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
     </LinearLayout>

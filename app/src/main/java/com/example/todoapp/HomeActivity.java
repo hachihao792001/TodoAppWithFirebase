@@ -14,6 +14,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -179,20 +181,50 @@ public class HomeActivity extends AppCompatActivity {
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
-                TaskModel model = new TaskModel(mTask, mDescription, id, mDate, taskType);
-                reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task1) {
-                        if (task1.isSuccessful()) {
-                            Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
-                            loader.dismiss();
-                        } else {
-                            //String error = task.getException().toString();
-                            Toast.makeText(HomeActivity.this, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
-                            loader.dismiss();
-                        }
-
+                TaskModel model;
+                switch (taskType.name) {
+                    case "Meeting":
+                        model = new MeetingTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy url từ edit text", "lấy location từ edit text");
+                        break;
+                    case "Shopping":
+                        model = new ShoppingTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy url từ edit text", "lấy location từ edit text");
+                        break;
+                    case "Office":
+                        model = new OfficeTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy filename từ edit text");
+                        break;
+                    case "Contact":
+                        TextView phoneET = myView.findViewById(R.id.et_phoneNumber);
+                        TextView emailET = myView.findViewById(R.id.et_email);
+                        model = new ContactTask(mTask, mDescription, id, mDate, taskType,
+                                phoneET.getText().toString(), emailET.getText().toString());
+                        break;
+                    case "Travelling":
+                        //travelling chưa có TravellingTask :(
+                        model = new ContactTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy phone từ edit text", "lấy email từ edit text");
+                        break;
+                    case "Relaxing":
+                        model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy playlist từ edit text");
+                        break;
+                    default:
+                        model = new MeetingTask(mTask, mDescription, id, mDate, taskType,
+                                "lấy url từ edit text", "lấy location từ edit text");
+                        break;
+                }
+                reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                    } else {
+                        //String error = task.getException().toString();
+                        Toast.makeText(HomeActivity.this, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
                     }
+
                 });
             }
 
@@ -274,33 +306,50 @@ public class HomeActivity extends AppCompatActivity {
 
                 holder.mView.setOnClickListener(v -> {
                     Intent intent;
-
                     switch (model.getTaskType().name) {
                         case "Meeting":
                             intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                            //chắc là putExtra hết mấy cái biến bên trong model qua ¯\_(ツ)_/¯
+                            startActivity(intent);
                             break;
                         case "Shopping":
                             intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
+                            startActivity(intent);
                             break;
                         case "Office":
                             intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
+                            startActivity(intent);
                             break;
                         case "Contact":
                             intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                            reference.child(getRef(position).getKey()).child(model.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.e("firebase", "Error getting data", task.getException());
+                                    } else {
+                                        ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                        intent.putExtra("task", contactTask);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+
+
                             break;
                         case "Travelling":
                             intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                            startActivity(intent);
                             break;
                         case "Relaxing":
                             intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
+                            startActivity(intent);
                             break;
                         default:
                             intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                            startActivity(intent);
                             break;
                     }
 
-                    startActivity(intent);
                 });
 
                 Button editButton = holder.mView.findViewById(R.id.editButton);
