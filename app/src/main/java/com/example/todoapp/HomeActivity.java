@@ -198,8 +198,8 @@ public class HomeActivity extends AppCompatActivity {
                                 "lấy filename từ edit text");
                         break;
                     case "Contact":
-                        TextView phoneET = myView.findViewById(R.id.et_phoneNumber);
-                        TextView emailET = myView.findViewById(R.id.et_email);
+                        EditText phoneET = myView.findViewById(R.id.et_phoneNumber);
+                        EditText emailET = myView.findViewById(R.id.et_email);
                         model = new ContactTask(mTask, mDescription, id, mDate, taskType,
                                 phoneET.getText().toString(), emailET.getText().toString());
                         break;
@@ -326,7 +326,7 @@ public class HomeActivity extends AppCompatActivity {
                             break;
                         case "Contact":
                             intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
-                            reference.child(getRef(position).getKey()).child(model.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            reference.child(key).child(model.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DataSnapshot> task) {
                                     if (!task.isSuccessful()) {
