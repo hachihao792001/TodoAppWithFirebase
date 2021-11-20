@@ -85,6 +85,14 @@ public class HomeActivity extends AppCompatActivity {
     private String date;
     private TaskType taskType;
 
+    //các biến cụ thể để lưu cho từng task detail :(
+    //meeting
+    private String gMeetingUrl = "";
+    private String gMeetingLocation = "";
+    //shopping
+    private String gProductUrl = "";
+    private String gShoppingLocation = "";
+
     ArrayList<TaskType> taskTypeList;
 
     @Override
@@ -318,7 +326,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 holder.mView.setOnClickListener(v -> {
                     //lấy task từ database để putExtra vào intent
-                    reference.child(key).child(model.getId()).get().addOnCompleteListener(task -> {
+                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
                         } else {
@@ -326,13 +334,21 @@ public class HomeActivity extends AppCompatActivity {
                             switch (model.getTaskType().name) {
                                 case "Meeting":
                                     MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
-                                    intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
-                                    intent.putExtra("task", meetingTask);
+                                    intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                                    intent.putExtra("task", meetingTask.getTask());
+                                    intent.putExtra("description", meetingTask.getDescription());
+                                    intent.putExtra("date", meetingTask.getDate());
+                                    intent.putExtra("meetingUrl", meetingTask.getMeetingUrl());
+                                    intent.putExtra("meetingLocation", meetingTask.getMeetingLocation());
                                     break;
                                 case "Shopping":
                                     ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
                                     intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
-                                    intent.putExtra("task", shoppingTask);
+                                    intent.putExtra("task", shoppingTask.getTask());
+                                    intent.putExtra("description", shoppingTask.getDescription());
+                                    intent.putExtra("date", shoppingTask.getDate());
+                                    intent.putExtra("productUrl", shoppingTask.getProductUrl());
+                                    intent.putExtra("shoppingLocation", shoppingTask.getShoppingLocation());
                                     break;
                                 case "Office":
                                     OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
@@ -369,6 +385,39 @@ public class HomeActivity extends AppCompatActivity {
                     description = model.getDescription();
                     taskType = model.getTaskType();
                     date = model.getDate();
+
+                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        } else {
+                            switch (model.getTaskType().name) {
+                                case "Meeting":
+                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
+                                    gMeetingLocation = meetingTask.getMeetingLocation();
+                                    gMeetingUrl = meetingTask.getMeetingUrl();
+                                    break;
+                                case "Shopping":
+                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
+                                    gProductUrl = shoppingTask.getProductUrl();
+                                    gShoppingLocation = shoppingTask.getShoppingLocation();
+                                    break;
+                                case "Office":
+                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
+                                    break;
+                                case "Contact":
+                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    break;
+                                case "Travelling":
+                                    //chưa có travellingTask :(
+                                    //TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    break;
+                                case "Relaxing":
+                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
+                                    break;
+                            }
+                        }
+                    });
+
                     updateTask();
                 });
             }
@@ -545,11 +594,27 @@ public class HomeActivity extends AppCompatActivity {
                     case 0: { //Meeting
                         View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
                         taskDetail.addView(meetingInputDetail);
+
+                        EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                        EditText etMeetingLocation = view.findViewById(R.id.et_location);
+
+                        etMeetingUrl.setText(gMeetingUrl);
+                        etMeetingUrl.setSelection(gMeetingUrl.length());
+                        etMeetingLocation.setText(gMeetingLocation);
+                        etMeetingLocation.setSelection(gMeetingLocation.length());
                         break;
                     }
                     case 1: { //Shopping
                         View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
                         taskDetail.addView(shoppingInputDetail);
+
+                        EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                        EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
+
+                        etProductUrl.setText(gProductUrl);
+                        etProductUrl.setSelection(gProductUrl.length());
+                        etShoppingLocation.setText(gShoppingLocation);
+                        etShoppingLocation.setSelection(gShoppingLocation.length());
                         break;
                     }
                     case 2: { //office

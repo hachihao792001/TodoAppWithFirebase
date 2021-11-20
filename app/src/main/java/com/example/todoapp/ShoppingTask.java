@@ -3,6 +3,10 @@ package com.example.todoapp;
 public class ShoppingTask extends TaskModel{
     private String productUrl, shoppingLocation;
 
+    public ShoppingTask() {
+
+    }
+
     public ShoppingTask(String shoppingUrl, String shoppingLocation) {
         this.productUrl = shoppingUrl;
         this.shoppingLocation = shoppingLocation;
