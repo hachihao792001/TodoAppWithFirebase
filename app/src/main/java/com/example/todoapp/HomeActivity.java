@@ -299,7 +299,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void updateLabel() {
         dateTv.setText(fmtDate.format(myCalendar.getTime()));
     }
@@ -318,51 +317,49 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setTaskType(model.getTaskType());
 
                 holder.mView.setOnClickListener(v -> {
-                    Intent intent;
-                    switch (model.getTaskType().name) {
-                        case "Meeting":
-                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Shopping":
-                            intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Office":
-                            intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Contact":
-                            intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
-                            reference.child(key).child(model.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.e("firebase", "Error getting data", task.getException());
-                                    } else {
-                                        ContactTask contactTask = task.getResult().getValue(ContactTask.class);
-                                        intent.putExtra("task", contactTask);
-                                        startActivity(intent);
-                                    }
-                                }
-                            });
+                    //lấy task từ database để putExtra vào intent
+                    reference.child(key).child(model.getId()).get().addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        } else {
+                            Intent intent = null;
+                            switch (model.getTaskType().name) {
+                                case "Meeting":
+                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
+                                    intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                                    intent.putExtra("task", meetingTask);
+                                    break;
+                                case "Shopping":
+                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
+                                    intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
+                                    intent.putExtra("task", shoppingTask);
+                                    break;
+                                case "Office":
+                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
+                                    intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
+                                    intent.putExtra("task", officeTask);
+                                    break;
+                                case "Contact":
+                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                                    intent.putExtra("task", contactTask);
+                                    break;
+                                case "Travelling":
+                                    //chưa có travellingTask :(
+                                    //TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    //intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                                    //intent.putExtra("task", travellingTask);
+                                    break;
+                                case "Relaxing":
+                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
+                                    intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
+                                    intent.putExtra("task", relaxingTask);
+                                    break;
+                            }
 
-
-                            break;
-                        case "Travelling":
-                            intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
                             startActivity(intent);
-                            break;
-                        case "Relaxing":
-                            intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        default:
-                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                    }
-
+                        }
+                    });
                 });
 
                 Button editButton = holder.mView.findViewById(R.id.editButton);
