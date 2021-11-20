@@ -107,6 +107,7 @@
             android:layout_margin="10dp"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -114,6 +115,39 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/productUrl"
+            android:textSize="13sp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product url:"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
+
+        <Button
+            android:id="@+id/btnShoppingUrl"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:textColor="#fff"
+            android:textColorHint="#000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="See product"
+            android:backgroundTint="#29b6f6"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/productLocation"
             android:textSize="13sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -124,7 +158,7 @@
 
 
         <Button
-            android:id="@+id/shoppingButton"
+            android:id="@+id/btnShoppingMap"
             android:layout_weight="1"
             android:textSize="14sp"
             android:textColor="#fff"
@@ -146,7 +180,7 @@
         android:id="@+id/shoppingMap"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="160dp"
         tools:context=".MapsActivity" />
 
     <LinearLayout
@@ -170,8 +204,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/saveBtn"
-            android:text="Save"
+            android:id="@+id/btnUpdate"
+            android:text="Update"
             android:textColor="#fff"
             android:backgroundTint="#29b6f6"
             android:textAllCaps="false"

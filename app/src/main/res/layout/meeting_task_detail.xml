@@ -125,7 +125,7 @@
 
 
         <Button
-            android:id="@+id/btnMeeting"
+            android:id="@+id/btnMeetingUrl"
             android:layout_weight="1"
             android:textSize="14sp"
             android:textColor="#fff"
@@ -146,6 +146,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/meetingLocation"
             android:textSize="13sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
@@ -156,7 +157,7 @@
 
 
         <Button
-            android:id="@+id/meetingButton"
+            android:id="@+id/btnMeetingMap"
             android:layout_weight="1"
             android:textSize="14sp"
             android:textColor="#fff"
@@ -202,7 +203,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/saveBtn"
+            android:id="@+id/btnUpdate"
             android:text="Update"
             android:textColor="#fff"
             android:backgroundTint="#29b6f6"

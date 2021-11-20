@@ -141,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
-                Model model = new Model(mTask, mDescription, id, date, taskType);
+                TaskModel model = new TaskModel(mTask, mDescription, id, date, taskType);
                 reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task1) {
@@ -197,11 +197,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerOptions<Model> options = new FirebaseRecyclerOptions.Builder<Model>().setQuery(reference, Model.class).build();
+        FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>().setQuery(reference, TaskModel.class).build();
 
-        FirebaseRecyclerAdapter<Model, MyViewHolder> adapter = new FirebaseRecyclerAdapter<Model, MyViewHolder>(options) {
+        FirebaseRecyclerAdapter<TaskModel, MyViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, MyViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final Model model) {
+            protected void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final TaskModel model) {
                 holder.setDate(model.getDate());
                 holder.setTask(model.getTask());
                 holder.setDescription(model.getDescription());
@@ -291,7 +291,7 @@ public class HomeActivity extends AppCompatActivity {
                 taskType = (TaskType) taskTypeDropdown.getSelectedItem();
                 String date = DateFormat.getDateInstance().format(new Date());
 
-                Model model = new Model(task, description, key, date, taskType);
+                TaskModel model = new TaskModel(task, description, key, date, taskType);
 
                 reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
