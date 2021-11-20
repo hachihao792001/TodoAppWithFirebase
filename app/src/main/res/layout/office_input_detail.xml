@@ -10,25 +10,35 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="13sp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="2"
             android:text="File name:"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/et_location"
-            android:layout_weight="0.5"
-            android:textSize="14sp"
-            android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:hint="Input your file name ..."
-            android:layout_margin="10dp"/>
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1.2"
+            android:hint="test.docx"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/chooseFileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:text="Choose file"
+            android:textSize="10sp" />
 
     </LinearLayout>
 </LinearLayout>

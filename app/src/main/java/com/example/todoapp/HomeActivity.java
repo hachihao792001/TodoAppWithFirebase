@@ -272,11 +272,35 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setDescription(model.getDescription());
                 holder.setTaskType(model.getTaskType());
 
-                holder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //TODO show details
+                holder.mView.setOnClickListener(v -> {
+                    Intent intent;
+
+                    switch (model.getTaskType().name) {
+                        case "Meeting":
+                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                            //chắc là putExtra hết mấy cái biến bên trong model qua ¯\_(ツ)_/¯
+                            break;
+                        case "Shopping":
+                            intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
+                            break;
+                        case "Office":
+                            intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
+                            break;
+                        case "Contact":
+                            intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                            break;
+                        case "Travelling":
+                            intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                            break;
+                        case "Relaxing":
+                            intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
+                            break;
+                        default:
+                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                            break;
                     }
+
+                    startActivity(intent);
                 });
 
                 ImageView editIcon = holder.mView.findViewById(R.id.edit);
