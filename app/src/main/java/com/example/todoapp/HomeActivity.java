@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
     EditText taskEt;  //Et = edit text
     EditText descriptionEt;
     TextView dateTv; // Tv = text view
+    FragmentManager fragmentManager = this.getSupportFragmentManager();
 
 
     DateFormat fmtDate = DateFormat.getDateInstance();
@@ -246,6 +248,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -254,6 +257,8 @@ public class HomeActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+
 
     private void updateLabel() {
         dateTv.setText(fmtDate.format(myCalendar.getTime()));
