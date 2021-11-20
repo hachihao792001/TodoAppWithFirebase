@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -165,6 +166,23 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //do stuff
+                RelativeLayout taskDetail = myView.findViewById(R.id.taskDetail);
+                LayoutInflater inflater = LayoutInflater.from(myView.getContext());
+
+                //thay doi taskDetail tuong ung voi moi type
+                taskDetail.removeAllViews();
+                switch (i) {
+                    case 0: { //Meeting
+                        View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
+                        taskDetail.addView(meetingInputDetail);
+                        break;
+                    }
+                    case 1: { //Shopping
+                        View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
+                        taskDetail.addView(shoppingInputDetail);
+                        break;
+                    }
+                }
             }
 
             @Override

@@ -114,7 +114,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="Type"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -133,6 +136,14 @@
                 android:spinnerMode="dropdown" />
         </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/taskDetail">
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
