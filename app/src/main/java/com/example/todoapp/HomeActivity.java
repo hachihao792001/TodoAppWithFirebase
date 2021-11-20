@@ -303,8 +303,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
 
-                ImageView editIcon = holder.mView.findViewById(R.id.edit);
-                editIcon.setOnClickListener(v -> {
+                Button editButton = holder.mView.findViewById(R.id.editButton);
+                editButton.setOnClickListener(v -> {
                     key = getRef(position).getKey();
                     task = model.getTask();
                     description = model.getDescription();

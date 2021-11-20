@@ -34,13 +34,14 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/edit"
+            <Button
+                android:id="@+id/editButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:layout_weight="0"
-                android:src="@drawable/edit_icon" />
+                android:background="@android:color/transparent"
+                android:drawableTop="@drawable/edit_icon" />
 
         </LinearLayout>
 
