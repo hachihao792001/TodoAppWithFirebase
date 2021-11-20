@@ -22,42 +22,62 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:text="Task"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Task"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/task"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:hint="Input task..."
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/task"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:hint="Input task..."
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Description"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:hint="Input description..."
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -67,139 +87,83 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Date:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Description"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4">
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:hint="date"
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Input description..."
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
+        <Button
+            android:id="@+id/pickDateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:hint="Pick Date"
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_marginStart="10dp"
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Date:"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:text="Type"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <Spinner
+            android:id="@+id/taskTypeDropdown"
+            android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
-            android:layout_weight="4">
+            android:layout_weight="1"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:hint="date"
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4">
-
-            <Button
-                android:id="@+id/pickDateBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:hint="Input date..."
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Type"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4">
-
-            <Spinner
-                android:id="@+id/taskTypeDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:spinnerMode="dropdown" />
-        </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/taskDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:id="@+id/taskDetail">
+        android:layout_margin="10dp">
 
     </RelativeLayout>
 
@@ -208,42 +172,35 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_marginStart="10dp"
 
-            <Button
-                android:id="@+id/cancelBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#0086c3"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="18dp" />
-        </RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#0086c3"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="18dp" />
 
-        <RelativeLayout
-            android:layout_width="0dp"
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <Button
-                android:id="@+id/saveBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:backgroundTint="#29b6f6"
-                android:text="Save"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="18dp" />
-        </RelativeLayout>
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#29b6f6"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="18dp" />
     </LinearLayout>
 
 </LinearLayout>
