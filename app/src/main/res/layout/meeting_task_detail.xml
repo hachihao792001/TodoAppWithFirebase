@@ -198,7 +198,8 @@
             android:textStyle="bold"
             android:text="See on Maps"
             android:backgroundTint="#29b6f6"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:onClick="seeMapOnCLick"/>
 
         <Button
             android:id="@+id/btnMeetingUrl"
@@ -211,7 +212,8 @@
             android:textStyle="bold"
             android:text="Go to meeting"
             android:backgroundTint="#29b6f6"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:onClick="goToMeetingOnClick"/>
     </LinearLayout>
 
 </LinearLayout>
