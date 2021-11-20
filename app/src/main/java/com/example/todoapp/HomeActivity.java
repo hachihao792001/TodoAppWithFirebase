@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,11 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -39,9 +43,38 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
+
+
+     EditText taskEt;
+     EditText descriptionEt ;
+     TextView dateTv;
+
+
+    DateFormat fmtDateAndTime = DateFormat.getDateTimeInstance();
+    Calendar myCalendar = Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener()
+    {
+        public void onDateSet(DatePicker view,
+                              int year, int monthOfYear, int dayOfMonth) {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateLabel();
+        }
+    };
+    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener()
+    {
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            myCalendar.set(Calendar.MINUTE, minute);
+            updateLabel();
+        }
+    };
+
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
@@ -56,6 +89,7 @@ public class HomeActivity extends AppCompatActivity {
     private String key = "";
     private String task;
     private String description;
+    private String date;
     private TaskType taskType;
 
     ArrayList<TaskType> taskTypeList;
@@ -115,33 +149,49 @@ public class HomeActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        final EditText task = myView.findViewById(R.id.task);
-        final EditText description = myView.findViewById(R.id.description);
+        taskEt = myView.findViewById(R.id.task);
+        descriptionEt = myView.findViewById(R.id.description);
+        dateTv=myView.findViewById(R.id.date);
+        Button pickDate=myView.findViewById(R.id.pickDateBtn);
         Button save = myView.findViewById(R.id.saveBtn);
         Button cancel = myView.findViewById(R.id.cancelBtn);
         Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
 
+
+        pickDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DatePickerDialog(HomeActivity.this, d,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        // cập nhật giá trị tại textview day
+        updateLabel();
+
+
         cancel.setOnClickListener(v -> dialog.dismiss());
 
         save.setOnClickListener(v -> {
-            String mTask = task.getText().toString().trim();
-            String mDescription = description.getText().toString().trim();
+            String mTask = taskEt.getText().toString().trim();
+            String mDescription = descriptionEt.getText().toString().trim();
             String id = reference.push().getKey();
-            String date = DateFormat.getDateInstance().format(new Date());
+            String mDate = dateTv.getText().toString().trim();
             TaskType taskType = (TaskType) taskTypeDropdown.getSelectedItem();
 
             if (TextUtils.isEmpty(mTask)) {
-                task.setError("Task is required!");
+                taskEt.setError("Task is required!");
                 return;
             } else if (TextUtils.isEmpty(mDescription)) {
-                task.setError("Description is required!");
+                taskEt.setError("Description is required!");
                 return;
             } else {
                 loader.setMessage("Adding your task...");
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
-                TaskModel model = new TaskModel(mTask, mDescription, id, date, taskType);
+                TaskModel model = new TaskModel(mTask, mDescription, id, mDate, taskType);
                 reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task1) {
@@ -214,6 +264,10 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void updateLabel() {
+        dateTv.setText(fmtDateAndTime.format(myCalendar.getTime()));
     }
 
     @Override
