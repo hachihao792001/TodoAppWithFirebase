@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class TaskType {
+class TaskType implements Serializable {
     public String name;
     public int iconResource;
 

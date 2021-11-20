@@ -12,8 +12,10 @@
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/drawable/travel_icon.xml" value="0.1125" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/drawable/travelling_icon.xml" value="0.1125" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/activity_login.xml" value="0.16666666666666666" />
-        <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/contact_task_detail.xml" value="0.33" />
+        <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/contact_input_detail.xml" value="0.22" />
+        <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/contact_task_detail.xml" value="0.25" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/input_file.xml" value="0.25" />
+        <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/meeting_input_detail.xml" value="0.17708333333333334" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/meeting_task_detail.xml" value="0.25" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/office_input_detail.xml" value="0.33" />
         <entry key="..\:/Android studio projects/ToDoApp/app/src/main/res/layout/office_task_detail.xml" value="0.22" />

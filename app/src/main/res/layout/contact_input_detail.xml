@@ -10,26 +10,53 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="13sp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Number:"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Phone number:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
 
         <EditText
-            android:id="@+id/et_meetingUrl"
-            android:layout_weight="0.5"
-            android:textSize="14sp"
-            android:textColorHint="#000"
+            android:id="@+id/et_phoneNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
             android:hint="Input number to call"
-            android:layout_margin="10dp"/>
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Email:"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0.5"
+            android:hint="Input email"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 </LinearLayout>
