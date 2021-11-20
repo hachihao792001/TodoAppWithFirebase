@@ -182,6 +182,28 @@ public class HomeActivity extends AppCompatActivity {
                         taskDetail.addView(shoppingInputDetail);
                         break;
                     }
+                    case 2:{ //office
+                        View officeInputDetail = inflater.inflate(R.layout.office_input_detail, null);
+                        taskDetail.addView(officeInputDetail);
+                        break;                    }
+                    case 3:{ //contact
+                        View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
+                        taskDetail.addView(contactInputDetail);
+                        break;
+
+                    }
+                    case 4:{ //travel
+                        View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
+                        taskDetail.addView(travellingInputDetail);
+                        break;
+
+                    }
+                    case 5:{  //relax
+                        View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
+                        taskDetail.addView(relaxingInputDetail);
+                        break;
+
+                    }
                 }
             }
 
