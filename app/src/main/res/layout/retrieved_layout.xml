@@ -22,8 +22,10 @@
 
             <TextView
                 android:id="@+id/dateTv"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="80dp"
+                android:layout_weight="1"
                 android:background="@drawable/background_design"
                 android:gravity="center"
                 android:padding="10dp"
@@ -31,6 +33,15 @@
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_weight="0"
+                android:src="@drawable/edit_icon" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -73,6 +84,8 @@
                 android:layout_weight="6"
                 android:padding="10dp"
                 android:src="@drawable/black_contact_icon" />
+
+
         </LinearLayout>
 
 

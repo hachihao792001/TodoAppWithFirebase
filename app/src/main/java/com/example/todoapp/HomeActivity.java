@@ -210,14 +210,18 @@ public class HomeActivity extends AppCompatActivity {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        key = getRef(position).getKey();
-                        task = model.getTask();
-                        description = model.getDescription();
-                        taskType = model.getTaskType();
-
-                        updateTask();
-
+                        //TODO show details
                     }
+                });
+
+                ImageView editIcon = holder.mView.findViewById(R.id.edit);
+                editIcon.setOnClickListener(v -> {
+                    key = getRef(position).getKey();
+                    task = model.getTask();
+                    description = model.getDescription();
+                    taskType = model.getTaskType();
+
+                    updateTask();
                 });
             }
 
@@ -283,30 +287,27 @@ public class HomeActivity extends AppCompatActivity {
         Button updateButton = view.findViewById(R.id.btnUpdate);
         Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
 
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                task = mTask.getText().toString().trim();
-                description = mDescription.getText().toString().trim();
-                taskType = (TaskType) taskTypeDropdown.getSelectedItem();
-                String date = DateFormat.getDateInstance().format(new Date());
+        updateButton.setOnClickListener(view1 -> {
+            task = mTask.getText().toString().trim();
+            description = mDescription.getText().toString().trim();
+            taskType = (TaskType) taskTypeDropdown.getSelectedItem();
+            String date = DateFormat.getDateInstance().format(new Date());
 
-                TaskModel model = new TaskModel(task, description, key, date, taskType);
+            TaskModel model = new TaskModel(task, description, key, date, taskType);
 
-                reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(HomeActivity.this, "Task has been updated", Toast.LENGTH_SHORT).show();
-                        } else {
-                            //String err = task.getException().toString();
-                            Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
-                        }
+            reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(HomeActivity.this, "Task has been updated", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //String err = task.getException().toString();
+                        Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            });
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         });
 
         delButton.setOnClickListener(new View.OnClickListener() {
@@ -331,6 +332,14 @@ public class HomeActivity extends AppCompatActivity {
         dialog.show();
 
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
+        int updatingTaskIndex = 0;
+        for (int i = 0; i < taskTypeList.size(); i++) {
+            if (taskTypeList.get(i).name.equals(taskType.name)) {
+                updatingTaskIndex = i;
+                break;
+            }
+        }
+        taskTypeDropdown.setSelection(updatingTaskIndex);
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
