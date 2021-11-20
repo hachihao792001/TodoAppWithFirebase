@@ -11,170 +11,171 @@
         android:background="@drawable/background_design"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Update your task"
+        android:text="Update task"
         android:textColor="#fff"
-        android:textSize="18sp"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Task"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Task"
-                android:textColor="#000"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/mEditTextTask"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4">
-
-            <EditText
-                android:id="@+id/mEditTextTask"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Task"
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
+            android:layout_margin="10dp"
+            android:layout_weight=".5"
+            android:hint="Input task..."
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Description"
-                android:textColor="#000"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Description"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/mEditTextDescription"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4">
-
-            <EditText
-                android:id="@+id/mEditTextDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="Description"
-                android:textColor="#000"
-                android:textColorHint="#000"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
+            android:layout_margin="10dp"
+            android:layout_weight=".5"
+            android:hint="Input description..."
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="Type"
-                android:textColor="#000"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Date"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/mEditDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4">
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:textColorHint="#000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/taskTypeDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:spinnerMode="dropdown" />
-        </RelativeLayout>
+        <Button
+            android:backgroundTint="#29b6f6"
+            android:id="@+id/pickUpdateDateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1.3"
+            android:drawableLeft="@drawable/ic_date_white"
+            android:textColorHint="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:backgroundTint="#0086c3"
-                android:text="Delete"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:text="Type"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/taskTypeDropdown"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_weight=".5"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
 
-            <Button
-                android:id="@+id/btnUpdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#29b6f6"
-                android:text="Update"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/taskDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#0086c3"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#29b6f6"
+            android:text="Update"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="18dp" />
+    </LinearLayout>
+
 </LinearLayout>

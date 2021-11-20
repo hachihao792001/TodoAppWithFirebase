@@ -47,8 +47,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
-
-
     EditText taskEt;  //Et = edit text
     EditText descriptionEt;
     TextView dateTv; // Tv = text view
@@ -160,7 +158,6 @@ public class HomeActivity extends AppCompatActivity {
 
         // cập nhật giá trị tại textview day
         updateLabel();
-
 
         cancel.setOnClickListener(v -> dialog.dismiss());
 
@@ -288,7 +285,7 @@ public class HomeActivity extends AppCompatActivity {
                     task = model.getTask();
                     description = model.getDescription();
                     taskType = model.getTaskType();
-
+                    date = model.getDate();
                     updateTask();
                 });
             }
@@ -344,12 +341,38 @@ public class HomeActivity extends AppCompatActivity {
 
         EditText mTask = view.findViewById(R.id.mEditTextTask);
         EditText mDescription = view.findViewById(R.id.mEditTextDescription);
+        TextView mDate = view.findViewById(R.id.mEditDate);
+        Button updateDateBtn = view.findViewById(R.id.pickUpdateDateBtn);
 
         mTask.setText(task);
         mTask.setSelection(task.length());
 
         mDescription.setText(description);
         mDescription.setSelection(description.length());
+
+        mDate.setText(date);
+
+        DateFormat fmtDate = DateFormat.getDateInstance();
+        Calendar myCalendar = Calendar.getInstance();
+
+        DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view,
+                                  int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                mDate.setText(fmtDate.format(myCalendar.getTime()));
+            }
+        };
+
+        updateDateBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DatePickerDialog(HomeActivity.this, d,
+                        myCalendar.get(Calendar.YEAR),
+                        myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         Button delButton = view.findViewById(R.id.btnDelete);
         Button updateButton = view.findViewById(R.id.btnUpdate);
@@ -359,7 +382,7 @@ public class HomeActivity extends AppCompatActivity {
             task = mTask.getText().toString().trim();
             description = mDescription.getText().toString().trim();
             taskType = (TaskType) taskTypeDropdown.getSelectedItem();
-            String date = DateFormat.getDateInstance().format(new Date());
+            String date = mDate.getText().toString().trim();
 
             TaskModel model = new TaskModel(task, description, key, date, taskType);
 
