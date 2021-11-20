@@ -49,28 +49,19 @@ import java.util.Date;
 public class HomeActivity extends AppCompatActivity {
 
 
-     EditText taskEt;
-     EditText descriptionEt ;
-     TextView dateTv;
+    EditText taskEt;  //Et = edit text
+    EditText descriptionEt;
+    TextView dateTv; // Tv = text view
 
 
-    DateFormat fmtDateAndTime = DateFormat.getDateTimeInstance();
+    DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener()
-    {
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view,
                               int year, int monthOfYear, int dayOfMonth) {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-    };
-    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener()
-    {
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            myCalendar.set(Calendar.MINUTE, minute);
             updateLabel();
         }
     };
@@ -151,8 +142,8 @@ public class HomeActivity extends AppCompatActivity {
 
         taskEt = myView.findViewById(R.id.task);
         descriptionEt = myView.findViewById(R.id.description);
-        dateTv=myView.findViewById(R.id.date);
-        Button pickDate=myView.findViewById(R.id.pickDateBtn);
+        dateTv = myView.findViewById(R.id.date);
+        Button pickDate = myView.findViewById(R.id.pickDateBtn);
         Button save = myView.findViewById(R.id.saveBtn);
         Button cancel = myView.findViewById(R.id.cancelBtn);
         Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
@@ -232,23 +223,24 @@ public class HomeActivity extends AppCompatActivity {
                         taskDetail.addView(shoppingInputDetail);
                         break;
                     }
-                    case 2:{ //office
+                    case 2: { //office
                         View officeInputDetail = inflater.inflate(R.layout.office_input_detail, null);
                         taskDetail.addView(officeInputDetail);
-                        break;                    }
-                    case 3:{ //contact
+                        break;
+                    }
+                    case 3: { //contact
                         View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
                         taskDetail.addView(contactInputDetail);
                         break;
 
                     }
-                    case 4:{ //travel
+                    case 4: { //travel
                         View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
                         taskDetail.addView(travellingInputDetail);
                         break;
 
                     }
-                    case 5:{  //relax
+                    case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
                         break;
@@ -267,7 +259,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void updateLabel() {
-        dateTv.setText(fmtDateAndTime.format(myCalendar.getTime()));
+        dateTv.setText(fmtDate.format(myCalendar.getTime()));
     }
 
     @Override
