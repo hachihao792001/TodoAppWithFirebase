@@ -147,17 +147,22 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
 
         LatLng latLngPlace = getLocationFromAddress(ShoppingTaskDetail.this, shoppingLocation);
 
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnCircleClickListener(this);
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
+        if (latLngPlace != null) {
+            mMap.setOnMarkerClickListener(this);
+            mMap.setOnCircleClickListener(this);
+            mMap.setOnMapClickListener(this);
+            mMap.setOnMapLongClickListener(this);
 
-        MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(shoppingLocation);
+            MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(shoppingLocation);
 
-        mMap.addMarker(mMarker);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
+            mMap.addMarker(mMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+        }
+        else {
+            Toast.makeText(ShoppingTaskDetail.this, "Shopping location is not valid!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -169,7 +174,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
+            if (address == null || address.size() == 0) {
                 return null;
             }
 
@@ -177,7 +182,6 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
 

@@ -243,6 +243,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             dialog.dismiss();
+            recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, recyclerView.getLayoutManager().getItemCount());
         });
 
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
@@ -718,11 +719,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
                     case 4: { //travel
-                        View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
-                        taskDetail.addView(travellingInputDetail);
-                        EditText etPlace = view.findViewById(R.id.et_place);
-                        etPlace.setText(gTravellingPlace);
-                        etPlace.setSelection(gTravellingPlace.length());
+                        if (taskType.name.equals("Travelling")) {
+                            View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
+                            taskDetail.addView(travellingInputDetail);
+                            EditText etPlace = view.findViewById(R.id.et_place);
+                            etPlace.setText(gTravellingPlace);
+                            etPlace.setSelection(gTravellingPlace.length());
+                        }
                         break;
 
                     }
