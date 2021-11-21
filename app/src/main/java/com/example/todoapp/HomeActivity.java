@@ -108,8 +108,13 @@ public class HomeActivity extends AppCompatActivity {
     //shopping
     private String gProductUrl = "";
     private String gShoppingLocation = "";
+    //office
+    //contact
+    private String gPhoneNumber = "";
+    private String gEmail = "";
     //Travelling
     private String gTravellingPlace = "";
+    //relaxing
 
     ArrayList<TaskType> taskTypeList;
 
@@ -243,8 +248,8 @@ public class HomeActivity extends AppCompatActivity {
                         model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
-                        EditText etPlaylistName=myView.findViewById(R.id.playlistName);
-                        String playlistName=etPlaylistName.getText().toString().trim();
+                        EditText etPlaylistName = myView.findViewById(R.id.playlistName);
+                        String playlistName = etPlaylistName.getText().toString().trim();
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
                                 playlistName);
                         break;
@@ -416,6 +421,8 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 case "Contact":
                                     ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    gPhoneNumber = contactTask.getPhoneNumber();
+                                    gEmail = contactTask.getEmail();
                                     break;
                                 case "Travelling":
                                     TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
@@ -655,6 +662,16 @@ public class HomeActivity extends AppCompatActivity {
                     case 3: { //contact
                         View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
                         taskDetail.addView(contactInputDetail);
+
+                        if (taskType.name.equals("Contact")) {
+                            EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
+                            EditText etEmail = view.findViewById(R.id.et_email);
+
+                            etPhoneNumber.setText(gPhoneNumber);
+                            etPhoneNumber.setSelection(gPhoneNumber.length());
+                            etEmail.setText(gEmail);
+                            etEmail.setSelection(gEmail.length());
+                        }
                         break;
 
                     }
@@ -664,7 +681,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         if (taskType.name.equals("Travelling")) {
                             EditText etPlace = view.findViewById(R.id.et_place);
-                            
+
                             etPlace.setText(gTravellingPlace);
                             etPlace.setSelection(gTravellingPlace.length());
                         }
@@ -706,11 +723,11 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chooseFile(View view){
-        String sPath= Environment.getExternalStorageDirectory()+"/";
-        Uri uri=Uri.parse(sPath);
+    public void chooseFile(View view) {
+        String sPath = Environment.getExternalStorageDirectory() + "/";
+        Uri uri = Uri.parse(sPath);
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(uri,"*/*");
+        intent.setDataAndType(uri, "*/*");
         startActivity(intent);
     }
 }
