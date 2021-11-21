@@ -14,18 +14,21 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Choose a song:"
+            android:text="Playlist name:"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
 
 
-        <Spinner
-            android:id="@+id/playlistsSpinner"
+        <EditText
+            android:id="@+id/playlistName"
+            android:layout_weight="0.5"
+            android:textSize="14sp"
+            android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown" />
+            android:textStyle="bold"
+            android:hint="Type your playlist"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
 </LinearLayout>
