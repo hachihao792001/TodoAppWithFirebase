@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -125,17 +126,22 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
 
         LatLng latLngPlace = getLocationFromAddress(TravellingTaskDetail.this, place);
 
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnCircleClickListener(this);
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
+        if (latLngPlace != null) {
+            mMap.setOnMarkerClickListener(this);
+            mMap.setOnCircleClickListener(this);
+            mMap.setOnMapClickListener(this);
+            mMap.setOnMapLongClickListener(this);
 
-        MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(place);
+            MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(place);
 
-        mMap.addMarker(mMarker);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
+            mMap.addMarker(mMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+        }
+        else {
+            Toast.makeText(TravellingTaskDetail.this, "Travelling location is not valid!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -147,7 +153,7 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
+            if (address == null || address.size() == 0) {
                 return null;
             }
 
@@ -155,7 +161,6 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
 

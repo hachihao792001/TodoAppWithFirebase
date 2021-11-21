@@ -130,17 +130,22 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
 
         LatLng latLngPlace = getLocationFromAddress(MeetingTaskDetail.this, meetingLocation);
 
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnCircleClickListener(this);
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
+        if (latLngPlace != null) {
+            mMap.setOnMarkerClickListener(this);
+            mMap.setOnCircleClickListener(this);
+            mMap.setOnMapClickListener(this);
+            mMap.setOnMapLongClickListener(this);
 
-        MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(meetingLocation);
+            MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(meetingLocation);
 
-        mMap.addMarker(mMarker);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
+            mMap.addMarker(mMarker);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+        }
+        else {
+            Toast.makeText(MeetingTaskDetail.this, "Meeting location is not valid!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public LatLng getLocationFromAddress(Context context, String strAddress) {
@@ -152,7 +157,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         try {
             // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
+            if (address == null || address.size() == 0) {
                 return null;
             }
 
@@ -160,7 +165,6 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
             p1 = new LatLng(location.getLatitude(), location.getLongitude() );
 
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
 
