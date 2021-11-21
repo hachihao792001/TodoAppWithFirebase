@@ -38,9 +38,6 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         TextView urlTextView = findViewById(R.id.meetingUrl);
         TextView locationTextView = findViewById(R.id.meetingLocation);
 
-        Button btnMeetingMap = findViewById(R.id.btnMeetingMap);
-        Button btnMeetingUrl = findViewById(R.id.btnMeetingUrl);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.meetingMap);
 
@@ -49,20 +46,6 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         dateTextView.setText(thisTask.getDate());
         urlTextView.setText(thisTask.getMeetingUrl());
         locationTextView.setText(thisTask.getMeetingLocation());
-
-        btnMeetingMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                seeMapOnCLick();
-            }
-        });
-
-        btnMeetingUrl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToMeetingOnClick();
-            }
-        });
     }
 
     public void seeMapOnCLick() {
@@ -89,8 +72,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if (intent.resolveActivity(getPackageManager()) != null && url.startsWith("https://")) {
             startActivity(intent);
-        }
-        else {
+        } else {
             Toast.makeText(this, "Meeting url is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
