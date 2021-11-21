@@ -128,17 +128,44 @@
 
 
         <Button
-            android:id="@+id/relaxButton"
+            android:id="@+id/startMusicBtn"
+            android:onClick="onMusicStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:backgroundTint="#29b6f6"
-            android:text="Play Music"
+            android:text="Play"
             android:textColor="#fff"
             android:textColorHint="#000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="13sp"
+ />
+        <Button
+            android:id="@+id/pauseMusicBtn"
+            android:onClick="onMusicPause"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#29b6f6"
+            android:text="Pause"
+            android:textColor="#fff"
+            android:textColorHint="#000"
+            android:textSize="13sp"
+     />
+        <Button
+            android:id="@+id/stopMusicBtn"
+            android:onClick="onMusicStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="#29b6f6"
+            android:text="Stop"
+            android:textColor="#fff"
+            android:textColorHint="#000"
+            android:textSize="13sp"
+ />
 
     </LinearLayout>
 

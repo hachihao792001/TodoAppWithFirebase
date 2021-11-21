@@ -309,8 +309,6 @@ public class HomeActivity extends AppCompatActivity {
                     case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
-                        Button openMusicBtn =  findViewById(R.id.openMusicBtn);
-                        MediaPlayer mediaPlayer= MediaPlayer.create(HomeActivity.this,R.raw.weigtless);
                         break;
 
                     }
@@ -689,9 +687,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-public void openMusic(View view){
-        MediaPlayer mediaPlayer=MediaPlayer.create(this,R.raw.weigtless);
-        mediaPlayer.start();
-}
+
 
 }

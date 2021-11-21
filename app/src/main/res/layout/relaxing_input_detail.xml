@@ -19,7 +19,7 @@
             android:layout_margin="10dp"/>
 
 
-        <Button
+        <EditText
             android:id="@+id/openMusicBtn"
             android:layout_weight="0.5"
             android:textSize="14sp"
@@ -27,8 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:onClick="openMusic"
-            android:hint="Start"
+            android:hint="Type your playlist"
             android:layout_margin="10dp"/>
 
     </LinearLayout>
