@@ -18,13 +18,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 public class OfficeTaskDetail extends AppCompatActivity {
+        OfficeTask thisTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.meeting_task_detail);
-
+        setContentView(R.layout.office_task_detail);
+        Intent intent = getIntent();
+        thisTask = (OfficeTask) intent.getSerializableExtra("task");
+        TextView taskTextView = findViewById(R.id.task);
+        TextView descTextView = findViewById(R.id.description);
+        TextView dateTextView = findViewById(R.id.date);
+        taskTextView.setText(thisTask.getTask());
+        descTextView.setText(thisTask.getDescription());
+        dateTextView.setText(thisTask.getDate());
 
     }
 

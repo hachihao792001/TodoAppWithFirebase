@@ -20,7 +20,7 @@
 
 
         <EditText
-            android:id="@+id/openMusicBtn"
+            android:id="@+id/playlistName"
             android:layout_weight="0.5"
             android:textSize="14sp"
             android:textColorHint="#000"

@@ -243,8 +243,10 @@ public class HomeActivity extends AppCompatActivity {
                         model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
+                        EditText etPlaylistName=myView.findViewById(R.id.playlistName);
+                        String playlistName=etPlaylistName.getText().toString().trim();
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy playlist từ edit text");
+                                playlistName);
                         break;
                 }
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
