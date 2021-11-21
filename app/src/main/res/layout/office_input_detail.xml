@@ -17,20 +17,9 @@
             android:layout_weight="2"
             android:text="File name:"
             android:textSize="13sp"
+            android:id="@+id/fileNameTextView"
             android:textStyle="bold" />
 
-
-        <TextView
-            android:id="@+id/et_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_weight="1.2"
-            android:hint="test.docx"
-            android:textColorHint="#000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/chooseFileButton"
@@ -39,7 +28,13 @@
             android:layout_weight="1.8"
             android:text="Choose file"
             android:textSize="10sp" />
-
+        <Button
+            android:id="@+id/openFileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:text="Choose file"
+            android:textSize="10sp" />
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>

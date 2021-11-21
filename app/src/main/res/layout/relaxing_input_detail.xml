@@ -19,15 +19,16 @@
             android:layout_margin="10dp"/>
 
 
-        <EditText
-            android:id="@+id/et_location"
+        <Button
+            android:id="@+id/openMusicBtn"
             android:layout_weight="0.5"
             android:textSize="14sp"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:hint="Input your playlist name ..."
+            android:onClick="openMusic"
+            android:hint="Start"
             android:layout_margin="10dp"/>
 
     </LinearLayout>
