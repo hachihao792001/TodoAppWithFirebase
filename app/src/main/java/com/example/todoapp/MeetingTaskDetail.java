@@ -48,7 +48,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         locationTextView.setText(thisTask.getMeetingLocation());
     }
 
-    public void seeMapOnCLick() {
+    public void seeMapOnCLick(View v) {
         String sSource = "";
         String sDest = thisTask.getMeetingLocation();
         try {
@@ -66,7 +66,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    public void goToMeetingOnClick() {
+    public void goToMeetingOnClick(View v) {
         String url = thisTask.getMeetingUrl();
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
