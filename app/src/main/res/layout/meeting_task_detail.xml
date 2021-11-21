@@ -32,6 +32,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
             android:text="Task:"
             android:textSize="13sp"
             android:textStyle="bold" />
@@ -45,7 +46,6 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description:"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
 
@@ -74,7 +75,6 @@
             android:id="@+id/description"
             android:layout_weight=".5"
             android:textSize="14sp"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,13 +96,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Date:"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
         <TextView
             android:id="@+id/date"
             android:layout_weight=".5"
             android:textSize="14sp"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,6 +124,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="Meeting url:"
+            android:textColor="@color/black"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -131,7 +132,6 @@
             android:id="@+id/meetingUrl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:layout_margin="10dp"
             android:layout_weight=".5"
@@ -154,6 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Meeting location:"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
 
@@ -161,7 +162,6 @@
             android:id="@+id/meetingLocation"
             android:textSize="13sp"
             android:layout_weight=".5"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -176,10 +176,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/meetingMap"
+        android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="260dp"
         tools:context=".MapsActivity" />
 
     <LinearLayout
