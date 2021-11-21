@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Todo List App");
+        getSupportActionBar().setTitle("Todo List");
 
         recyclerView = findViewById(R.id.recyclerView);
 

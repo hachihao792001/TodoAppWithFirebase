@@ -61,6 +61,32 @@
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/NEW2/MobileMidterm/app/src/main/res/layout/shopping_task_detail.xml" value="0.13020833333333334" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/Newest/MobileMidterm/app/src/main/res/layout/input_file.xml" value="0.1" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/Newest/MobileMidterm/app/src/main/res/layout/shopping_input_detail.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/background_design.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_contact_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_meeting_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_office_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_relaxing_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_shopping_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/black_travelling_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/button_design.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/edit_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_add.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_date_white.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_email.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_lock.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_pause_white.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_play_white.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/ic_stop_white.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/inputs.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/relaxing_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_contact_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_meeting_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_office_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_relaxing_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_shopping_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/drawable/white_travelling_icon.xml" value="0.2703125" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/activity_home.xml" value="0.17291666666666666" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/activity_main2.xml" value="0.128125" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/activity_registration.xml" value="0.13020833333333334" />
@@ -72,7 +98,7 @@
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/office_input_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/office_task_detail.xml" value="0.17083333333333334" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/relaxing_input_detail.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/relaxing_task_detail.xml" value="0.17844202898550723" />
+        <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/relaxing_task_detail.xml" value="0.264" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/shopping_input_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/shopping_task_detail.xml" value="0.20108695652173914" />
         <entry key="..\:/Users/Luc/Documents/github/android/app/src/main/res/layout/task_type_dropdownitem.xml" value="0.22509057971014493" />

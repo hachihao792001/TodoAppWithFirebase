@@ -132,6 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight=".5"
+            android:text="Playlist name"
             android:textSize="13sp"
             android:textStyle="bold" />
 
@@ -144,44 +145,52 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/startMusicBtn"
-            android:onClick="onMusicStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:backgroundTint="#29b6f6"
             android:drawableLeft="@drawable/ic_play_white"
+            android:onClick="onMusicStart"
+            android:paddingLeft="40dp"
             android:textColor="#fff"
             android:textColorHint="#000"
-            android:textSize="13sp"
-            />
+            android:textSize="13sp" />
+
         <Button
             android:id="@+id/pauseMusicBtn"
-            android:onClick="onMusicPause"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_weight="1"
             android:backgroundTint="#29b6f6"
             android:drawableLeft="@drawable/ic_pause_white"
+            android:onClick="onMusicPause"
+            android:paddingLeft="40dp"
             android:textColor="#fff"
             android:textColorHint="#000"
-            android:textSize="13sp"
-            />
+            android:textSize="13sp" />
+
         <Button
             android:id="@+id/stopMusicBtn"
-            android:onClick="onMusicStop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:backgroundTint="#29b6f6"
             android:drawableLeft="@drawable/ic_stop_white"
+
+            android:onClick="onMusicStop"
+            android:paddingLeft="40dp"
             android:textColor="#fff"
             android:textColorHint="#000"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
     </LinearLayout>
 
 </LinearLayout>
