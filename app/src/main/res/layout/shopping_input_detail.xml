@@ -48,7 +48,7 @@
 
 
         <EditText
-            android:id="@+id/et_shoppingUrl"
+            android:id="@+id/et_shoppingLocation"
             android:layout_weight="0.5"
             android:textSize="14sp"
             android:textColorHint="#000"

@@ -101,6 +101,16 @@ public class HomeActivity extends AppCompatActivity {
     private String date;
     private TaskType taskType;
 
+    //các biến cụ thể để lưu cho từng task detail :(
+    //meeting
+    private String gMeetingUrl = "";
+    private String gMeetingLocation = "";
+    //shopping
+    private String gProductUrl = "";
+    private String gShoppingLocation = "";
+    //Travelling
+    private String gTravellingPlace = "";
+
     ArrayList<TaskType> taskTypeList;
 
     @Override
@@ -202,27 +212,35 @@ public class HomeActivity extends AppCompatActivity {
                 TaskModel model;
                 switch (taskType.name) {
                     case "Meeting":
+                        EditText etMeetingUrl = myView.findViewById(R.id.et_meetingUrl);
+                        EditText etMeetingLocation = myView.findViewById(R.id.et_location);
+                        String meetingUrl = etMeetingUrl.getText().toString().trim();
+                        String meetingLocation = etMeetingLocation.getText().toString().trim();
                         model = new MeetingTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy url từ edit text", "lấy location từ edit text");
+                                meetingUrl, meetingLocation);
                         break;
                     case "Shopping":
+                        EditText etProductUrl = myView.findViewById(R.id.et_productUrl);
+                        EditText etShoppingLocation = myView.findViewById(R.id.et_shoppingLocation);
+                        String productUrl = etProductUrl.getText().toString().trim();
+                        String shoppingLocation = etShoppingLocation.getText().toString().trim();
                         model = new ShoppingTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy url từ edit text", "lấy location từ edit text");
+                                productUrl, shoppingLocation);
                         break;
                     case "Office":
                         model = new OfficeTask(mTask, mDescription, id, mDate, taskType,
                                 "lấy filename từ edit text");
                         break;
                     case "Contact":
-                        TextView phoneET = myView.findViewById(R.id.et_phoneNumber);
-                        TextView emailET = myView.findViewById(R.id.et_email);
+                        EditText phoneET = myView.findViewById(R.id.et_phoneNumber);
+                        EditText emailET = myView.findViewById(R.id.et_email);
                         model = new ContactTask(mTask, mDescription, id, mDate, taskType,
                                 phoneET.getText().toString(), emailET.getText().toString());
                         break;
                     case "Travelling":
-                        //travelling chưa có TravellingTask :(
-                        model = new ContactTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy phone từ edit text", "lấy email từ edit text");
+                        EditText etPlace = myView.findViewById(R.id.et_place);
+                        String place = etPlace.getText().toString().trim();
+                        model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
@@ -328,51 +346,48 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setTaskType(model.getTaskType());
 
                 holder.mView.setOnClickListener(v -> {
-                    Intent intent;
-                    switch (model.getTaskType().name) {
-                        case "Meeting":
-                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Shopping":
-                            intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Office":
-                            intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        case "Contact":
-                            intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
-                            reference.child(getRef(position).getKey()).child(model.getId()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    if (!task.isSuccessful()) {
-                                        Log.e("firebase", "Error getting data", task.getException());
-                                    } else {
-                                        ContactTask contactTask = task.getResult().getValue(ContactTask.class);
-                                        intent.putExtra("task", contactTask);
-                                        startActivity(intent);
-                                    }
-                                }
-                            });
+                    //lấy task từ database để putExtra vào intent
+                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        } else {
+                            Intent intent = null;
+                            switch (model.getTaskType().name) {
+                                case "Meeting":
+                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
+                                    intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                                    intent.putExtra("task", meetingTask);
+                                    break;
+                                case "Shopping":
+                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
+                                    intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
+                                    intent.putExtra("task", shoppingTask);
+                                    break;
+                                case "Office":
+                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
+                                    intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
+                                    intent.putExtra("task", officeTask);
+                                    break;
+                                case "Contact":
+                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                                    intent.putExtra("task", contactTask);
+                                    break;
+                                case "Travelling":
+                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                                    intent.putExtra("task", travellingTask);
+                                    break;
+                                case "Relaxing":
+                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
+                                    intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
+                                    intent.putExtra("task", relaxingTask);
+                                    break;
+                            }
 
-
-                            break;
-                        case "Travelling":
-                            intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
                             startActivity(intent);
-                            break;
-                        case "Relaxing":
-                            intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                        default:
-                            intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                            startActivity(intent);
-                            break;
-                    }
-
+                        }
+                    });
                 });
 
                 Button editButton = holder.mView.findViewById(R.id.editButton);
@@ -382,6 +397,39 @@ public class HomeActivity extends AppCompatActivity {
                     description = model.getDescription();
                     taskType = model.getTaskType();
                     date = model.getDate();
+
+                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        } else {
+                            switch (model.getTaskType().name) {
+                                case "Meeting":
+                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
+                                    gMeetingLocation = meetingTask.getMeetingLocation();
+                                    gMeetingUrl = meetingTask.getMeetingUrl();
+                                    break;
+                                case "Shopping":
+                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
+                                    gProductUrl = shoppingTask.getProductUrl();
+                                    gShoppingLocation = shoppingTask.getShoppingLocation();
+                                    break;
+                                case "Office":
+                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
+                                    break;
+                                case "Contact":
+                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    break;
+                                case "Travelling":
+                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    gTravellingPlace = travellingTask.getPlace();
+                                    break;
+                                case "Relaxing":
+                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
+                                    break;
+                            }
+                        }
+                    });
+
                     updateTask();
                 });
             }
@@ -483,6 +531,29 @@ public class HomeActivity extends AppCompatActivity {
 
             TaskModel model = new TaskModel(task, description, key, date, taskType);
 
+            switch (taskType.name) {
+                case "Meeting":
+                    EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                    EditText etMeetingLocation = view.findViewById(R.id.et_location);
+                    String meetingUrl = etMeetingUrl.getText().toString().trim();
+                    String meetingLocation = etMeetingLocation.getText().toString().trim();
+                    model = new MeetingTask(task, description, key, date, taskType, meetingUrl, meetingLocation);
+                    break;
+                case "Shopping":
+                    EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                    EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
+                    String productUrl = etProductUrl.getText().toString().trim();
+                    String shoppingLocation = etShoppingLocation.getText().toString().trim();
+                    model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
+                    break;
+                case "Travelling":
+                    EditText etPlace = view.findViewById(R.id.et_place);
+                    String place = etPlace.getText().toString().trim();
+                    model = new TravellingTask(task, description, key, date, taskType, place);
+                    break;
+                // other cases
+            }
+
             reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -530,8 +601,67 @@ public class HomeActivity extends AppCompatActivity {
         taskTypeDropdown.setSelection(updatingTaskIndex);
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View v, int i, long l) {
                 //do stuff
+                RelativeLayout taskDetail = view.findViewById(R.id.taskDetail);
+                LayoutInflater inflater = LayoutInflater.from(view.getContext());
+
+                //thay doi taskDetail tuong ung voi moi type
+                taskDetail.removeAllViews();
+                switch (i) {
+                    case 0: { //Meeting
+                        View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
+                        taskDetail.addView(meetingInputDetail);
+
+                        EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                        EditText etMeetingLocation = view.findViewById(R.id.et_location);
+
+                        etMeetingUrl.setText(gMeetingUrl);
+                        etMeetingUrl.setSelection(gMeetingUrl.length());
+                        etMeetingLocation.setText(gMeetingLocation);
+                        etMeetingLocation.setSelection(gMeetingLocation.length());
+                        break;
+                    }
+                    case 1: { //Shopping
+                        View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
+                        taskDetail.addView(shoppingInputDetail);
+
+                        EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                        EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
+
+                        etProductUrl.setText(gProductUrl);
+                        etProductUrl.setSelection(gProductUrl.length());
+                        etShoppingLocation.setText(gShoppingLocation);
+                        etShoppingLocation.setSelection(gShoppingLocation.length());
+                        break;
+                    }
+                    case 2: { //office
+                        View officeInputDetail = inflater.inflate(R.layout.office_input_detail, null);
+                        taskDetail.addView(officeInputDetail);
+                        break;
+                    }
+                    case 3: { //contact
+                        View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
+                        taskDetail.addView(contactInputDetail);
+                        break;
+
+                    }
+                    case 4: { //travel
+                        View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
+                        taskDetail.addView(travellingInputDetail);
+                        EditText etPlace = view.findViewById(R.id.et_place);
+                        etPlace.setText(gTravellingPlace);
+                        etPlace.setSelection(gTravellingPlace.length());
+                        break;
+
+                    }
+                    case 5: {  //relax
+                        View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
+                        taskDetail.addView(relaxingInputDetail);
+                        break;
+
+                    }
+                }
             }
 
             @Override

@@ -3,9 +3,9 @@ package com.example.todoapp;
 public class MeetingTask extends TaskModel {
     private String meetingUrl, meetingLocation;
 
-    public MeetingTask(String meetingUrl, String meetingLocation) {
-        this.meetingUrl = meetingUrl;
-        this.meetingLocation = meetingLocation;
+    public MeetingTask() {
+        this.meetingUrl = "";
+        this.meetingLocation = "";
     }
 
     public MeetingTask(String task, String description, String id, String date, TaskType taskType, String meetingUrl, String meetingLocation) {
