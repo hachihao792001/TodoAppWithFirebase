@@ -53,8 +53,6 @@ public class HomeActivity extends AppCompatActivity {
     EditText taskEt;  //Et = edit text
     EditText descriptionEt;
     TextView dateTv; // Tv = text view
-    FragmentManager fragmentManager = this.getSupportFragmentManager();
-
 
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -71,20 +69,16 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
-
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-
     private ProgressDialog loader;
-
     private String key = "";
     private String task;
     private String description;
     private String date;
     private TaskType taskType;
-
     //các biến cụ thể để lưu cho từng task detail :(
     //meeting
     private String gMeetingUrl = "";
@@ -92,13 +86,8 @@ public class HomeActivity extends AppCompatActivity {
     //shopping
     private String gProductUrl = "";
     private String gShoppingLocation = "";
-    //office
-    //contact
-    private String gPhoneNumber = "";
-    private String gEmail = "";
     //Travelling
     private String gTravellingPlace = "";
-    //relaxing
 
     ArrayList<TaskType> taskTypeList;
 
@@ -106,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Todo List");
@@ -119,7 +107,6 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         loader = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -218,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case "Office":
                         model = new OfficeTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy filename từ edit text");
+                                "");
                         break;
                     case "Contact":
                         EditText phoneET = myView.findViewById(R.id.et_phoneNumber);
@@ -232,10 +219,9 @@ public class HomeActivity extends AppCompatActivity {
                         model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
-                        EditText etPlaylistName = myView.findViewById(R.id.playlistName);
-                        String playlistName = etPlaylistName.getText().toString().trim();
+                        //  String playlistName = etPlaylistName.getText().toString().trim();
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
-                                playlistName);
+                                "");
                         break;
                 }
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
@@ -252,7 +238,6 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             dialog.dismiss();
-            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
         });
 
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
@@ -296,18 +281,36 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
+                        //Spinner spinner = (Spinner) relaxingInputDetail.findViewById(R.id.playlistsSpinner);
+                        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+                        //       R.array.list_song, android.R.layout.simple_spinner_item);
+                        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        //   spinner.setAdapter(adapter);
+                     /*  spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                String playlistName=adapterView.getItemAtPosition(i).toString();
+                                Toast.makeText(adapterView.getContext(),playlistName,Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });*/
                         taskDetail.addView(relaxingInputDetail);
+
                         break;
 
                     }
                 }
             }
 
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+
         });
 
         dialog.show();
@@ -406,8 +409,6 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 case "Contact":
                                     ContactTask contactTask = task.getResult().getValue(ContactTask.class);
-                                    gPhoneNumber = contactTask.getPhoneNumber();
-                                    gEmail = contactTask.getEmail();
                                     break;
                                 case "Travelling":
                                     TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
@@ -665,30 +666,26 @@ public class HomeActivity extends AppCompatActivity {
                         View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
                         taskDetail.addView(meetingInputDetail);
 
-                        if (taskType.name.equals("Meeting")) {
-                            EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
-                            EditText etMeetingLocation = view.findViewById(R.id.et_location);
+                        EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                        EditText etMeetingLocation = view.findViewById(R.id.et_location);
 
-                            etMeetingUrl.setText(gMeetingUrl);
-                            etMeetingUrl.setSelection(gMeetingUrl.length());
-                            etMeetingLocation.setText(gMeetingLocation);
-                            etMeetingLocation.setSelection(gMeetingLocation.length());
-                        }
+                        etMeetingUrl.setText(gMeetingUrl);
+                        etMeetingUrl.setSelection(gMeetingUrl.length());
+                        etMeetingLocation.setText(gMeetingLocation);
+                        etMeetingLocation.setSelection(gMeetingLocation.length());
                         break;
                     }
                     case 1: { //Shopping
                         View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
                         taskDetail.addView(shoppingInputDetail);
 
-                        if (taskType.name.equals("Shopping")) {
-                            EditText etProductUrl = view.findViewById(R.id.et_productUrl);
-                            EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
+                        EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                        EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
 
-                            etProductUrl.setText(gProductUrl);
-                            etProductUrl.setSelection(gProductUrl.length());
-                            etShoppingLocation.setText(gShoppingLocation);
-                            etShoppingLocation.setSelection(gShoppingLocation.length());
-                        }
+                        etProductUrl.setText(gProductUrl);
+                        etProductUrl.setSelection(gProductUrl.length());
+                        etShoppingLocation.setText(gShoppingLocation);
+                        etShoppingLocation.setSelection(gShoppingLocation.length());
                         break;
                     }
                     case 2: { //office
@@ -699,35 +696,23 @@ public class HomeActivity extends AppCompatActivity {
                     case 3: { //contact
                         View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
                         taskDetail.addView(contactInputDetail);
-
-                        if (taskType.name.equals("Contact")) {
-                            EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
-                            EditText etEmail = view.findViewById(R.id.et_email);
-
-                            etPhoneNumber.setText(gPhoneNumber);
-                            etPhoneNumber.setSelection(gPhoneNumber.length());
-                            etEmail.setText(gEmail);
-                            etEmail.setSelection(gEmail.length());
-                        }
                         break;
 
                     }
                     case 4: { //travel
                         View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
                         taskDetail.addView(travellingInputDetail);
-
-                        if (taskType.name.equals("Travelling")) {
-                            EditText etPlace = view.findViewById(R.id.et_place);
-
-                            etPlace.setText(gTravellingPlace);
-                            etPlace.setSelection(gTravellingPlace.length());
-                        }
+                        EditText etPlace = view.findViewById(R.id.et_place);
+                        etPlace.setText(gTravellingPlace);
+                        etPlace.setSelection(gTravellingPlace.length());
                         break;
 
                     }
                     case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
+
+
                         break;
 
                     }
@@ -767,4 +752,6 @@ public class HomeActivity extends AppCompatActivity {
         intent.setDataAndType(uri, "*/*");
         startActivity(intent);
     }
+
+
 }

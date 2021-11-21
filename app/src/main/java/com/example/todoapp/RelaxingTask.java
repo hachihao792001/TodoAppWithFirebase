@@ -24,3 +24,4 @@ public class RelaxingTask extends TaskModel {
         this.playlistName = playlistName;
     }
 }
+
