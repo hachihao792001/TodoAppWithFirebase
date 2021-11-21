@@ -340,11 +340,7 @@ public class HomeActivity extends AppCompatActivity {
                                 case "Shopping":
                                     ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
                                     intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
-                                    intent.putExtra("task", shoppingTask.getTask());
-                                    intent.putExtra("description", shoppingTask.getDescription());
-                                    intent.putExtra("date", shoppingTask.getDate());
-                                    intent.putExtra("productUrl", shoppingTask.getProductUrl());
-                                    intent.putExtra("shoppingLocation", shoppingTask.getShoppingLocation());
+                                    intent.putExtra("task", shoppingTask);
                                     break;
                                 case "Office":
                                     OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);

@@ -3,11 +3,14 @@ package com.example.todoapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.*;
 import com.google.android.gms.maps.*;
@@ -34,6 +37,10 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         TextView dateTextView = findViewById(R.id.date);
         TextView urlTextView = findViewById(R.id.meetingUrl);
         TextView locationTextView = findViewById(R.id.meetingLocation);
+
+        Button btnMeetingMap = findViewById(R.id.btnMeetingMap);
+        Button btnMeetingUrl = findViewById(R.id.btnMeetingUrl);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.meetingMap);
 
@@ -42,18 +49,49 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         dateTextView.setText(thisTask.getDate());
         urlTextView.setText(thisTask.getMeetingUrl());
         locationTextView.setText(thisTask.getMeetingLocation());
+
+        btnMeetingMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                seeMapOnCLick();
+            }
+        });
+
+        btnMeetingUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToMeetingOnClick();
+            }
+        });
     }
 
-    public void seeMapOnCLick(View view) {
-        String location = thisTask.getMeetingLocation();
+    public void seeMapOnCLick() {
+        String sSource = "";
+        String sDest = thisTask.getMeetingLocation();
+        try {
+            Uri uri = Uri.parse("https://www.google.co.in/maps/dir/" + sSource + "/" + sDest);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setPackage("com.google.android.apps.maps");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            //if gg map is not installed
+            Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.maps");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
-    public void goToMeetingOnClick(View view) {
+    public void goToMeetingOnClick() {
         String url = thisTask.getMeetingUrl();
         Uri webpage = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getPackageManager()) != null && url.startsWith("https://")) {
             startActivity(intent);
+        }
+        else {
+            Toast.makeText(this, "Meeting url is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
 
