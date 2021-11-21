@@ -193,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
-                TaskModel model;
+                TaskModel model = null;
                 switch (taskType.name) {
                     case "Meeting":
                         EditText etMeetingUrl = myView.findViewById(R.id.et_meetingUrl);
@@ -229,10 +229,6 @@ public class HomeActivity extends AppCompatActivity {
                     case "Relaxing":
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
                                 "lấy playlist từ edit text");
-                        break;
-                    default:
-                        model = new MeetingTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy url từ edit text", "lấy location từ edit text");
                         break;
                 }
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
@@ -379,6 +375,7 @@ public class HomeActivity extends AppCompatActivity {
                     taskType = model.getTaskType();
                     date = model.getDate();
 
+                    //lấy data từ database để để vào những "global variable" tuỳ theo từng kiểu taskType cho hàm updateTask xài
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
@@ -526,12 +523,22 @@ public class HomeActivity extends AppCompatActivity {
                     String shoppingLocation = etShoppingLocation.getText().toString().trim();
                     model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
                     break;
+                case "Office":
+
+                    break;
+                case "Contact":
+                    EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
+                    EditText etEmail = view.findViewById(R.id.et_email);
+                    model = new ContactTask(task, description, key, date, taskType,
+                            etPhoneNumber.getText().toString(), etEmail.getText().toString());
+                    break;
                 case "Travelling":
                     EditText etPlace = view.findViewById(R.id.et_place);
                     String place = etPlace.getText().toString().trim();
                     model = new TravellingTask(task, description, key, date, taskType, place);
                     break;
-                // other cases
+                case "Relaxing":
+                    break;
             }
 
             reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
