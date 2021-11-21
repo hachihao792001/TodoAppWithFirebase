@@ -1,7 +1,6 @@
 package com.example.todoapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,17 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
+
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -48,29 +41,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
     EditText taskEt;  //Et = edit text
     EditText descriptionEt;
     TextView dateTv; // Tv = text view
-    FragmentManager fragmentManager = this.getSupportFragmentManager();
-
 
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -87,20 +69,16 @@ public class HomeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
-
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-
     private ProgressDialog loader;
-
     private String key = "";
     private String task;
     private String description;
     private String date;
     private TaskType taskType;
-
     //các biến cụ thể để lưu cho từng task detail :(
     //meeting
     private String gMeetingUrl = "";
@@ -117,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Todo List");
@@ -130,7 +107,6 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         loader = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -229,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case "Office":
                         model = new OfficeTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy filename từ edit text");
+                                "");
                         break;
                     case "Contact":
                         EditText phoneET = myView.findViewById(R.id.et_phoneNumber);
@@ -243,10 +219,9 @@ public class HomeActivity extends AppCompatActivity {
                         model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
-                        EditText etPlaylistName=myView.findViewById(R.id.playlistName);
-                        String playlistName=etPlaylistName.getText().toString().trim();
+                        //  String playlistName = etPlaylistName.getText().toString().trim();
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
-                                playlistName);
+                                "");
                         break;
                 }
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
@@ -306,18 +281,36 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
+                        //Spinner spinner = (Spinner) relaxingInputDetail.findViewById(R.id.playlistsSpinner);
+                        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+                        //       R.array.list_song, android.R.layout.simple_spinner_item);
+                        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        //   spinner.setAdapter(adapter);
+                     /*  spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                String playlistName=adapterView.getItemAtPosition(i).toString();
+                                Toast.makeText(adapterView.getContext(),playlistName,Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });*/
                         taskDetail.addView(relaxingInputDetail);
+
                         break;
 
                     }
                 }
             }
 
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
+
         });
 
         dialog.show();
@@ -665,6 +658,8 @@ public class HomeActivity extends AppCompatActivity {
                     case 5: {  //relax
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
+
+
                         break;
 
                     }
@@ -697,11 +692,13 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chooseFile(View view){
-        String sPath= Environment.getExternalStorageDirectory()+"/";
-        Uri uri=Uri.parse(sPath);
+    public void chooseFile(View view) {
+        String sPath = Environment.getExternalStorageDirectory() + "/";
+        Uri uri = Uri.parse(sPath);
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(uri,"*/*");
+        intent.setDataAndType(uri, "*/*");
         startActivity(intent);
     }
+
+
 }
