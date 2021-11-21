@@ -122,13 +122,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="Address:"
+            android:text="Place:"
             android:textSize="13sp"
             android:textStyle="bold" />
 
 
         <TextView
-            android:id="@+id/address"
+            android:id="@+id/place"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -146,8 +146,22 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
         tools:context=".MapsActivity" />
+
+    <Button
+        android:id="@+id/btnTravellingMap"
+        android:textSize="14sp"
+        android:textColor="#fff"
+        android:textColorHint="#000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="See on Maps"
+        android:backgroundTint="#29b6f6"
+        android:layout_margin="10dp"
+        android:onClick="seeMapOnCLick"/>
 
 </LinearLayout>
 

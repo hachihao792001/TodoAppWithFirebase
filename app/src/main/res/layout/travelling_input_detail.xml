@@ -20,7 +20,7 @@
 
 
         <EditText
-            android:id="@+id/et_location"
+            android:id="@+id/et_place"
             android:layout_weight="0.5"
             android:textSize="14sp"
             android:textColorHint="#000"

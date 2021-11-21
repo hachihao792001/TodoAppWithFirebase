@@ -92,6 +92,8 @@ public class HomeActivity extends AppCompatActivity {
     //shopping
     private String gProductUrl = "";
     private String gShoppingLocation = "";
+    //Travelling
+    private String gTravellingPlace = "";
 
     ArrayList<TaskType> taskTypeList;
 
@@ -220,9 +222,9 @@ public class HomeActivity extends AppCompatActivity {
                                 phoneET.getText().toString(), emailET.getText().toString());
                         break;
                     case "Travelling":
-                        //travelling chưa có TravellingTask :(
-                        model = new ContactTask(mTask, mDescription, id, mDate, taskType,
-                                "lấy phone từ edit text", "lấy email từ edit text");
+                        EditText etPlace = myView.findViewById(R.id.et_place);
+                        String place = etPlace.getText().toString().trim();
+                        model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
                         break;
                     case "Relaxing":
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
@@ -353,10 +355,9 @@ public class HomeActivity extends AppCompatActivity {
                                     intent.putExtra("task", contactTask);
                                     break;
                                 case "Travelling":
-                                    //chưa có travellingTask :(
-                                    //TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
-                                    //intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
-                                    //intent.putExtra("task", travellingTask);
+                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                                    intent.putExtra("task", travellingTask);
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
@@ -400,8 +401,8 @@ public class HomeActivity extends AppCompatActivity {
                                     ContactTask contactTask = task.getResult().getValue(ContactTask.class);
                                     break;
                                 case "Travelling":
-                                    //chưa có travellingTask :(
-                                    //TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
+                                    gTravellingPlace = travellingTask.getPlace();
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
@@ -525,6 +526,11 @@ public class HomeActivity extends AppCompatActivity {
                     String shoppingLocation = etShoppingLocation.getText().toString().trim();
                     model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
                     break;
+                case "Travelling":
+                    EditText etPlace = view.findViewById(R.id.et_place);
+                    String place = etPlace.getText().toString().trim();
+                    model = new TravellingTask(task, description, key, date, taskType, place);
+                    break;
                 // other cases
             }
 
@@ -623,6 +629,9 @@ public class HomeActivity extends AppCompatActivity {
                     case 4: { //travel
                         View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
                         taskDetail.addView(travellingInputDetail);
+                        EditText etPlace = view.findViewById(R.id.et_place);
+                        etPlace.setText(gTravellingPlace);
+                        etPlace.setSelection(gTravellingPlace.length());
                         break;
 
                     }
