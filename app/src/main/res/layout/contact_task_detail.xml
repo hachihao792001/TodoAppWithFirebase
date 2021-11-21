@@ -21,19 +21,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
-
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="Task:"
-            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -41,15 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:textSize="14sp"
             android:textStyle="bold" />
-
 
     </LinearLayout>
 
@@ -57,15 +54,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="Description:"
-            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -73,13 +74,13 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:textSize="14sp"
             android:textStyle="bold" />
-
 
     </LinearLayout>
 
@@ -87,24 +88,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:text="Date:"
-            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
             android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:textColor="#000"
             android:textColorHint="#000"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -117,26 +124,49 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/phoneNumberText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="Phone number:"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="Phone number:"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/phoneNumberText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="0123456789"
+                android:textColorHint="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/callButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_weight="2"
             android:backgroundTint="#29b6f6"
             android:onClick="callOnClick"
-            android:text="Make a call"
+            android:text="Call"
             android:textColor="#fff"
             android:textColorHint="#000"
             android:textSize="12sp"
@@ -150,26 +180,49 @@
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/emailText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:text="Email:"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="Email:"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:text="hao@gmail.com"
+                android:textColorHint="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/emailButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:layout_weight="2"
             android:backgroundTint="#29b6f6"
             android:onClick="emailOnClick"
-            android:text="Send an email"
+            android:text="Email"
             android:textColor="#fff"
             android:textColorHint="#000"
             android:textSize="12sp"
