@@ -688,5 +688,11 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    public void chooseFile(View view){
+        String sPath= Environment.getExternalStorageDirectory()+"/";
+        Uri uri=Uri.parse(sPath);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(uri,"*/*");
+        startActivity(intent);
+    }
 }

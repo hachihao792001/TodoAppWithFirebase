@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,5 +26,13 @@ public class OfficeTaskDetail extends AppCompatActivity {
         setContentView(R.layout.meeting_task_detail);
 
 
+    }
+
+    public void chooseFile(View view){
+        String sPath= Environment.getExternalStorageDirectory()+"/";
+        Uri uri=Uri.parse(sPath);
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(uri,"*/*");
+        startActivity(intent);
     }
 }
