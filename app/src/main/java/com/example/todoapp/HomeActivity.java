@@ -621,26 +621,30 @@ public class HomeActivity extends AppCompatActivity {
                         View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
                         taskDetail.addView(meetingInputDetail);
 
-                        EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
-                        EditText etMeetingLocation = view.findViewById(R.id.et_location);
+                        if (taskType.name.equals("Meeting")) {
+                            EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                            EditText etMeetingLocation = view.findViewById(R.id.et_location);
 
-                        etMeetingUrl.setText(gMeetingUrl);
-                        etMeetingUrl.setSelection(gMeetingUrl.length());
-                        etMeetingLocation.setText(gMeetingLocation);
-                        etMeetingLocation.setSelection(gMeetingLocation.length());
+                            etMeetingUrl.setText(gMeetingUrl);
+                            etMeetingUrl.setSelection(gMeetingUrl.length());
+                            etMeetingLocation.setText(gMeetingLocation);
+                            etMeetingLocation.setSelection(gMeetingLocation.length());
+                        }
                         break;
                     }
                     case 1: { //Shopping
                         View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
                         taskDetail.addView(shoppingInputDetail);
 
-                        EditText etProductUrl = view.findViewById(R.id.et_productUrl);
-                        EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
+                        if (taskType.name.equals("Shopping")) {
+                            EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                            EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
 
-                        etProductUrl.setText(gProductUrl);
-                        etProductUrl.setSelection(gProductUrl.length());
-                        etShoppingLocation.setText(gShoppingLocation);
-                        etShoppingLocation.setSelection(gShoppingLocation.length());
+                            etProductUrl.setText(gProductUrl);
+                            etProductUrl.setSelection(gProductUrl.length());
+                            etShoppingLocation.setText(gShoppingLocation);
+                            etShoppingLocation.setSelection(gShoppingLocation.length());
+                        }
                         break;
                     }
                     case 2: { //office
@@ -657,9 +661,13 @@ public class HomeActivity extends AppCompatActivity {
                     case 4: { //travel
                         View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
                         taskDetail.addView(travellingInputDetail);
-                        EditText etPlace = view.findViewById(R.id.et_place);
-                        etPlace.setText(gTravellingPlace);
-                        etPlace.setSelection(gTravellingPlace.length());
+
+                        if (taskType.name.equals("Travelling")) {
+                            EditText etPlace = view.findViewById(R.id.et_place);
+                            
+                            etPlace.setText(gTravellingPlace);
+                            etPlace.setSelection(gTravellingPlace.length());
+                        }
                         break;
 
                     }
