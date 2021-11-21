@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -16,13 +19,21 @@ import com.google.android.gms.common.api.*;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
 
 public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnCircleClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
 
     MeetingTask thisTask;
+    private GoogleMap mMap;
+    private String task, description, date, meetingUrl, meetingLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +49,21 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         TextView urlTextView = findViewById(R.id.meetingUrl);
         TextView locationTextView = findViewById(R.id.meetingLocation);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.meetingMap);
+        task = thisTask.getTask();
+        description = thisTask.getDescription();
+        date = thisTask.getDate();
+        meetingUrl = thisTask.getMeetingUrl();
+        meetingLocation = thisTask.getMeetingLocation();
 
-        taskTextView.setText(thisTask.getTask());
-        descTextView.setText(thisTask.getDescription());
-        dateTextView.setText(thisTask.getDate());
-        urlTextView.setText(thisTask.getMeetingUrl());
-        locationTextView.setText(thisTask.getMeetingLocation());
+        taskTextView.setText(task);
+        descTextView.setText(description);
+        dateTextView.setText(date);
+        urlTextView.setText(meetingUrl);
+        locationTextView.setText(meetingLocation);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     public void seeMapOnCLick(View v) {
@@ -99,5 +117,53 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        Calendar rightNow = Calendar.getInstance();
+        int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY); // return the hour in 24 hrs format (ranging from 0-23)
+
+        if (currentHourIn24Format >= 6 && currentHourIn24Format <= 17) {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstylelight));
+        } else {
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.mapstyle));
+        }
+
+        LatLng latLngPlace = getLocationFromAddress(MeetingTaskDetail.this, meetingLocation);
+
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnCircleClickListener(this);
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+
+        MarkerOptions mMarker = new MarkerOptions().position(latLngPlace).title(meetingLocation);
+
+        mMap.addMarker(mMarker);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
+    }
+
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
     }
 }
