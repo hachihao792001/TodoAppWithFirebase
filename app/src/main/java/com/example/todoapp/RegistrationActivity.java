@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class RegistrationActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText regEmail, regPwd;
+    private EditText regEmail, regPwd,regConPwd;
     private Button regBtn;
     private TextView regQn;
     private FirebaseAuth mAuth;
@@ -41,6 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         regEmail = findViewById(R.id.registrationEmail);
         regPwd = findViewById(R.id.registrationPassword);
+        regConPwd=findViewById(R.id.registrationConfirmPassword);
         regBtn = findViewById(R.id.registrationButton);
         regQn = findViewById(R.id.registrationQuestion);
 
@@ -62,6 +63,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = regEmail.getText().toString().trim();
                 String password = regPwd.getText().toString().trim();
+                String passwordCon = regConPwd.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)){
                     regEmail.setError("Email is required!");
@@ -70,7 +72,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 else if (TextUtils.isEmpty(password)){
                     regPwd.setError("Password is required!");
                     return;
+                }else if (TextUtils.isEmpty(passwordCon)){
+                    regConPwd.setError("Password is required!");
+                    return;
+                }else if (!password.equals(passwordCon)){
+                    regConPwd.setError("Confirmed password is incorrect!");
+                    return;
                 }
+
                 else {
                     loader.setMessage("Registration in progress...");
                     loader.setCanceledOnTouchOutside(false);
