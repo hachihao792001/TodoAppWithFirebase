@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class TaskModel implements Serializable {
     private String task, description, id, date;
     private TaskType taskType;
+    private boolean isDone;
 
     public TaskModel() {
     }
@@ -15,6 +16,7 @@ public class TaskModel implements Serializable {
         this.id = id;
         this.date = date;
         this.taskType = taskType;
+        this.isDone = false;
     }
 
     public String getDate() {
@@ -55,5 +57,13 @@ public class TaskModel implements Serializable {
 
     public void setTaskType(TaskType taskType) {
         this.taskType = taskType;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
     }
 }

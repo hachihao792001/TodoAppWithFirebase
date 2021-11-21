@@ -1,7 +1,6 @@
 package com.example.todoapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,17 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,13 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -48,22 +41,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
     EditText taskEt;  //Et = edit text
@@ -346,6 +330,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setTask(model.getTask());
                 holder.setDescription(model.getDescription());
                 holder.setTaskType(model.getTaskType());
+                holder.setIsDone(model.isDone());
 
                 holder.mView.setOnClickListener(v -> {
                     //lấy task từ database để putExtra vào intent
@@ -437,6 +422,53 @@ public class HomeActivity extends AppCompatActivity {
 
                     updateTask();
                 });
+
+                CheckBox doneCheckBox = holder.mView.findViewById(R.id.doneCheckBox);
+                doneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                        reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                            if (!task.isSuccessful()) {
+                                Log.e("firebase", "Error getting data", task.getException());
+                            } else {
+                                TaskModel receivedTask = null;
+
+                                switch (model.getTaskType().name) {
+                                    case "Meeting":
+                                        receivedTask = task.getResult().getValue(MeetingTask.class);
+                                        break;
+                                    case "Shopping":
+                                        receivedTask = task.getResult().getValue(ShoppingTask.class);
+                                        break;
+                                    case "Office":
+                                        receivedTask = task.getResult().getValue(OfficeTask.class);
+                                        break;
+                                    case "Contact":
+                                        receivedTask = task.getResult().getValue(ContactTask.class);
+                                        break;
+                                    case "Travelling":
+                                        receivedTask = task.getResult().getValue(TravellingTask.class);
+                                        break;
+                                    case "Relaxing":
+                                        receivedTask = task.getResult().getValue(RelaxingTask.class);
+                                        break;
+                                }
+
+                                receivedTask.setDone(b);
+                                reference.child(getRef(position).getKey()).setValue(receivedTask).addOnCompleteListener(t -> {
+                                    if (t.isSuccessful()) {
+                                        Toast.makeText(HomeActivity.this,
+                                                "Task " + (b ? "done" : "not done"),
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
             }
 
             @NonNull
@@ -479,6 +511,11 @@ public class HomeActivity extends AppCompatActivity {
             icon.setImageResource(taskType.iconResource);
         }
 
+        public void setIsDone(boolean done) {
+            CheckBox doneCheckBox = mView.findViewById(R.id.doneCheckBox);
+            if (doneCheckBox.isChecked() != done)
+                doneCheckBox.setChecked(done);
+        }
     }
 
     private void updateTask() {
