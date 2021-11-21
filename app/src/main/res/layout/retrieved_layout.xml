@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="80dp"
                 android:layout_weight="1"
-                android:background="@drawable/background_design"
+                android:background="#29b6f6"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="June 18, 2020"
@@ -41,7 +41,7 @@
                 android:layout_gravity="right"
                 android:layout_weight="0"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/edit_icon" />
+                android:drawableRight="@drawable/edit_icon" />
 
         </LinearLayout>
 

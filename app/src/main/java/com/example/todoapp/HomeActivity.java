@@ -263,6 +263,7 @@ public class HomeActivity extends AppCompatActivity {
             }
 
             dialog.dismiss();
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
         });
 
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
