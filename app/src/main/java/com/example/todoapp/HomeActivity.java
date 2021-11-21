@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
     //Travelling
     private String gTravellingPlace = "";
     //relaxing
-
+private String gSongNameChosen="";
     ArrayList<TaskType> taskTypeList;
 
     @Override
@@ -227,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
                     case "Relaxing":
                         //  String playlistName = etPlaylistName.getText().toString().trim();
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
-                                "");
+                                gSongNameChosen);
                         break;
                 }
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
@@ -290,9 +290,23 @@ public class HomeActivity extends AppCompatActivity {
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         Spinner spinner = (Spinner) relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
                         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
-                               R.array.list_song, android.R.layout.simple_spinner_item);
-                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                           spinner.setAdapter(adapter);
+                                R.array.list_song, android.R.layout.simple_spinner_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                String playlistName=adapterView.getItemAtPosition(i).toString();
+                                gSongNameChosen=playlistName;
+                                Toast.makeText(adapterView.getContext(),playlistName,Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
                      /*  spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

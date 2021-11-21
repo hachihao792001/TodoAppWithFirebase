@@ -22,11 +22,11 @@ public class RelaxingTaskDetail extends AppCompatActivity {
         TextView taskTextView = findViewById(R.id.task);
         TextView descTextView = findViewById(R.id.description);
         TextView dateTextView = findViewById(R.id.date);
-        TextView playlistName= findViewById(R.id.playlistName);
+        TextView songName= findViewById(R.id.songName);
         taskTextView.setText(thisTask.getTask());
         descTextView.setText(thisTask.getDescription());
         dateTextView.setText(thisTask.getDate());
-        playlistName.setText(thisTask.getPlaylistName());
+        songName.setText(thisTask.getPlaylistName());
     }
     public void onMusicStart(View view){
        mediaPlayer = MediaPlayer.create(this,R.raw.weigtless);
