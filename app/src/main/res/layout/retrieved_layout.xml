@@ -24,7 +24,7 @@
                 android:id="@+id/dateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="30dp"
                 android:layout_weight="1"
                 android:background="#29b6f6"
                 android:gravity="center"

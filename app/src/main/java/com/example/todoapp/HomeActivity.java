@@ -86,8 +86,13 @@ public class HomeActivity extends AppCompatActivity {
     //shopping
     private String gProductUrl = "";
     private String gShoppingLocation = "";
+    //office
+    //contact
+    private String gPhoneNumber = "";
+    private String gEmail = "";
     //Travelling
     private String gTravellingPlace = "";
+    //relaxing
 
     ArrayList<TaskType> taskTypeList;
 
@@ -409,6 +414,8 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 case "Contact":
                                     ContactTask contactTask = task.getResult().getValue(ContactTask.class);
+                                    gPhoneNumber = contactTask.getPhoneNumber();
+                                    gEmail = contactTask.getEmail();
                                     break;
                                 case "Travelling":
                                     TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
@@ -425,50 +432,49 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
                 CheckBox doneCheckBox = holder.mView.findViewById(R.id.doneCheckBox);
-                doneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                doneCheckBox.setOnClickListener(v -> {
+                    boolean newDoneState = doneCheckBox.isChecked();
 
-                        reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
-                            if (!task.isSuccessful()) {
-                                Log.e("firebase", "Error getting data", task.getException());
-                            } else {
-                                TaskModel receivedTask = null;
+                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(getDataTask -> {
+                        if (!getDataTask.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", getDataTask.getException());
+                        } else {
+                            TaskModel receivedTask = null;
 
-                                switch (model.getTaskType().name) {
-                                    case "Meeting":
-                                        receivedTask = task.getResult().getValue(MeetingTask.class);
-                                        break;
-                                    case "Shopping":
-                                        receivedTask = task.getResult().getValue(ShoppingTask.class);
-                                        break;
-                                    case "Office":
-                                        receivedTask = task.getResult().getValue(OfficeTask.class);
-                                        break;
-                                    case "Contact":
-                                        receivedTask = task.getResult().getValue(ContactTask.class);
-                                        break;
-                                    case "Travelling":
-                                        receivedTask = task.getResult().getValue(TravellingTask.class);
-                                        break;
-                                    case "Relaxing":
-                                        receivedTask = task.getResult().getValue(RelaxingTask.class);
-                                        break;
-                                }
-
-                                receivedTask.setDone(b);
-                                reference.child(getRef(position).getKey()).setValue(receivedTask).addOnCompleteListener(t -> {
-                                    if (t.isSuccessful()) {
-                                        Toast.makeText(HomeActivity.this,
-                                                "Task " + (b ? "done" : "not done"),
-                                                Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                            switch (model.getTaskType().name) {
+                                case "Meeting":
+                                    receivedTask = getDataTask.getResult().getValue(MeetingTask.class);
+                                    break;
+                                case "Shopping":
+                                    receivedTask = getDataTask.getResult().getValue(ShoppingTask.class);
+                                    break;
+                                case "Office":
+                                    receivedTask = getDataTask.getResult().getValue(OfficeTask.class);
+                                    break;
+                                case "Contact":
+                                    receivedTask = getDataTask.getResult().getValue(ContactTask.class);
+                                    break;
+                                case "Travelling":
+                                    receivedTask = getDataTask.getResult().getValue(TravellingTask.class);
+                                    break;
+                                case "Relaxing":
+                                    receivedTask = getDataTask.getResult().getValue(RelaxingTask.class);
+                                    break;
                             }
-                        });
-                    }
+
+                            receivedTask.setDone(newDoneState);
+                            reference.child(getRef(position).getKey()).setValue(receivedTask).addOnCompleteListener(t -> {
+                                if (t.isSuccessful()) {
+                                    Toast.makeText(HomeActivity.this,
+                                            "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done"),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+
                 });
             }
 
@@ -665,27 +671,29 @@ public class HomeActivity extends AppCompatActivity {
                     case 0: { //Meeting
                         View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
                         taskDetail.addView(meetingInputDetail);
+                        if (taskType.name.equals("Meeting")) {
+                            EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
+                            EditText etMeetingLocation = view.findViewById(R.id.et_location);
 
-                        EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
-                        EditText etMeetingLocation = view.findViewById(R.id.et_location);
-
-                        etMeetingUrl.setText(gMeetingUrl);
-                        etMeetingUrl.setSelection(gMeetingUrl.length());
-                        etMeetingLocation.setText(gMeetingLocation);
-                        etMeetingLocation.setSelection(gMeetingLocation.length());
+                            etMeetingUrl.setText(gMeetingUrl);
+                            etMeetingUrl.setSelection(gMeetingUrl.length());
+                            etMeetingLocation.setText(gMeetingLocation);
+                            etMeetingLocation.setSelection(gMeetingLocation.length());
+                        }
                         break;
                     }
                     case 1: { //Shopping
                         View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
                         taskDetail.addView(shoppingInputDetail);
+                        if (taskType.name.equals("Shopping")) {
+                            EditText etProductUrl = view.findViewById(R.id.et_productUrl);
+                            EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
 
-                        EditText etProductUrl = view.findViewById(R.id.et_productUrl);
-                        EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
-
-                        etProductUrl.setText(gProductUrl);
-                        etProductUrl.setSelection(gProductUrl.length());
-                        etShoppingLocation.setText(gShoppingLocation);
-                        etShoppingLocation.setSelection(gShoppingLocation.length());
+                            etProductUrl.setText(gProductUrl);
+                            etProductUrl.setSelection(gProductUrl.length());
+                            etShoppingLocation.setText(gShoppingLocation);
+                            etShoppingLocation.setSelection(gShoppingLocation.length());
+                        }
                         break;
                     }
                     case 2: { //office
@@ -696,6 +704,16 @@ public class HomeActivity extends AppCompatActivity {
                     case 3: { //contact
                         View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
                         taskDetail.addView(contactInputDetail);
+
+                        if (taskType.name.equals("Contact")) {
+                            EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
+                            EditText etEmail = view.findViewById(R.id.et_email);
+
+                            etPhoneNumber.setText(gPhoneNumber);
+                            etPhoneNumber.setSelection(gPhoneNumber.length());
+                            etEmail.setText(gEmail);
+                            etEmail.setSelection(gEmail.length());
+                        }
                         break;
 
                     }
