@@ -55,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     EditText descriptionEt;
     TextView dateTv; // Tv = text view
 
+    //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -80,7 +81,8 @@ public class HomeActivity extends AppCompatActivity {
     private String description;
     private String date;
     private TaskType taskType;
-    //các biến cụ thể để lưu cho từng task detail :(
+
+    //các biến cụ thể để lưu cho từng task detail
     //meeting
     private String gMeetingUrl = "";
     private String gMeetingLocation = "";
@@ -94,32 +96,38 @@ public class HomeActivity extends AppCompatActivity {
     //Travelling
     private String gTravellingPlace = "";
     //relaxing
-private String gSongNameChosen="";
+    private String gSongNameChosen = "";
+    //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //Setup toolbar
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Todo List");
 
-        recyclerView = findViewById(R.id.recyclerView);
 
+        //Setup recyclerview lưu các task mà người dùng tạo
+        recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
         loader = new ProgressDialog(this);
 
+        //Thực hiện các thao tác với firebase
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         onlineUserID = mUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
 
+        //Setup floating Button để người dùng tạo task mới
         floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +136,7 @@ private String gSongNameChosen="";
             }
         });
 
+        //Danh sách các loại task mà pm hỗ trợ, mỗi loại kèm icon riêng
         String[] taskTypeNames = getResources().getStringArray(R.array.task_types);
         taskTypeList = new ArrayList<TaskType>(Arrays.asList(
                 new TaskType(taskTypeNames[0], R.drawable.black_meeting_icon),
@@ -139,13 +148,14 @@ private String gSongNameChosen="";
         ));
     }
 
+    //Hàm tạo thêm 1 task
     private void addTask() {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
-
         View myView = inflater.inflate(R.layout.input_file, null);
         myDialog.setView(myView);
 
+        // Hiển thị 1 alertdialog tạo task
         final AlertDialog dialog = myDialog.create();
         dialog.setCancelable(false);
         dialog.show();
@@ -158,7 +168,7 @@ private String gSongNameChosen="";
         Button cancel = myView.findViewById(R.id.cancelBtn);
         Spinner taskTypeDropdown = myView.findViewById(R.id.taskTypeDropdown);
 
-
+        // Cho phép người dùng chọn ngày
         pickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 new DatePickerDialog(HomeActivity.this, d,
@@ -168,11 +178,13 @@ private String gSongNameChosen="";
             }
         });
 
-        // cập nhật giá trị tại textview day
+        // kết quả chọn ngày được cập nhật ở dateTextview
         updateLabel();
 
+        //Nhấn nút Cancel để tắt dialog tạo task
         cancel.setOnClickListener(v -> dialog.dismiss());
 
+        //Nhấn nút Save, kiểm tra và lưu vào database
         save.setOnClickListener(v -> {
             String mTask = taskEt.getText().toString().trim();
             String mDescription = descriptionEt.getText().toString().trim();
@@ -180,6 +192,7 @@ private String gSongNameChosen="";
             String mDate = dateTv.getText().toString().trim();
             TaskType taskType = (TaskType) taskTypeDropdown.getSelectedItem();
 
+            //Kiểm tra các thông tin task người dùng nhập hợp lệ khôgn
             if (TextUtils.isEmpty(mTask)) {
                 taskEt.setError("Task is required!");
                 return;
@@ -191,6 +204,7 @@ private String gSongNameChosen="";
                 loader.setCanceledOnTouchOutside(false);
                 loader.show();
 
+                //Tùy vào từng loại task người dùng chọn tạo ra các model tương ứng
                 TaskModel model = null;
                 switch (taskType.name) {
                     case "Meeting":
@@ -210,8 +224,7 @@ private String gSongNameChosen="";
                                 productUrl, shoppingLocation);
                         break;
                     case "Office":
-                        model = new OfficeTask(mTask, mDescription, id, mDate, taskType,
-                                "");
+                        model = new OfficeTask(mTask, mDescription, id, mDate, taskType);
                         break;
                     case "Contact":
                         EditText phoneET = myView.findViewById(R.id.et_phoneNumber);
@@ -230,6 +243,8 @@ private String gSongNameChosen="";
                                 gSongNameChosen);
                         break;
                 }
+
+                //Thông báo kết quả tạo task thành công/ thất bại
                 reference.child(id).setValue(model).addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()) {
                         Toast.makeText(HomeActivity.this, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
@@ -247,6 +262,7 @@ private String gSongNameChosen="";
             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, recyclerView.getLayoutManager().getItemCount());
         });
 
+        //Set up Dropdown cho phần chọn loại task
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         taskTypeDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -255,7 +271,7 @@ private String gSongNameChosen="";
                 RelativeLayout taskDetail = myView.findViewById(R.id.taskDetail);
                 LayoutInflater inflater = LayoutInflater.from(myView.getContext());
 
-                //thay doi taskDetail tuong ung voi moi type
+                //Task detail sẽ thay đổi tương ứng với mỗi loại task người dùng chọn
                 taskDetail.removeAllViews();
                 switch (i) {
                     case 0: { //Meeting
@@ -297,9 +313,9 @@ private String gSongNameChosen="";
                         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                String playlistName=adapterView.getItemAtPosition(i).toString();
-                                gSongNameChosen=playlistName;
-                                Toast.makeText(adapterView.getContext(),playlistName,Toast.LENGTH_SHORT).show();
+                                String playlistName = adapterView.getItemAtPosition(i).toString();
+                                gSongNameChosen = playlistName;
+                                Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -307,18 +323,7 @@ private String gSongNameChosen="";
 
                             }
                         });
-                     /*  spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                String playlistName=adapterView.getItemAtPosition(i).toString();
-                                Toast.makeText(adapterView.getContext(),playlistName,Toast.LENGTH_SHORT).show();
-                            }
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });*/
                         taskDetail.addView(relaxingInputDetail);
 
                         break;
@@ -345,8 +350,10 @@ private String gSongNameChosen="";
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>().setQuery(reference, TaskModel.class).build();
 
+        //Setup việc lấy data từ firebase và hiển thị vào recyclerview
+
+        FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>().setQuery(reference, TaskModel.class).build();
         FirebaseRecyclerAdapter<TaskModel, MyViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, MyViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final TaskModel model) {
@@ -401,6 +408,7 @@ private String gSongNameChosen="";
                     });
                 });
 
+
                 Button editButton = holder.mView.findViewById(R.id.editButton);
                 editButton.setOnClickListener(v -> {
                     key = getRef(position).getKey();
@@ -409,7 +417,7 @@ private String gSongNameChosen="";
                     taskType = model.getTaskType();
                     date = model.getDate();
 
-                    //lấy data từ database để để vào những "global variable" tuỳ theo từng kiểu taskType cho hàm updateTask xài
+                    //lấy data từ database để để vào những "global variable" tuỳ theo từng kiểu taskType cho hàm updateTask dùng
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
@@ -439,6 +447,7 @@ private String gSongNameChosen="";
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
+
                                     break;
                             }
                         }
@@ -447,6 +456,8 @@ private String gSongNameChosen="";
                     updateTask();
                 });
 
+
+                //Checkbox đánh dấu task đã hoàn thành hay chưa
                 CheckBox doneCheckBox = holder.mView.findViewById(R.id.doneCheckBox);
                 doneCheckBox.setOnClickListener(v -> {
                     boolean newDoneState = doneCheckBox.isChecked();
@@ -493,6 +504,8 @@ private String gSongNameChosen="";
 
                 });
             }
+
+
 
             @NonNull
             @Override
@@ -541,30 +554,26 @@ private String gSongNameChosen="";
         }
     }
 
+    //Hàm cập nhật task
     private void updateTask() {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.update_data, null);
         myDialog.setView(view);
-
         AlertDialog dialog = myDialog.create();
 
         EditText mTask = view.findViewById(R.id.mEditTextTask);
         EditText mDescription = view.findViewById(R.id.mEditTextDescription);
         TextView mDate = view.findViewById(R.id.mEditDate);
         Button updateDateBtn = view.findViewById(R.id.pickUpdateDateBtn);
-
         mTask.setText(task);
         mTask.setSelection(task.length());
-
         mDescription.setText(description);
         mDescription.setSelection(description.length());
 
         mDate.setText(date);
-
         DateFormat fmtDate = DateFormat.getDateInstance();
         Calendar myCalendar = Calendar.getInstance();
-
         DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view,
                                   int year, int monthOfYear, int dayOfMonth) {
@@ -587,7 +596,7 @@ private String gSongNameChosen="";
         Button delButton = view.findViewById(R.id.btnDelete);
         Button updateButton = view.findViewById(R.id.btnUpdate);
         Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
-
+        //Cập nhật lại các thông tin người dùng nhập
         updateButton.setOnClickListener(view1 -> {
             task = mTask.getText().toString().trim();
             description = mDescription.getText().toString().trim();
@@ -628,7 +637,7 @@ private String gSongNameChosen="";
                 case "Relaxing":
                     break;
             }
-
+            //update lại data của firebase
             reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -644,6 +653,7 @@ private String gSongNameChosen="";
             dialog.dismiss();
         });
 
+        //xóa task -> xóa data trong firebase
         delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
