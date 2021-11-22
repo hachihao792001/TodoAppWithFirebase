@@ -234,13 +234,13 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     case "Travelling":
                         EditText etPlace = myView.findViewById(R.id.et_place);
-                        String place = etPlace.getText().toString().trim();
-                        model = new TravellingTask(mTask, mDescription, id, mDate, taskType, place);
+                        model = new TravellingTask(mTask, mDescription, id, mDate, taskType,
+                                etPlace.getText().toString().trim());
                         break;
                     case "Relaxing":
-                        //  String playlistName = etPlaylistName.getText().toString().trim();
+                        Spinner chooseSongSpinner = myView.findViewById(R.id.chooseSongSpinner);
                         model = new RelaxingTask(mTask, mDescription, id, mDate, taskType,
-                                gSongNameChosen);
+                                chooseSongSpinner.getSelectedItem().toString().trim());
                         break;
                 }
 
@@ -254,7 +254,6 @@ public class HomeActivity extends AppCompatActivity {
                         Toast.makeText(HomeActivity.this, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
                         loader.dismiss();
                     }
-
                 });
             }
 
@@ -314,7 +313,6 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 String playlistName = adapterView.getItemAtPosition(i).toString();
-                                gSongNameChosen = playlistName;
                                 Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
                             }
 
@@ -354,9 +352,9 @@ public class HomeActivity extends AppCompatActivity {
         //Setup việc lấy data từ firebase và hiển thị vào recyclerview
 
         FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>().setQuery(reference, TaskModel.class).build();
-        FirebaseRecyclerAdapter<TaskModel, MyViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, MyViewHolder>(options) {
+        FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final TaskModel model) {
+            protected void onBindViewHolder(@NonNull FirebaseViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final TaskModel model) {
                 holder.setDate(model.getDate());
                 holder.setTask(model.getTask());
                 holder.setDescription(model.getDescription());
@@ -447,7 +445,7 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
-                                    gSongNameChosen=relaxingTask.getPlaylistName();
+                                    gSongNameChosen = relaxingTask.getPlaylistName();
                                     break;
                             }
                         }
@@ -506,52 +504,16 @@ public class HomeActivity extends AppCompatActivity {
             }
 
 
-
             @NonNull
             @Override
-            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.retrieved_layout, parent, false);
-                return new MyViewHolder(v);
+                return new FirebaseViewHolder(v);
             }
         };
 
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        View mView;
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setTask(String task) {
-            TextView taskTextView = mView.findViewById(R.id.taskTv);
-            taskTextView.setText(task);
-        }
-
-        public void setDescription(String des) {
-            TextView desTextView = mView.findViewById(R.id.descriptionTv);
-            desTextView.setText(des);
-        }
-
-        public void setDate(String date) {
-            TextView dateTextView = mView.findViewById(R.id.dateTv);
-            dateTextView.setText(date);
-        }
-
-        public void setTaskType(TaskType taskType) {
-            ImageView icon = mView.findViewById(R.id.taskTypeIcon);
-            icon.setImageResource(taskType.iconResource);
-        }
-
-        public void setIsDone(boolean done) {
-            CheckBox doneCheckBox = mView.findViewById(R.id.doneCheckBox);
-            if (doneCheckBox.isChecked() != done)
-                doneCheckBox.setChecked(done);
-        }
     }
 
     //Hàm cập nhật task
@@ -603,7 +565,7 @@ public class HomeActivity extends AppCompatActivity {
             taskType = (TaskType) taskTypeDropdown.getSelectedItem();
             String date = mDate.getText().toString().trim();
 
-            TaskModel model = new TaskModel(task, description, key, date, taskType);
+            TaskModel model = null;
 
             switch (taskType.name) {
                 case "Meeting":
@@ -621,7 +583,7 @@ public class HomeActivity extends AppCompatActivity {
                     model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
                     break;
                 case "Office":
-                    model=new OfficeTask(task,description,key,date,taskType);
+                    model = new OfficeTask(task, description, key, date, taskType);
                     break;
                 case "Contact":
                     EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
@@ -646,7 +608,6 @@ public class HomeActivity extends AppCompatActivity {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             String playlistName = adapterView.getItemAtPosition(i).toString();
-                            gSongNameChosen = playlistName;
                             Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
                         }
 
@@ -656,7 +617,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     });
 
-                 //   taskDetail.addView(relaxingInputDetail);
+                    //   taskDetail.addView(relaxingInputDetail);
                     model = new RelaxingTask(task, description, key, date, taskType, gSongNameChosen);
                     break;
             }
@@ -677,23 +638,17 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //xóa task -> xóa data trong firebase
-        delButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reference.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
-                        } else {
-                            String err = task.getException().toString();
-                            Toast.makeText(HomeActivity.this, "Delete task failed!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        delButton.setOnClickListener(view12 -> {
+            reference.child(key).removeValue().addOnCompleteListener(removeTask -> {
+                if (removeTask.isSuccessful()) {
+                    Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    String err = removeTask.getException().toString();
+                    Toast.makeText(HomeActivity.this, "Delete task failed!", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         });
 
         dialog.show();
@@ -767,9 +722,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
                     case 4: { //travel
+                        View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
+                        taskDetail.addView(travellingInputDetail);
+
                         if (taskType.name.equals("Travelling")) {
-                            View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
-                            taskDetail.addView(travellingInputDetail);
                             EditText etPlace = view.findViewById(R.id.et_place);
                             etPlace.setText(gTravellingPlace);
                             etPlace.setSelection(gTravellingPlace.length());
@@ -781,7 +737,33 @@ public class HomeActivity extends AppCompatActivity {
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
 
+                        if (taskType.name.equals("Relaxing")) {
+                            Spinner chooseSongSpinner = relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
+                            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+                                    R.array.list_song, android.R.layout.simple_spinner_item);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            chooseSongSpinner.setAdapter(adapter);
 
+                            chooseSongSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    String playlistName = adapterView.getItemAtPosition(i).toString();
+                                    Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                }
+                            });
+
+                            String[] songNames = getResources().getStringArray(R.array.list_song);
+                            for (int s = 0; s < songNames.length; s++) {
+                                if (gSongNameChosen.equals(songNames[s])) {
+                                    chooseSongSpinner.setSelection(s);
+                                    break;
+                                }
+                            }
+                        }
                         break;
 
                     }

@@ -33,6 +33,7 @@ public class RelaxingTaskDetail extends AppCompatActivity {
 
 
     public void onMusicStart(View view) {
+        if (mediaPlayer != null) return;
         switch (song) {
             case "Weightless - Marconi Union":
                 mediaPlayer = MediaPlayer.create(this, R.raw.weigtless);
