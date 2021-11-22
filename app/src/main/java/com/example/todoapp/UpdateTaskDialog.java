@@ -1,4 +1,4 @@
 package com.example.todoapp;
 
-public class UpdateDialog {
+public class UpdateTaskDialog {
 }
