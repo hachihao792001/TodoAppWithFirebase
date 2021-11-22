@@ -76,6 +76,7 @@
         android:padding="15dp"
         android:textAllCaps="false"
         android:layout_margin="10dp"
+        android:textSize="16dp"
         android:textColor="#000"
         android:backgroundTint="#fff"/>
 
@@ -85,6 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
         android:textColor="#fff"
+        android:textSize="15dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 

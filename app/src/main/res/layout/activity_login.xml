@@ -60,6 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:textSize="16dp"
         android:padding="15dp"
         android:textAllCaps="false"
         android:layout_margin="10dp"
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="Don't have an account? Register"
         android:textColor="#fff"
+        android:textSize="15dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"/>
 

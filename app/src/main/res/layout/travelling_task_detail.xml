@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:text="Task:"
             android:textColor="@color/black"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_marginBottom="10dp"
             android:layout_weight=".5"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:text="Description:"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -79,7 +79,7 @@
             android:layout_margin="10dp"
             android:layout_weight=".5"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -99,7 +99,7 @@
             android:layout_weight="1"
             android:text="Date:"
             android:textColor="@color/black"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -109,7 +109,7 @@
             android:layout_margin="10dp"
             android:layout_weight=".5"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -128,7 +128,7 @@
             android:layout_weight="1"
             android:text="Place:"
             android:textColor="@color/black"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -139,7 +139,7 @@
             android:layout_margin="10dp"
             android:layout_weight=".5"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -156,7 +156,7 @@
 
     <Button
         android:id="@+id/btnTravellingMap"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="#fff"
         android:textColorHint="#000"
         android:layout_width="match_parent"

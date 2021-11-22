@@ -15,7 +15,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="Phone number:"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
 
@@ -43,7 +43,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="Email:"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
 

@@ -34,7 +34,7 @@
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:text="Task:"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -61,7 +61,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         <TextView
             android:id="@+id/description"
             android:layout_weight=".5"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
         <TextView
             android:id="@+id/date"
             android:layout_weight=".5"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
             android:layout_weight="1"
             android:text="Meeting url:"
             android:textColor="@color/black"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
@@ -135,7 +135,7 @@
             android:textColorHint="#000"
             android:layout_margin="10dp"
             android:layout_weight=".5"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold" />
 
 
@@ -149,7 +149,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
 
         <TextView
             android:id="@+id/meetingLocation"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:layout_weight=".5"
             android:textColorHint="#000"
             android:layout_width="match_parent"
@@ -190,7 +190,7 @@
         <Button
             android:id="@+id/btnMeetingMap"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="#fff"
             android:textColorHint="#000"
             android:layout_width="match_parent"
@@ -204,7 +204,7 @@
         <Button
             android:id="@+id/btnMeetingUrl"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="#fff"
             android:textColorHint="#000"
             android:layout_width="match_parent"
