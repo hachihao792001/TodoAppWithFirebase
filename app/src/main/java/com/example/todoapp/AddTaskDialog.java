@@ -34,7 +34,6 @@ public class AddTaskDialog extends AlertDialog {
     Context context;
     DatabaseReference reference;
     ProgressDialog loader;
-    RecyclerView recyclerView;
     ArrayList<TaskType> taskTypeList;
 
     View dialogView;
@@ -57,12 +56,11 @@ public class AddTaskDialog extends AlertDialog {
     EditText descriptionEt;
     TextView dateTv;
 
-    protected AddTaskDialog(Context context, String onlineUserID, ProgressDialog loader, RecyclerView recyclerView, ArrayList<TaskType> taskTypes) {
+    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes) {
         super(context);
         this.context = context;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
-        this.loader = loader;
-        this.recyclerView = recyclerView;
+        this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypes;
     }
 
@@ -190,7 +188,6 @@ public class AddTaskDialog extends AlertDialog {
         }
 
         dismiss();
-        recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, recyclerView.getLayoutManager().getItemCount());
     }
 
     void updateTaskDetailFragment(int chosenTask) {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -63,7 +64,6 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-    private ProgressDialog loader;
 
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
@@ -86,8 +86,6 @@ public class HomeActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        loader = new ProgressDialog(this);
 
         //Thực hiện các thao tác với firebase
         mAuth = FirebaseAuth.getInstance();
@@ -113,8 +111,12 @@ public class HomeActivity extends AppCompatActivity {
 
     //Hàm tạo thêm 1 task
     private void addTask() {
-        AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, loader, recyclerView, taskTypeList);
+        AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList);
         addTaskDialog.show();
+        addTaskDialog.setOnDismissListener(dialogInterface -> {
+            recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
+                    null, recyclerView.getLayoutManager().getItemCount());
+        });
     }
 
 
