@@ -447,7 +447,7 @@ public class HomeActivity extends AppCompatActivity {
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
-
+                                    gSongNameChosen=relaxingTask.getPlaylistName();
                                     break;
                             }
                         }
@@ -621,7 +621,7 @@ public class HomeActivity extends AppCompatActivity {
                     model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
                     break;
                 case "Office":
-
+                    model=new OfficeTask(task,description,key,date,taskType);
                     break;
                 case "Contact":
                     EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
@@ -635,6 +635,29 @@ public class HomeActivity extends AppCompatActivity {
                     model = new TravellingTask(task, description, key, date, taskType, place);
                     break;
                 case "Relaxing":
+                    View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
+                    Spinner spinner = (Spinner) relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
+                            R.array.list_song, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            String playlistName = adapterView.getItemAtPosition(i).toString();
+                            gSongNameChosen = playlistName;
+                            Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                 //   taskDetail.addView(relaxingInputDetail);
+                    model = new RelaxingTask(task, description, key, date, taskType, gSongNameChosen);
                     break;
             }
             //update lại data của firebase

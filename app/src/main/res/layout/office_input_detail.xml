@@ -4,31 +4,5 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_weight="2"
-            android:text="File name:"
-            android:textSize="13sp"
-            android:id="@+id/fileNameTextView"
-            android:textStyle="bold" />
-
-
-        <Button
-            android:id="@+id/chooseFileButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.8"
-            android:text="Choose file"
-            android:onClick="chooseFile"
-            android:textSize="10sp" />
-       </LinearLayout>
 
     </LinearLayout>
