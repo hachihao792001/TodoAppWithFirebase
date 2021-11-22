@@ -14,7 +14,7 @@
             android:layout_weight="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Playlist name:"
+            android:text="Select a song:"
             android:textStyle="bold"
             android:layout_margin="10dp"/>
 
