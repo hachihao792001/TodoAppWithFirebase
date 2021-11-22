@@ -281,25 +281,25 @@ public class UpdateTaskDialog extends AlertDialog {
                 View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                 taskDetailFragment.addView(relaxingInputDetail);
 
+                Spinner chooseSongSpinner = relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
+                        R.array.list_song, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                chooseSongSpinner.setAdapter(adapter);
+
+                chooseSongSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String playlistName = adapterView.getItemAtPosition(i).toString();
+                        Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
+
                 if (taskToUpdateName.equals("Relaxing")) {
-                    Spinner chooseSongSpinner = relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
-                            R.array.list_song, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    chooseSongSpinner.setAdapter(adapter);
-
-                    chooseSongSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            String playlistName = adapterView.getItemAtPosition(i).toString();
-                            Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-                        }
-                    });
-
                     RelaxingTask relaxingTaskToUpdate = (RelaxingTask) taskToUpdate;
                     String[] songNames = context.getResources().getStringArray(R.array.list_song);
                     for (int s = 0; s < songNames.length; s++) {
