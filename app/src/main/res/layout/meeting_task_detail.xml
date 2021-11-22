@@ -1,220 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableLeft="@drawable/white_meeting_icon"
-        android:padding="10dp"
-        android:text="My task detail"
-        android:gravity="center"
-        android:background="@drawable/background_design"
-        android:textColor="#fff"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
-
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
-            android:text="Task:"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/task"
-            android:layout_weight=".5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColorHint="#000"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:textSize="15sp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description:"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_weight=".5"
-            android:textSize="15sp"
-            android:textColorHint="#000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:textSize="15sp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date:"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-        <TextView
-            android:id="@+id/date"
-            android:layout_weight=".5"
-            android:textSize="15sp"
-            android:textColorHint="#000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Meeting url:"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/meetingUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#000"
-            android:layout_margin="10dp"
-            android:layout_weight=".5"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:textSize="15sp"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Meeting location:"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-        <TextView
-            android:id="@+id/meetingLocation"
-            android:textSize="15sp"
-            android:layout_weight=".5"
-            android:textColorHint="#000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-
-    </LinearLayout>
-
-    <fragment
-        android:layout_margin="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        tools:context=".MapsActivity" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnMeetingMap"
-            android:layout_weight="1"
-            android:textSize="16sp"
+            android:drawableLeft="@drawable/white_meeting_icon"
+            android:padding="10dp"
+            android:text="My task detail"
+            android:gravity="center"
+            android:background="@drawable/background_design"
             android:textColor="#fff"
-            android:textColorHint="#000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="See on Maps"
-            android:backgroundTint="#29b6f6"
-            android:layout_margin="10dp"
-            android:onClick="seeMapOnCLick"/>
+            android:textSize="20dp"/>
 
-        <Button
-            android:id="@+id/btnMeetingUrl"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:textColor="#fff"
-            android:textColorHint="#000"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Go to meeting"
-            android:backgroundTint="#29b6f6"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/black"
+                android:text="Task:"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/task"
+                android:layout_weight=".5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColorHint="#000"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_weight=".5"
+                android:textSize="15sp"
+                android:textColorHint="#000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+            <TextView
+                android:id="@+id/date"
+                android:layout_weight=".5"
+                android:textSize="15sp"
+                android:textColorHint="#000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:text="Meeting url:"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/meetingUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="#000"
+                android:layout_margin="10dp"
+                android:layout_weight=".5"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Meeting location:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/meetingLocation"
+                android:textSize="15sp"
+                android:layout_weight=".5"
+                android:textColorHint="#000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+
+
+        </LinearLayout>
+
+        <fragment
             android:layout_margin="10dp"
-            android:onClick="goToMeetingOnClick"/>
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            tools:context=".MapsActivity" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnMeetingMap"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:textColorHint="#000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="See on Maps"
+                android:backgroundTint="#29b6f6"
+                android:layout_margin="10dp"
+                android:onClick="seeMapOnCLick"/>
+
+            <Button
+                android:id="@+id/btnMeetingUrl"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:textColorHint="#000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="join"
+                android:backgroundTint="#29b6f6"
+                android:layout_margin="10dp"
+                android:onClick="goToMeetingOnClick"/>
+        </LinearLayout>
+
     </LinearLayout>
+</ScrollView>
 
-</LinearLayout>
 
