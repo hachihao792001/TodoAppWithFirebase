@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,18 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -76,27 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     private String onlineUserID;
     private ProgressDialog loader;
-    private String key = "";
-    private String task;
-    private String description;
-    private String date;
-    private TaskType taskType;
 
-    //các biến cụ thể để lưu cho từng task detail
-    //meeting
-    private String gMeetingUrl = "";
-    private String gMeetingLocation = "";
-    //shopping
-    private String gProductUrl = "";
-    private String gShoppingLocation = "";
-    //office
-    //contact
-    private String gPhoneNumber = "";
-    private String gEmail = "";
-    //Travelling
-    private String gTravellingPlace = "";
-    //relaxing
-    private String gSongNameChosen = "";
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
@@ -409,49 +377,37 @@ public class HomeActivity extends AppCompatActivity {
 
                 Button editButton = holder.mView.findViewById(R.id.editButton);
                 editButton.setOnClickListener(v -> {
-                    key = getRef(position).getKey();
-                    task = model.getTask();
-                    description = model.getDescription();
-                    taskType = model.getTaskType();
-                    date = model.getDate();
 
-                    //lấy data từ database để để vào những "global variable" tuỳ theo từng kiểu taskType cho hàm updateTask dùng
+                    //lấy data từ database để cho hàm updateTask dùng
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
                         } else {
+                            TaskModel taskToEdit = null;
                             switch (model.getTaskType().name) {
                                 case "Meeting":
-                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
-                                    gMeetingLocation = meetingTask.getMeetingLocation();
-                                    gMeetingUrl = meetingTask.getMeetingUrl();
+                                    taskToEdit = task.getResult().getValue(MeetingTask.class);
                                     break;
                                 case "Shopping":
-                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
-                                    gProductUrl = shoppingTask.getProductUrl();
-                                    gShoppingLocation = shoppingTask.getShoppingLocation();
+                                    taskToEdit = task.getResult().getValue(ShoppingTask.class);
                                     break;
                                 case "Office":
-                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
+                                    taskToEdit = task.getResult().getValue(OfficeTask.class);
                                     break;
                                 case "Contact":
-                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
-                                    gPhoneNumber = contactTask.getPhoneNumber();
-                                    gEmail = contactTask.getEmail();
+                                    taskToEdit = task.getResult().getValue(ContactTask.class);
                                     break;
                                 case "Travelling":
-                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
-                                    gTravellingPlace = travellingTask.getPlace();
+                                    taskToEdit = task.getResult().getValue(TravellingTask.class);
                                     break;
                                 case "Relaxing":
-                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
-                                    gSongNameChosen = relaxingTask.getPlaylistName();
+                                    taskToEdit = task.getResult().getValue(RelaxingTask.class);
                                     break;
                             }
+
+                            updateTask(taskToEdit);
                         }
                     });
-
-                    updateTask();
                 });
 
 
@@ -517,7 +473,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     //Hàm cập nhật task
-    private void updateTask() {
+    private void updateTask(TaskModel taskToUpdate) {
         AlertDialog.Builder myDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.update_data, null);
@@ -528,12 +484,12 @@ public class HomeActivity extends AppCompatActivity {
         EditText mDescription = view.findViewById(R.id.mEditTextDescription);
         TextView mDate = view.findViewById(R.id.mEditDate);
         Button updateDateBtn = view.findViewById(R.id.pickUpdateDateBtn);
-        mTask.setText(task);
-        mTask.setSelection(task.length());
-        mDescription.setText(description);
-        mDescription.setSelection(description.length());
+        mTask.setText(taskToUpdate.getTask());
+        mTask.setSelection(taskToUpdate.getTask().length());
+        mDescription.setText(taskToUpdate.getDescription());
+        mDescription.setSelection(taskToUpdate.getDescription().length());
 
-        mDate.setText(date);
+        mDate.setText(taskToUpdate.getDate());
         DateFormat fmtDate = DateFormat.getDateInstance();
         Calendar myCalendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -560,69 +516,50 @@ public class HomeActivity extends AppCompatActivity {
         Spinner taskTypeDropdown = view.findViewById(R.id.taskTypeDropdown);
         //Cập nhật lại các thông tin người dùng nhập
         updateButton.setOnClickListener(view1 -> {
-            task = mTask.getText().toString().trim();
-            description = mDescription.getText().toString().trim();
-            taskType = (TaskType) taskTypeDropdown.getSelectedItem();
-            String date = mDate.getText().toString().trim();
+            String newTask = mTask.getText().toString().trim();
+            String newDescription = mDescription.getText().toString().trim();
+            TaskType newTaskType = (TaskType) taskTypeDropdown.getSelectedItem();
+            String newDate = mDate.getText().toString().trim();
 
             TaskModel model = null;
 
-            switch (taskType.name) {
+            switch (newTaskType.name) {
                 case "Meeting":
                     EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
                     EditText etMeetingLocation = view.findViewById(R.id.et_location);
-                    String meetingUrl = etMeetingUrl.getText().toString().trim();
-                    String meetingLocation = etMeetingLocation.getText().toString().trim();
-                    model = new MeetingTask(task, description, key, date, taskType, meetingUrl, meetingLocation);
+                    model = new MeetingTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
+                            etMeetingUrl.getText().toString().trim(),
+                            etMeetingLocation.getText().toString().trim());
                     break;
                 case "Shopping":
                     EditText etProductUrl = view.findViewById(R.id.et_productUrl);
                     EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
-                    String productUrl = etProductUrl.getText().toString().trim();
-                    String shoppingLocation = etShoppingLocation.getText().toString().trim();
-                    model = new ShoppingTask(task, description, key, date, taskType, productUrl, shoppingLocation);
+                    model = new ShoppingTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
+                            etProductUrl.getText().toString().trim(),
+                            etShoppingLocation.getText().toString().trim());
                     break;
                 case "Office":
-                    model = new OfficeTask(task, description, key, date, taskType);
+                    model = new OfficeTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType);
                     break;
                 case "Contact":
                     EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
                     EditText etEmail = view.findViewById(R.id.et_email);
-                    model = new ContactTask(task, description, key, date, taskType,
+                    model = new ContactTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
                             etPhoneNumber.getText().toString(), etEmail.getText().toString());
                     break;
                 case "Travelling":
                     EditText etPlace = view.findViewById(R.id.et_place);
-                    String place = etPlace.getText().toString().trim();
-                    model = new TravellingTask(task, description, key, date, taskType, place);
+                    model = new TravellingTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
+                            etPlace.getText().toString().trim());
                     break;
                 case "Relaxing":
-                    View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
-                    Spinner spinner = (Spinner) relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
-                            R.array.list_song, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapter);
-
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            String playlistName = adapterView.getItemAtPosition(i).toString();
-                            Toast.makeText(adapterView.getContext(), playlistName, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-
-                    //   taskDetail.addView(relaxingInputDetail);
-                    model = new RelaxingTask(task, description, key, date, taskType, gSongNameChosen);
+                    Spinner spinner = (Spinner) view.findViewById(R.id.chooseSongSpinner);
+                    model = new RelaxingTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
+                            spinner.getSelectedItem().toString());
                     break;
             }
             //update lại data của firebase
-            reference.child(key).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -639,7 +576,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //xóa task -> xóa data trong firebase
         delButton.setOnClickListener(view12 -> {
-            reference.child(key).removeValue().addOnCompleteListener(removeTask -> {
+            reference.child(taskToUpdate.getId()).removeValue().addOnCompleteListener(removeTask -> {
                 if (removeTask.isSuccessful()) {
                     Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
                 } else {
@@ -656,7 +593,7 @@ public class HomeActivity extends AppCompatActivity {
         taskTypeDropdown.setAdapter(new TaskTypeAdapter(this, taskTypeList));
         int updatingTaskIndex = 0;
         for (int i = 0; i < taskTypeList.size(); i++) {
-            if (taskTypeList.get(i).name.equals(taskType.name)) {
+            if (taskTypeList.get(i).name.equals(taskToUpdate.getTaskType().name)) {
                 updatingTaskIndex = i;
                 break;
             }
@@ -671,32 +608,35 @@ public class HomeActivity extends AppCompatActivity {
 
                 //thay doi taskDetail tuong ung voi moi type
                 taskDetail.removeAllViews();
+                String taskToUpdateName = taskToUpdate.getTaskType().name;
                 switch (i) {
                     case 0: { //Meeting
                         View meetingInputDetail = inflater.inflate(R.layout.meeting_input_detail, null);
                         taskDetail.addView(meetingInputDetail);
-                        if (taskType.name.equals("Meeting")) {
+                        if (taskToUpdateName.equals("Meeting")) {
                             EditText etMeetingUrl = view.findViewById(R.id.et_meetingUrl);
                             EditText etMeetingLocation = view.findViewById(R.id.et_location);
 
-                            etMeetingUrl.setText(gMeetingUrl);
-                            etMeetingUrl.setSelection(gMeetingUrl.length());
-                            etMeetingLocation.setText(gMeetingLocation);
-                            etMeetingLocation.setSelection(gMeetingLocation.length());
+                            MeetingTask meetingTaskToUpdate = (MeetingTask) taskToUpdate;
+                            etMeetingUrl.setText(meetingTaskToUpdate.getMeetingUrl());
+                            etMeetingUrl.setSelection(meetingTaskToUpdate.getMeetingUrl().length());
+                            etMeetingLocation.setText(meetingTaskToUpdate.getMeetingLocation());
+                            etMeetingLocation.setSelection(meetingTaskToUpdate.getMeetingLocation().length());
                         }
                         break;
                     }
                     case 1: { //Shopping
                         View shoppingInputDetail = inflater.inflate(R.layout.shopping_input_detail, null);
                         taskDetail.addView(shoppingInputDetail);
-                        if (taskType.name.equals("Shopping")) {
+                        if (taskToUpdateName.equals("Shopping")) {
                             EditText etProductUrl = view.findViewById(R.id.et_productUrl);
                             EditText etShoppingLocation = view.findViewById(R.id.et_shoppingLocation);
 
-                            etProductUrl.setText(gProductUrl);
-                            etProductUrl.setSelection(gProductUrl.length());
-                            etShoppingLocation.setText(gShoppingLocation);
-                            etShoppingLocation.setSelection(gShoppingLocation.length());
+                            ShoppingTask shoppingTaskToUpdate = (ShoppingTask) taskToUpdate;
+                            etProductUrl.setText(shoppingTaskToUpdate.getProductUrl());
+                            etProductUrl.setSelection(shoppingTaskToUpdate.getProductUrl().length());
+                            etShoppingLocation.setText(shoppingTaskToUpdate.getShoppingLocation());
+                            etShoppingLocation.setSelection(shoppingTaskToUpdate.getShoppingLocation().length());
                         }
                         break;
                     }
@@ -709,14 +649,15 @@ public class HomeActivity extends AppCompatActivity {
                         View contactInputDetail = inflater.inflate(R.layout.contact_input_detail, null);
                         taskDetail.addView(contactInputDetail);
 
-                        if (taskType.name.equals("Contact")) {
+                        if (taskToUpdateName.equals("Contact")) {
                             EditText etPhoneNumber = view.findViewById(R.id.et_phoneNumber);
                             EditText etEmail = view.findViewById(R.id.et_email);
 
-                            etPhoneNumber.setText(gPhoneNumber);
-                            etPhoneNumber.setSelection(gPhoneNumber.length());
-                            etEmail.setText(gEmail);
-                            etEmail.setSelection(gEmail.length());
+                            ContactTask contactTaskToUpdate = (ContactTask) taskToUpdate;
+                            etPhoneNumber.setText(contactTaskToUpdate.getPhoneNumber());
+                            etPhoneNumber.setSelection(contactTaskToUpdate.getPhoneNumber().length());
+                            etEmail.setText(contactTaskToUpdate.getEmail());
+                            etEmail.setSelection(contactTaskToUpdate.getEmail().length());
                         }
                         break;
 
@@ -725,10 +666,12 @@ public class HomeActivity extends AppCompatActivity {
                         View travellingInputDetail = inflater.inflate(R.layout.travelling_input_detail, null);
                         taskDetail.addView(travellingInputDetail);
 
-                        if (taskType.name.equals("Travelling")) {
+                        if (taskToUpdateName.equals("Travelling")) {
                             EditText etPlace = view.findViewById(R.id.et_place);
-                            etPlace.setText(gTravellingPlace);
-                            etPlace.setSelection(gTravellingPlace.length());
+
+                            TravellingTask travellingTaskToUpdate = (TravellingTask) taskToUpdate;
+                            etPlace.setText(travellingTaskToUpdate.getPlace());
+                            etPlace.setSelection(travellingTaskToUpdate.getPlace().length());
                         }
                         break;
 
@@ -737,7 +680,7 @@ public class HomeActivity extends AppCompatActivity {
                         View relaxingInputDetail = inflater.inflate(R.layout.relaxing_input_detail, null);
                         taskDetail.addView(relaxingInputDetail);
 
-                        if (taskType.name.equals("Relaxing")) {
+                        if (taskToUpdateName.equals("Relaxing")) {
                             Spinner chooseSongSpinner = relaxingInputDetail.findViewById(R.id.chooseSongSpinner);
                             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(HomeActivity.this,
                                     R.array.list_song, android.R.layout.simple_spinner_item);
@@ -756,9 +699,10 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                             });
 
+                            RelaxingTask relaxingTaskToUpdate = (RelaxingTask) taskToUpdate;
                             String[] songNames = getResources().getStringArray(R.array.list_song);
                             for (int s = 0; s < songNames.length; s++) {
-                                if (gSongNameChosen.equals(songNames[s])) {
+                                if (relaxingTaskToUpdate.getPlaylistName().equals(songNames[s])) {
                                     chooseSongSpinner.setSelection(s);
                                     break;
                                 }
