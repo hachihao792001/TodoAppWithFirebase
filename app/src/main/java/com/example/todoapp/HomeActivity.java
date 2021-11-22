@@ -40,22 +40,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity {
-    EditText taskEt;  //Et = edit text
-    EditText descriptionEt;
     TextView dateTv; // Tv = text view
 
     //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view,
-                              int year, int monthOfYear, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-    };
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -77,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Todo List");
-
 
         //Setup recyclerview lưu các task mà người dùng tạo
         recyclerView = findViewById(R.id.recyclerView);
@@ -125,10 +113,6 @@ public class HomeActivity extends AppCompatActivity {
         updateTaskDialog.show();
     }
 
-    private void updateLabel() {
-        dateTv.setText(fmtDate.format(myCalendar.getTime()));
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -145,6 +129,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setTaskType(model.getTaskType());
                 holder.setIsDone(model.isDone());
 
+                //bấm vào background của task thì chuyển tới màn hình detail của task
                 holder.mView.setOnClickListener(v -> {
                     //lấy task từ database để putExtra vào intent
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
@@ -190,10 +175,9 @@ public class HomeActivity extends AppCompatActivity {
                     });
                 });
 
-
+                //bấm cây bút thì lấy task từ database về và cho hàm updateTask xử lí (hiện UpdateTaskDialog)
                 Button editButton = holder.mView.findViewById(R.id.editButton);
                 editButton.setOnClickListener(v -> {
-
                     //lấy data từ database để cho hàm updateTask dùng
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
@@ -232,6 +216,7 @@ public class HomeActivity extends AppCompatActivity {
                 doneCheckBox.setOnClickListener(v -> {
                     boolean newDoneState = doneCheckBox.isChecked();
 
+                    //lấy task từ database về, cập nhật isDone cho nó, rồi set lên database lại
                     reference.child(getRef(position).getKey()).get().addOnCompleteListener(getDataTask -> {
                         if (!getDataTask.isSuccessful()) {
                             Log.e("firebase", "Error getting data", getDataTask.getException());
@@ -306,14 +291,4 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public void chooseFile(View view) {
-        String sPath = Environment.getExternalStorageDirectory() + "/";
-        Uri uri = Uri.parse(sPath);
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(uri, "*/*");
-        startActivity(intent);
-    }
-
-
 }
