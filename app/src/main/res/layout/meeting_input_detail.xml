@@ -10,7 +10,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         <EditText
             android:id="@+id/et_meetingUrl"
             android:layout_weight="0.5"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         <EditText
             android:id="@+id/et_location"
             android:layout_weight="0.5"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:textColorHint="#000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

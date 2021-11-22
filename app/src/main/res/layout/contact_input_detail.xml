@@ -15,7 +15,7 @@
             android:layout_margin="10dp"
             android:layout_weight="2"
             android:text="Phone number:"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
 
@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:hint="Input number to call"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -43,7 +43,7 @@
             android:layout_margin="10dp"
             android:layout_weight="2"
             android:text="Email:"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
 
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:hint="Input email"
             android:textColorHint="#000"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
     </LinearLayout>

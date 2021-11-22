@@ -39,6 +39,8 @@
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/drawable/edit_icon.xml" value="0.14635416666666667" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2015625" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/drawable/inputs.xml" value="0.1287037037037037" />
+        <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/font/kanit.xml" value="0.16041666666666668" />
+        <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/font/roboto.xml" value="0.284375" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/activity_login.xml" value="0.18697916666666667" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/activity_main.xml" value="0.18697916666666667" />
@@ -50,7 +52,7 @@
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/meeting_task_detail.xml" value="0.264" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/office_input_detail.xml" value="0.13020833333333334" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/office_task_detail.xml" value="0.25416666666666665" />
-        <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/relaxing_input_detail.xml" value="0.13020833333333334" />
+        <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/relaxing_input_detail.xml" value="0.4" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/relaxing_task_detail.xml" value="0.1793478260869565" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/retrieved_layout.xml" value="0.2" />
         <entry key="..\:/STUDY/HOC_KI_5/ANDROID/__MIDTERN/MobileMidterm/app/src/main/res/layout/shopping_input_detail.xml" value="0.16799999999999998" />
