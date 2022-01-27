@@ -19,12 +19,26 @@ android:background="?colorPrimaryVariant">
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
+<<<<<<< HEAD
     android:layout_height="match_parent">
+=======
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:orientation="vertical"
+    android:background="?colorPrimaryVariant">
+>>>>>>> 288f021c317f4fe15b7c1db06e76364bea33ee2a
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
+<<<<<<< HEAD
         android:layout_height="match_parent"
+=======
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+>>>>>>> 288f021c317f4fe15b7c1db06e76364bea33ee2a
         />
 
     <LinearLayout

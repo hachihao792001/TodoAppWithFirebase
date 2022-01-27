@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/background_design"
+            android:background="?colorPrimary"
             android:drawableLeft="@drawable/relaxing_icon"
             android:gravity="center"
             android:padding="10dp"
@@ -146,7 +146,7 @@
                 android:textColor="#fff"
                 android:textColorHint="#000"
                 android:textStyle="bold"
-                android:backgroundTint="#29b6f6"
+                android:backgroundTint="?colorPrimary"
                 android:layout_margin="10dp"
                 />
         </LinearLayout>

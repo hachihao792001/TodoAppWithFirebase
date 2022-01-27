@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,6 +57,7 @@ import java.util.Calendar;
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
 
+
     //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -78,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
         setContentView(R.layout.activity_home);
 
         //Setup toolbar
@@ -323,6 +326,9 @@ public class HomeActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
+            case R.id.changeTheme:
+                Intent themeIntent=new Intent(HomeActivity.this, ChangeTheme.class);
+                startActivity(themeIntent);
         }
         return super.onOptionsItemSelected(item);
     }

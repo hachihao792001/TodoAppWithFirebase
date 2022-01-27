@@ -16,7 +16,7 @@
             android:padding="10dp"
             android:text="My task detail"
             android:gravity="center"
-            android:background="@drawable/background_design"
+            android:background="?colorPrimary"
             android:textColor="#fff"
             android:textStyle="bold"
             android:textSize="20dp"/>
@@ -201,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="See on Maps"
-                android:backgroundTint="#29b6f6"
+                android:backgroundTint="?colorPrimary"
                 android:layout_margin="10dp"/>
 
             <Button
@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="Buy product"
-                android:backgroundTint="#29b6f6"
+                android:backgroundTint="?colorPrimary"
                 android:layout_margin="10dp"/>
         </LinearLayout>
 

@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="30dp"
                 android:layout_weight="1"
-                android:background="#29b6f6"
+                android:background="?colorPrimary"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="June 18, 2020"

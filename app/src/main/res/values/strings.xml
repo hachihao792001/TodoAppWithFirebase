@@ -7,6 +7,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="prefs_theme_key">theme</string>
     <string-array name="task_types">
         <item>Meeting</item>
         <item>Shopping</item>

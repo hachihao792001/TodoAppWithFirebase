@@ -38,6 +38,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
         setContentView(R.layout.meeting_task_detail);
 
         Intent intent = getIntent();

@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/background_design"
+            android:background="?colorPrimary"
             android:gravity="center"
             android:padding="10dp"
             android:text="Update task"
@@ -104,7 +104,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:backgroundTint="#29b6f6"
+                android:backgroundTint="?colorPrimary"
                 android:id="@+id/pickUpdateDateBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="#0086c3"
+                android:backgroundTint="?colorPrimaryVariant"
                 android:text="DELETE"
                 android:textAllCaps="false"
                 android:textColor="#fff"
@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="#29b6f6"
+                android:backgroundTint="?colorPrimary"
                 android:text="UPDATE"
                 android:textAllCaps="false"
                 android:textColor="#fff"
