@@ -26,6 +26,7 @@ public class OfficeTaskDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
         setContentView(R.layout.office_task_detail);
         Intent intent = getIntent();
         thisTask = (OfficeTask) intent.getSerializableExtra("task");

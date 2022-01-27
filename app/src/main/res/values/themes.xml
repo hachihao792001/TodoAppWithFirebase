@@ -1,9 +1,86 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+
+<!--    <style name="f">-->
+<!--        <item name="colorPrimary">@color/red_2</item>-->
+<!--        <item name="colorPrimaryVariant">@color/red_1</item>-->
+<!--        <item name="backgroundTint">@color/red_2</item>-->
+<!--        <item name="background">@color/red_1</item>-->
+<!--        <item name="backgroundColor">@color/red_1</item>-->
+
+<!--    </style>-->
+
+
+    <style name="AppTheme.Red" parent="Theme.ToDoApp.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/red_2</item>
+        <item name="colorPrimaryVariant">@color/red_1</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/kanit</item>
+
+    </style>
+
+    <style name="AppTheme.Orange" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/orange_2</item>
+
+        <item name="colorPrimary">@color/orange_2</item>
+        <item name="colorPrimaryVariant">@color/orange_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Yellow" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/yellow_2</item>
+        <item name="colorPrimary">@color/yellow_2</item>
+        <item name="colorPrimaryVariant">@color/yellow_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Green" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/green_2</item>
+        <item name="colorPrimary">@color/green_2</item>
+        <item name="colorPrimaryVariant">@color/green_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Blue" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/blue_2</item>
+        <item name="colorPrimary">@color/blue_2</item>
+        <item name="colorPrimaryVariant">@color/blue_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Purple" parent="Theme.ToDoApp.NoActionBar">
+    <item name="background">@color/purple_2</item>
+        <item name="colorPrimary">@color/purple_2</item>
+        <item name="colorPrimaryVariant">@color/purple_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Pink" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/pink_2</item>
+        <item name="colorPrimary">@color/pink_2</item>
+        <item name="colorPrimaryVariant">@color/pink_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+    <style name="AppTheme.Gray" parent="Theme.ToDoApp.NoActionBar">
+        <item name="background">@color/gray_2</item>
+        <item name="colorPrimary">@color/gray_2</item>
+        <item name="colorPrimaryVariant">@color/gray_1</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:fontFamily">@font/kanit</item>
+    </style>
+
+
+
+
     <style name="Theme.ToDoApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/blue_2</item>
+        <item name="colorPrimaryVariant">@color/blue_1</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -11,7 +88,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/kanit</item>
     </style>
 

@@ -28,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoApp">
         <activity
+            android:name=".ChangeTheme"
+            android:exported="true" />
+        <activity
             android:name=".RelaxingTaskDetail"
             android:exported="true" />
         <activity
@@ -70,7 +73,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ToDoApp.NoActionBar">
+            android:theme="@style/AppTheme.Blue"
+>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

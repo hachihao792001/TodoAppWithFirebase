@@ -38,6 +38,8 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
+
         setContentView(R.layout.shopping_task_detail);
 
         Intent intent = getIntent();

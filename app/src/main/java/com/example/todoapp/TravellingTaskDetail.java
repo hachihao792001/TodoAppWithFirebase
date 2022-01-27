@@ -40,6 +40,8 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
+
         setContentView(R.layout.travelling_task_detail);
 
         Intent intent = getIntent();

@@ -4,4 +4,8 @@
         android:id="@+id/logout"
         android:title="Log out"
         />
+    <item
+        android:id="@+id/changeTheme"
+        android:title="Change Theme"
+        />
 </menu>

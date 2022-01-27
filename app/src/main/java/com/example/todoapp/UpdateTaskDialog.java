@@ -55,6 +55,7 @@ public class UpdateTaskDialog extends AlertDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(context);
+
         dialogView = inflater.inflate(R.layout.update_data, null);
         setView(dialogView);
 
