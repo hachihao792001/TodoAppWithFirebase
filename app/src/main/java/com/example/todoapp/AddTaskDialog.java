@@ -35,6 +35,7 @@ public class AddTaskDialog extends AlertDialog {
     DatabaseReference reference;
     ProgressDialog loader;
     ArrayList<TaskType> taskTypeList;
+    String description;
 
     View dialogView;
     Spinner taskTypeDropdown;
@@ -56,12 +57,13 @@ public class AddTaskDialog extends AlertDialog {
     EditText descriptionEt;
     TextView dateTv;
 
-    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes) {
+    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description) {
         super(context);
         this.context = context;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypes;
+        this.description = description;
     }
 
     @Override
@@ -79,6 +81,11 @@ public class AddTaskDialog extends AlertDialog {
         Button saveButton = dialogView.findViewById(R.id.saveBtn);
         Button cancel = dialogView.findViewById(R.id.cancelBtn);
         taskTypeDropdown = dialogView.findViewById(R.id.taskTypeDropdown);
+
+        if (description.length() > 0) {
+            descriptionEt.setText(description);
+            taskEt.setText("My task");
+        }
 
         // Cho phép người dùng chọn ngày
         pickDate.setOnClickListener(new View.OnClickListener() {

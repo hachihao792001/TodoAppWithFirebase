@@ -1,22 +1,30 @@
 package com.example.todoapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +36,18 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,9 +60,13 @@ public class HomeActivity extends AppCompatActivity {
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
 
+    Bitmap bitmap;
+    private static final  int REQUEST_CAMERA_CODE = 100;
+
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
+    private FloatingActionButton addTaskFromCameraButton;
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -85,6 +103,11 @@ public class HomeActivity extends AppCompatActivity {
         floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(view -> addTask());
 
+        //Nút tạo một task từ ảnh
+        addTaskFromCameraButton = findViewById(R.id.btn_add_task_from_camera);
+        addTaskFromCameraButton.setOnClickListener(view -> addTaskFromImage());
+
+
         //Danh sách các loại task mà pm hỗ trợ, mỗi loại kèm icon riêng
         String[] taskTypeNames = getResources().getStringArray(R.array.task_types);
         taskTypeList = new ArrayList<TaskType>(Arrays.asList(
@@ -99,12 +122,24 @@ public class HomeActivity extends AppCompatActivity {
 
     //Hàm tạo thêm 1 task
     private void addTask() {
-        AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList);
+        AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList, "");
         addTaskDialog.show();
         addTaskDialog.setOnDismissListener(dialogInterface -> {
             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
                     null, recyclerView.getLayoutManager().getItemCount());
         });
+    }
+
+    //Hàm tạo thêm 1 task từ image
+    private void addTaskFromImage() {
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
+                    Manifest.permission.CAMERA
+            }, REQUEST_CAMERA_CODE);
+        }
+        else {
+            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
+        }
     }
 
     //Hàm cập nhật task
@@ -290,5 +325,49 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                    String description = getTextFromImage(bitmap);
+                    AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList, description);
+                    addTaskDialog.show();
+                    addTaskDialog.setOnDismissListener(dialogInterface -> {
+                        recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
+                                null, recyclerView.getLayoutManager().getItemCount());
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private String getTextFromImage(Bitmap bitmap) {
+        String result = "";
+        TextRecognizer recognizer = new TextRecognizer.Builder(this).build();
+        if (!recognizer.isOperational()) {
+            Toast.makeText(HomeActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+            SparseArray<TextBlock> textBlockSparseArray = recognizer.detect(frame);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < textBlockSparseArray.size(); i++) {
+                TextBlock textBlock = textBlockSparseArray.valueAt(i);
+                stringBuilder.append(textBlock.getValue());
+                stringBuilder.append("\n");
+            }
+
+            result = stringBuilder.toString();
+        }
+        return result;
     }
 }
