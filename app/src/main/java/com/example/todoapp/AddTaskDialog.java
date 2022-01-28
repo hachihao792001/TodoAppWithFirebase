@@ -7,7 +7,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawImageDialogListener {
+public class AddTaskDialog extends AlertDialog {
 
     Context context;
     DatabaseReference reference;
@@ -51,6 +50,7 @@ public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawIm
     EditText descriptionEt;
     TextView dateTv;
 
+    Button clearImage;
     ImageView taskImage;
 
     protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description) {
@@ -75,7 +75,10 @@ public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawIm
         dateTv = dialogView.findViewById(R.id.date);
         Button pickDate = dialogView.findViewById(R.id.pickDateBtn);
 
+        Button chooseImageFromFile = dialogView.findViewById(R.id.chooseImageFromFile);
+        Button takeImage = dialogView.findViewById(R.id.takeImage);
         Button drawImage = dialogView.findViewById(R.id.drawImage);
+        clearImage = dialogView.findViewById(R.id.removeImage);
         taskImage = dialogView.findViewById(R.id.taskImage);
 
         Button saveButton = dialogView.findViewById(R.id.saveBtn);
@@ -102,6 +105,11 @@ public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawIm
 
         // bấm vẽ hình để đi tới activity vẽ hình
         drawImage.setOnClickListener(v -> drawImageOnClick());
+        // bỏ hình
+        clearImage.setOnClickListener(v -> {
+            taskImage.setImageBitmap(null);
+            clearImage.setEnabled(false);
+        });
 
         //Nhấn nút Cancel để tắt dialog tạo task
         cancel.setOnClickListener(v -> dismiss());
@@ -137,7 +145,10 @@ public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawIm
         ft.addToBackStack(null);
 
         DrawImageDialog drawImageDialog = new DrawImageDialog();
-        drawImageDialog.setDrawImageDialogListener(this);
+        drawImageDialog.setOnFinishDrawingListener(bitmap -> {
+            taskImage.setImageBitmap(bitmap);
+            clearImage.setEnabled(true);
+        });
         drawImageDialog.show(ft, "dialog");
     }
 
@@ -277,10 +288,5 @@ public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawIm
                 break;
             }
         }
-    }
-
-    @Override
-    public void onFinishDrawingImage(Bitmap bitmap) {
-        taskImage.setImageBitmap(bitmap);
     }
 }

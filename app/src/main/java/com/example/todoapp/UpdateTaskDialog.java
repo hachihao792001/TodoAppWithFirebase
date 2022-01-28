@@ -1,22 +1,14 @@
 package com.example.todoapp;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -39,6 +31,9 @@ public class UpdateTaskDialog extends AlertDialog {
     TextView mDate;
     Spinner taskTypeDropdown;
 
+    Button clearImage;
+    ImageView taskImage;
+
     protected UpdateTaskDialog(Context context, String onlineUserID, TaskModel taskToUpdate, ArrayList<TaskType> taskTypeList) {
         super(context);
         this.context = context;
@@ -59,6 +54,12 @@ public class UpdateTaskDialog extends AlertDialog {
         etDescription = dialogView.findViewById(R.id.mEditTextDescription);
         mDate = dialogView.findViewById(R.id.mEditDate);
         Button updateDateBtn = dialogView.findViewById(R.id.pickUpdateDateBtn);
+
+        Button chooseImageFromFile = dialogView.findViewById(R.id.chooseImageFromFile);
+        Button takeImage = dialogView.findViewById(R.id.takeImage);
+        Button drawImage = dialogView.findViewById(R.id.drawImage);
+        clearImage = dialogView.findViewById(R.id.removeImage);
+        taskImage = dialogView.findViewById(R.id.taskImage);
 
         etTask.setText(taskToUpdate.getTask());
         etTask.setSelection(taskToUpdate.getTask().length());
@@ -85,6 +86,14 @@ public class UpdateTaskDialog extends AlertDialog {
         Button delButton = dialogView.findViewById(R.id.btnDelete);
         Button updateButton = dialogView.findViewById(R.id.btnUpdate);
         taskTypeDropdown = dialogView.findViewById(R.id.taskTypeDropdown);
+
+        // bấm vẽ hình để đi tới activity vẽ hình
+        drawImage.setOnClickListener(v -> drawImageOnClick());
+        // bỏ hình
+        clearImage.setOnClickListener(v -> {
+            taskImage.setImageBitmap(null);
+            clearImage.setEnabled(false);
+        });
 
         //Cập nhật lại các thông tin người dùng nhập
         updateButton.setOnClickListener(view1 -> {
@@ -126,6 +135,24 @@ public class UpdateTaskDialog extends AlertDialog {
         });
 
         super.onCreate(savedInstanceState);
+    }
+
+    private void drawImageOnClick() {
+
+        FragmentManager fm = ((AppCompatActivity) context).getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        DrawImageDialog drawImageDialog = new DrawImageDialog();
+        drawImageDialog.setOnFinishDrawingListener(bitmap -> {
+            taskImage.setImageBitmap(bitmap);
+            clearImage.setEnabled(true);
+        });
+        drawImageDialog.show(ft, "dialog");
     }
 
     void updateButtonOnClick() {

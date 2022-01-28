@@ -18,13 +18,13 @@ import android.app.DialogFragment;
 public class DrawImageDialog extends DialogFragment {
 
     //Trả kết quả từ DialogFragment ra bên ngoài: https://stackoverflow.com/a/14808425/13440955
-    public interface DrawImageDialogListener {
-        void onFinishDrawingImage(Bitmap bitmap);
+    public interface FinishDrawingListener {
+        void onFinishDrawing(Bitmap bitmap);
     }
 
-    private DrawImageDialogListener listener;
+    private FinishDrawingListener listener;
 
-    public void setDrawImageDialogListener(DrawImageDialogListener listener) {
+    public void setOnFinishDrawingListener(FinishDrawingListener listener) {
         this.listener = listener;
     }
 
@@ -75,13 +75,10 @@ public class DrawImageDialog extends DialogFragment {
             drawArea.clear();
         });
 
-        cancel.setOnClickListener(
-                v -> {
-                    dismiss();
-                });
+        cancel.setOnClickListener(v -> dismiss());
         ok.setOnClickListener(
                 v -> {
-                    listener.onFinishDrawingImage(drawArea.mBitmap);
+                    listener.onFinishDrawing(drawArea.getmBitmap());
                     dismiss();
                 });
 
