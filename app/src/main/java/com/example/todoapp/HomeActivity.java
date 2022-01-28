@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-    int idTheme=3;
+//    int idTheme=3;
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
@@ -86,32 +86,30 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference themeRefer = FirebaseDatabase.getInstance().getReference().child("theme");
-//        themeRefer.child(uid).addValueEventListener(
-//                new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        idTheme=dataSnapshot.getValue(Integer.class);
-//                        //idTheme=1;
-//                    }
-//                    @Override
-//                    public void onCancelled (DatabaseError databaseError){
-//                    }
-//                }
-//        );
+//        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        DatabaseReference themeRefer = FirebaseDatabase.getInstance().getReference().child("theme").child(uid);
+////        themeRefer.child(uid).addValueEventListener(
+////                new ValueEventListener() {
+////                    @Override
+////                    public void onDataChange(DataSnapshot dataSnapshot) {
+////                        idTheme=dataSnapshot.getValue(Integer.class);
+////                        //idTheme=1;
+////                    }
+////                    @Override
+////                    public void onCancelled (DatabaseError databaseError){
+////                    }
+////                }
+////        );
+//
+//        themeRefer.get().addOnCompleteListener(task -> {
+//            if (!task.isSuccessful()) { }
+//            else
+//            {
+//                idTheme = (task.getResult().getValue(Integer.class));
+//            }
+//        });
 
-        themeRefer.child(uid).get().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("firebase", "Error getting theme", task.getException());
-            }
-            else
-            {
-                idTheme = task.getResult().getValue(Integer.class);
-            }
-        });
-
-        Constant.theme=Constant.convert(idTheme);
+//        Constant.theme=Constant.convert(idTheme);
         setTheme(Constant.theme);
         setContentView(R.layout.activity_home);
 

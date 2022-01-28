@@ -107,8 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                                 // Thực hiện: xét mã theme=0 mặc định cho tất cả các user
                                 // ý tưởng: khi login kiểm tra user này có chọn theme chưa, nếu chưa thì set theme mặc định = 0
                                  // nếu user này đã chọn theme rồi thì gán Constant.theme = giá trị tại theme của user đó để thiết lập theme trong ứng dụng
-                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("theme");
                                 final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("theme");
                                 databaseReference.addListenerForSingleValueEvent(
                                         new ValueEventListener() {
                                             @Override
