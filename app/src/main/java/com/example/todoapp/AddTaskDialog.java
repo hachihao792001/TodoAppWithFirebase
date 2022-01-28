@@ -2,13 +2,19 @@ package com.example.todoapp;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -17,7 +23,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddTaskDialog extends AlertDialog {
+public class AddTaskDialog extends AlertDialog implements DrawImageDialog.DrawImageDialogListener {
 
     Context context;
     DatabaseReference reference;
@@ -45,6 +51,8 @@ public class AddTaskDialog extends AlertDialog {
     EditText descriptionEt;
     TextView dateTv;
 
+    ImageView taskImage;
+
     protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description) {
         super(context);
         this.context = context;
@@ -66,7 +74,10 @@ public class AddTaskDialog extends AlertDialog {
         descriptionEt = dialogView.findViewById(R.id.description);
         dateTv = dialogView.findViewById(R.id.date);
         Button pickDate = dialogView.findViewById(R.id.pickDateBtn);
+
         Button drawImage = dialogView.findViewById(R.id.drawImage);
+        taskImage = dialogView.findViewById(R.id.taskImage);
+
         Button saveButton = dialogView.findViewById(R.id.saveBtn);
         Button cancel = dialogView.findViewById(R.id.cancelBtn);
         taskTypeDropdown = dialogView.findViewById(R.id.taskTypeDropdown);
@@ -114,9 +125,20 @@ public class AddTaskDialog extends AlertDialog {
         super.onCreate(savedInstanceState);
     }
 
+
     void drawImageOnClick() {
-        DrawImageDialog drawImageDialog = new DrawImageDialog(context);
-        drawImageDialog.show();
+
+        FragmentManager fm = ((AppCompatActivity) context).getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment prev = fm.findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        DrawImageDialog drawImageDialog = new DrawImageDialog();
+        drawImageDialog.setDrawImageDialogListener(this);
+        drawImageDialog.show(ft, "dialog");
     }
 
     void saveButtonOnClick() {
@@ -255,5 +277,10 @@ public class AddTaskDialog extends AlertDialog {
                 break;
             }
         }
+    }
+
+    @Override
+    public void onFinishDrawingImage(Bitmap bitmap) {
+        taskImage.setImageBitmap(bitmap);
     }
 }

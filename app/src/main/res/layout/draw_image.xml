@@ -21,37 +21,37 @@
                 <Button
                     android:id="@+id/redButton"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_marginStart="4dp"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:layout_gravity="start"
+                    android:layout_marginStart="4dp"
                     android:backgroundTint="@color/red" />
 
                 <Button
                     android:id="@+id/orangeButton"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/orange" />
 
                 <Button
                     android:id="@+id/yellowButton"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/yellow" />
 
                 <Button
                     android:id="@+id/greenButton"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/green" />
 
                 <Button
                     android:id="@+id/blueButton"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="32dp"
+                    android:layout_width="35dp"
                     android:layout_height="40dp"
                     android:backgroundTint="@color/blue" />
             </LinearLayout>
@@ -75,33 +75,35 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="4dp"
-                    android:text="Clear"/>
+                    android:text="Clear" />
             </LinearLayout>
         </LinearLayout>
 
         <com.example.todoapp.DrawArea
             android:id="@+id/drawArea"
             android:layout_width="match_parent"
+            android:layout_height="1000px"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_height="500dp" />
+            android:layout_marginEnd="4dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right">
+
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"/>
+                android:text="Cancel" />
+
             <Button
                 android:id="@+id/ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="OK"/>
+                android:text="OK" />
         </LinearLayout>
     </LinearLayout>
 

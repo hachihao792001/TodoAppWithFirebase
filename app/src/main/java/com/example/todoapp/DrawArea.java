@@ -28,7 +28,7 @@ public class DrawArea extends View {
     private int currentColor;
     private final ArrayList<FingerPath> paths = new ArrayList<>();
 
-    private Bitmap mBitmap;
+    public Bitmap mBitmap;
     private Canvas mCanvas;
     private final Paint mBitmapPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -53,7 +53,7 @@ public class DrawArea extends View {
     }
 
     public void init(DisplayMetrics metrics) {
-        int height = metrics.heightPixels;
+        int height = 1000;
         int width = metrics.widthPixels;
 
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
