@@ -69,13 +69,11 @@ public class UpdateTaskDialog extends AlertDialog {
         mDate.setText(taskToUpdate.getDate());
         DateFormat fmtDate = DateFormat.getDateInstance();
         Calendar myCalendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                mDate.setText(fmtDate.format(myCalendar.getTime()));
-            }
+        DatePickerDialog.OnDateSetListener d = (view, year, monthOfYear, dayOfMonth) -> {
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            mDate.setText(fmtDate.format(myCalendar.getTime()));
         };
         updateDateBtn.setOnClickListener(v ->
                 new DatePickerDialog(context, d,
