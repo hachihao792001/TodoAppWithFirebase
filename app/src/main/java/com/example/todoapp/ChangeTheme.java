@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ChangeTheme  extends AppCompatActivity implements View.OnClickListener {
     public final static int THEME_RED = 0;
     public final static int THEME_ORANGE = 1;
@@ -21,6 +26,8 @@ public class ChangeTheme  extends AppCompatActivity implements View.OnClickListe
     public final static int THEME_PURPLE = 5;
     public final static int THEME_PINK = 6;
     public final static int THEME_GRAY = 7;
+    public int theme=0;
+    int chosen=0;
     Button back;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,41 +60,45 @@ public class ChangeTheme  extends AppCompatActivity implements View.OnClickListe
         // TODO Auto-generated method stub
         switch (v.getId())
         {
-
             case R.id.red:
                 Constant.theme=R.style.AppTheme_Red;
-                Utils.changeToTheme(ChangeTheme.this, THEME_RED);
+                chosen= THEME_RED;
                 break;
             case R.id.orange:
                 Constant.theme=R.style.AppTheme_Orange;
-                Utils.changeToTheme(ChangeTheme.this, THEME_ORANGE);
+                chosen= THEME_ORANGE;
                 break;
             case R.id.yellow:
                 Constant.theme=R.style.AppTheme_Yellow;
-                Utils.changeToTheme(ChangeTheme.this, THEME_YELLOW);
+                chosen= THEME_YELLOW;
                 break;
             case R.id.green:
                 Constant.theme=R.style.AppTheme_Green;
-                Utils.changeToTheme(ChangeTheme.this, THEME_GREEN);
+                chosen=  THEME_GREEN;
                 break;
             case R.id.blue:
                 Constant.theme=R.style.AppTheme_Blue;
-                Utils.changeToTheme(ChangeTheme.this, THEME_BLUE);
+                chosen= THEME_BLUE;
                 break;
             case R.id.purple:
                 Constant.theme=R.style.AppTheme_Purple;
-                Utils.changeToTheme(ChangeTheme.this, THEME_PURPLE);
+                chosen=  THEME_PURPLE;
                 break;
             case R.id.pink:
                 Constant.theme=R.style.AppTheme_Pink;
-                Utils.changeToTheme(ChangeTheme.this, THEME_PINK);
+                chosen= THEME_PINK;
                 break;
             case R.id.gray:
                 Constant.theme=R.style.AppTheme_Gray;
-                Utils.changeToTheme(ChangeTheme.this, THEME_GRAY);
+                chosen= THEME_GRAY;
                 break;
         }
-        setTheme(Constant.theme);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("theme");
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final String uid = currentFirebaseUser.getUid();
+        databaseReference.child(uid).setValue(chosen);
+        Utils.changeToTheme(ChangeTheme.this, chosen);
+       // setTheme(Constant.theme);
         recreateActivity();
     }
 

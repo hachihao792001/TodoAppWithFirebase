@@ -81,7 +81,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
 
                 else {
-                    loader.setMessage("Registration in progress...");
+       //             loader.setMessage("Registration in progress...");
+
                     loader.setCanceledOnTouchOutside(false);
                     loader.show();
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

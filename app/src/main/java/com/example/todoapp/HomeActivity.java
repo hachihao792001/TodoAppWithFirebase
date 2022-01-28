@@ -43,8 +43,13 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.view.Change;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -73,13 +78,40 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-
+    int idTheme=3;
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference themeRefer = FirebaseDatabase.getInstance().getReference().child("theme");
+//        themeRefer.child(uid).addValueEventListener(
+//                new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        idTheme=dataSnapshot.getValue(Integer.class);
+//                        //idTheme=1;
+//                    }
+//                    @Override
+//                    public void onCancelled (DatabaseError databaseError){
+//                    }
+//                }
+//        );
+
+        themeRefer.child(uid).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting theme", task.getException());
+            }
+            else
+            {
+                idTheme = task.getResult().getValue(Integer.class);
+            }
+        });
+
+        Constant.theme=Constant.convert(idTheme);
         setTheme(Constant.theme);
         setContentView(R.layout.activity_home);
 
@@ -101,6 +133,9 @@ public class HomeActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         onlineUserID = mUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
+
+
+
 
         //Setup floating Button để người dùng tạo task mới
         floatingActionButton = findViewById(R.id.fab);
