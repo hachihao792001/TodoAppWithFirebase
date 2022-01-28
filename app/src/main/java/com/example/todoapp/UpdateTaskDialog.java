@@ -2,8 +2,12 @@ package com.example.todoapp;
 
 import android.app.*;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -12,14 +16,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UpdateTaskDialog extends AlertDialog {
     Context context;
+    StorageReference storageRef;
     DatabaseReference reference;
+    String onlineUserID;
+
     ProgressDialog loader;
     ArrayList<TaskType> taskTypeList;
 
@@ -39,6 +50,8 @@ public class UpdateTaskDialog extends AlertDialog {
         this.context = context;
         this.taskToUpdate = taskToUpdate;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
+        this.storageRef = FirebaseStorage.getInstance().getReference();
+        this.onlineUserID = onlineUserID;
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypeList;
     }
@@ -93,6 +106,16 @@ public class UpdateTaskDialog extends AlertDialog {
         clearImage.setOnClickListener(v -> {
             taskImage.setImageBitmap(null);
             clearImage.setEnabled(false);
+        });
+
+        storageRef.child(onlineUserID + "/" + taskToUpdate.getId() + ".png").getBytes(100000).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting image or the task doesn't have an image", task.getException());
+            } else {
+                byte[] byteArr = task.getResult();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+                taskImage.setImageBitmap(bitmap);
+            }
         });
 
         //Cập nhật lại các thông tin người dùng nhập
@@ -172,6 +195,18 @@ public class UpdateTaskDialog extends AlertDialog {
         loader.setMessage("Updating your task...");
         loader.setCanceledOnTouchOutside(false);
         loader.show();
+
+        if (taskImage.getDrawable() != null) {
+
+            //https://stackoverflow.com/a/4989543/13440955
+            Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            bmp.recycle();
+
+            storageRef.child(onlineUserID + "/" + taskToUpdate.getId() + ".png").putBytes(byteArray);
+        }
 
         TaskModel model = null;
 

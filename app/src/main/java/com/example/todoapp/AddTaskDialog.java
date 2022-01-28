@@ -7,6 +7,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +31,9 @@ public class AddTaskDialog extends AlertDialog {
 
     Context context;
     DatabaseReference reference;
+    StorageReference storageRef;
+    String onlineUserID;
+
     ProgressDialog loader;
     ArrayList<TaskType> taskTypeList;
     String description;
@@ -57,6 +65,8 @@ public class AddTaskDialog extends AlertDialog {
         super(context);
         this.context = context;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
+        this.storageRef = FirebaseStorage.getInstance().getReference();
+        this.onlineUserID = onlineUserID;
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypes;
         this.description = description;
@@ -171,6 +181,18 @@ public class AddTaskDialog extends AlertDialog {
         loader.setMessage("Adding your task...");
         loader.setCanceledOnTouchOutside(false);
         loader.show();
+
+        if (taskImage.getDrawable() != null) {
+
+            //https://stackoverflow.com/a/4989543/13440955
+            Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            bmp.recycle();
+
+            storageRef.child(onlineUserID + "/" + newTaskID + ".png").putBytes(byteArray);
+        }
 
         //Tùy vào từng loại task người dùng chọn tạo ra các model tương ứng
         TaskModel model = null;
