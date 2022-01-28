@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 public class ChangeTheme  extends AppCompatActivity implements View.OnClickListener {
-    Button red,orange, yellow, green,blue,purple,pink,gray;
     public final static int THEME_RED = 0;
     public final static int THEME_ORANGE = 1;
     public final static int THEME_YELLOW = 2;
@@ -26,6 +25,7 @@ public class ChangeTheme  extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(Constant.theme);
         Utils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_change_theme);
         findViewById(R.id.red).setOnClickListener(this);

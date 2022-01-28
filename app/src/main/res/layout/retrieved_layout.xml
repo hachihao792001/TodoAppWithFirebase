@@ -47,6 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_weight="0"
+                android:backgroundTint="@color/black"
                 android:background="@android:color/transparent"
                 android:drawableRight="@drawable/edit_icon" />
 

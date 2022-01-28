@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
     android:orientation="vertical"
-    android:background="?colorPrimaryVariant">
+    android:background="@drawable/background_design">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/homeToolbar"

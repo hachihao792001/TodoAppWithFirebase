@@ -326,9 +326,11 @@ public class HomeActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
+                break;
             case R.id.changeTheme:
                 Intent themeIntent=new Intent(HomeActivity.this, ChangeTheme.class);
                 startActivity(themeIntent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
