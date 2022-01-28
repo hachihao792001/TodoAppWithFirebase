@@ -8,15 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -74,6 +66,7 @@ public class AddTaskDialog extends AlertDialog {
         descriptionEt = dialogView.findViewById(R.id.description);
         dateTv = dialogView.findViewById(R.id.date);
         Button pickDate = dialogView.findViewById(R.id.pickDateBtn);
+        Button drawImage = dialogView.findViewById(R.id.drawImage);
         Button saveButton = dialogView.findViewById(R.id.saveBtn);
         Button cancel = dialogView.findViewById(R.id.cancelBtn);
         taskTypeDropdown = dialogView.findViewById(R.id.taskTypeDropdown);
@@ -96,6 +89,9 @@ public class AddTaskDialog extends AlertDialog {
         // kết quả chọn ngày được cập nhật ở dateTextview
         dateTv.setText(fmtDate.format(myCalendar.getTime()));
 
+        // bấm vẽ hình để đi tới activity vẽ hình
+        drawImage.setOnClickListener(v -> drawImageOnClick());
+
         //Nhấn nút Cancel để tắt dialog tạo task
         cancel.setOnClickListener(v -> dismiss());
 
@@ -116,6 +112,11 @@ public class AddTaskDialog extends AlertDialog {
         });
 
         super.onCreate(savedInstanceState);
+    }
+
+    void drawImageOnClick() {
+        DrawImageDialog drawImageDialog = new DrawImageDialog(context);
+        drawImageDialog.show();
     }
 
     void saveButtonOnClick() {

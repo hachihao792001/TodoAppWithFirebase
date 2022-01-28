@@ -33,8 +33,11 @@
     <color name="yellow_1">#ffd54f</color>
     <color name="yellow_2">#E8E63E</color>
 
-
-
+    <color name="red">#FF0000</color>
+    <color name="orange">#FFA500</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
 
 
 </resources>
