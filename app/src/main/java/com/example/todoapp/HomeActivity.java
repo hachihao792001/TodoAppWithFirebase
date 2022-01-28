@@ -14,14 +14,17 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -78,6 +81,11 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
+    SharedPreferences sharedPreferences;
+    Constant constant;
+    int appTheme;
+    int themeColor;
+    int appColor;
 //    int idTheme=3;
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
@@ -86,31 +94,16 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference themeRefer = FirebaseDatabase.getInstance().getReference().child("theme").child(uid);
-////        themeRefer.child(uid).addValueEventListener(
-////                new ValueEventListener() {
-////                    @Override
-////                    public void onDataChange(DataSnapshot dataSnapshot) {
-////                        idTheme=dataSnapshot.getValue(Integer.class);
-////                        //idTheme=1;
-////                    }
-////                    @Override
-////                    public void onCancelled (DatabaseError databaseError){
-////                    }
-////                }
-////        );
-//
-//        themeRefer.get().addOnCompleteListener(task -> {
-//            if (!task.isSuccessful()) { }
-//            else
-//            {
-//                idTheme = (task.getResult().getValue(Integer.class));
-//            }
-//        });
+            // lấy theme user đã chọn trong THEME.txt để set up
+        SharedPreferences sharedPreferences=getSharedPreferences("THEME.txt", Context.MODE_PRIVATE);
+        int idtheme=sharedPreferences.getInt("theme",-1);
+        Constant.theme=Constant.convert(idtheme);
+        if (idtheme==-1)
+            setTheme(Constant.convert(5));
+        else
+            setTheme(Constant.theme);
 
-//        Constant.theme=Constant.convert(idTheme);
-        setTheme(Constant.theme);
+
         setContentView(R.layout.activity_home);
 
         //Setup toolbar

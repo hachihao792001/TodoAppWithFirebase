@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,13 +27,22 @@ public class ChangeTheme  extends AppCompatActivity implements View.OnClickListe
     public final static int THEME_PURPLE = 5;
     public final static int THEME_PINK = 6;
     public final static int THEME_GRAY = 7;
-    public int theme=0;
-    int chosen=0;
+    int chosen=5;
+
     Button back;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(Constant.theme);
+
+        // lấy theme user đã chọn trong THEME.txt để set up
+        SharedPreferences sharedPreferences=getSharedPreferences("THEME.txt", Context.MODE_PRIVATE);
+        int idtheme=sharedPreferences.getInt("theme",-1);
+        Constant.theme=Constant.convert(idtheme);
+        if (idtheme==-1)
+            setTheme(Constant.convert(5));
+        else
+            setTheme(Constant.theme);
+
         Utils.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_change_theme);
         findViewById(R.id.red).setOnClickListener(this);
@@ -93,10 +103,12 @@ public class ChangeTheme  extends AppCompatActivity implements View.OnClickListe
                 chosen= THEME_GRAY;
                 break;
         }
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("theme");
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        final String uid = currentFirebaseUser.getUid();
-        databaseReference.child(uid).setValue(chosen);
+        SharedPreferences sharedPreferences= getSharedPreferences("THEME.txt",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putInt("theme",chosen);
+        editor.commit();
+
+
         Utils.changeToTheme(ChangeTheme.this, chosen);
        // setTheme(Constant.theme);
         recreateActivity();

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.WindowManager;
 
 public class Utils {
-    private static int sTheme;
+    private static int sTheme=R.style.AppTheme_Blue;
 
     public final static int THEME_RED = 0;
     public final static int THEME_ORANGE = 1;
@@ -26,7 +26,6 @@ public class Utils {
 
     public static void onActivityCreateSetTheme(Activity activity) {
         switch (sTheme) {
-
             case THEME_RED:
                 activity.setTheme(R.style.AppTheme_Red);
                 break;
