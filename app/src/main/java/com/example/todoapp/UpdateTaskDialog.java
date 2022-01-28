@@ -108,14 +108,9 @@ public class UpdateTaskDialog extends AlertDialog {
             clearImage.setEnabled(false);
         });
 
-        storageRef.child(onlineUserID + "/" + taskToUpdate.getId() + ".png").getBytes(100000).addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("firebase", "Error getting image or the task doesn't have an image", task.getException());
-            } else {
-                byte[] byteArr = task.getResult();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+        Utils.downloadImageFromStorage(onlineUserID, taskToUpdate.getId(), bitmap -> {
+            if (bitmap != null)
                 taskImage.setImageBitmap(bitmap);
-            }
         });
 
         //Cập nhật lại các thông tin người dùng nhập
@@ -198,14 +193,8 @@ public class UpdateTaskDialog extends AlertDialog {
 
         if (taskImage.getDrawable() != null) {
 
-            //https://stackoverflow.com/a/4989543/13440955
             Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            bmp.recycle();
-
-            storageRef.child(onlineUserID + "/" + taskToUpdate.getId() + ".png").putBytes(byteArray);
+            Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp);
         }
 
         TaskModel model = null;

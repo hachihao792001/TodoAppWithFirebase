@@ -183,15 +183,8 @@ public class AddTaskDialog extends AlertDialog {
         loader.show();
 
         if (taskImage.getDrawable() != null) {
-
-            //https://stackoverflow.com/a/4989543/13440955
             Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            bmp.recycle();
-
-            storageRef.child(onlineUserID + "/" + newTaskID + ".png").putBytes(byteArray);
+            Utils.uploadImageToStorage(onlineUserID, newTaskID, bmp);
         }
 
         //Tùy vào từng loại task người dùng chọn tạo ra các model tương ứng
