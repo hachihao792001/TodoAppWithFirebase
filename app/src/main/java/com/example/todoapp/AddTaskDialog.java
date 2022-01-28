@@ -13,15 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -70,7 +66,7 @@ public class AddTaskDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        dialogView = inflater.inflate(R.layout.input_file, null);
+        dialogView = inflater.inflate(R.layout.add_task, null);
         setView(dialogView);
         setCancelable(false);
 

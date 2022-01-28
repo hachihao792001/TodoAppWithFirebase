@@ -18,10 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -56,7 +52,7 @@ public class UpdateTaskDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        dialogView = inflater.inflate(R.layout.update_data, null);
+        dialogView = inflater.inflate(R.layout.update_task, null);
         setView(dialogView);
 
         etTask = dialogView.findViewById(R.id.mEditTextTask);
