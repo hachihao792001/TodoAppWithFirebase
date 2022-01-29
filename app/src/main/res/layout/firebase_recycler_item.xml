@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/taskImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,8 +52,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_weight="0"
-                android:backgroundTint="@color/black"
                 android:background="@android:color/transparent"
+                android:backgroundTint="@color/black"
                 android:drawableRight="@drawable/edit_icon" />
 
         </LinearLayout>
@@ -93,11 +93,10 @@
 
             <CheckBox
                 android:id="@+id/doneCheckBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:background="?android:attr/listChoiceIndicatorMultiple"
+                android:button="@null"
                 android:padding="10dp"
                 android:text="@null" />
 
