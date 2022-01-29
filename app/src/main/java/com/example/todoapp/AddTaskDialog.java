@@ -39,7 +39,7 @@ public class AddTaskDialog extends AlertDialog {
 
     View dialogView;
     Spinner taskTypeDropdown;
-
+    Bitmap bmChooseFromFile=null;
     //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -69,6 +69,16 @@ public class AddTaskDialog extends AlertDialog {
         this.taskTypeList = taskTypes;
         this.description = description;
     }
+    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description,Bitmap bitmap) {
+        super(context);
+        this.context = context;
+        this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
+        this.onlineUserID = onlineUserID;
+        this.loader = new ProgressDialog(context);
+        this.taskTypeList = taskTypes;
+        this.description = description;
+        this.bmChooseFromFile=(bitmap);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +98,10 @@ public class AddTaskDialog extends AlertDialog {
         Button drawImage = dialogView.findViewById(R.id.drawImage);
         clearImage = dialogView.findViewById(R.id.removeImage);
         taskImage = dialogView.findViewById(R.id.taskImage);
+        if (this.bmChooseFromFile==null)
+            taskImage.setImageBitmap(null);
+        else
+            taskImage.setImageBitmap(bmChooseFromFile);
 
         Button saveButton = dialogView.findViewById(R.id.saveBtn);
         Button cancel = dialogView.findViewById(R.id.cancelBtn);
@@ -118,7 +132,6 @@ public class AddTaskDialog extends AlertDialog {
             taskImage.setImageBitmap(null);
             clearImage.setEnabled(false);
         });
-        taskImage.setImageBitmap(null);
 
         //Nhấn nút Cancel để tắt dialog tạo task
         cancel.setOnClickListener(v -> dismiss());

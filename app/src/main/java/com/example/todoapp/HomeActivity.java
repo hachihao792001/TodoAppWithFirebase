@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
+    private Boolean isAddTaskWithImg=false;
+    private Boolean isAddTaskWithOCR=false;
 
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
@@ -142,8 +144,7 @@ public class HomeActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void addTaskWithImage() {
-    }
+
 
     ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
         @Override
@@ -178,6 +179,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //Hàm tạo thêm 1 task từ image
     private void addTaskFromImage() {
+        isAddTaskWithOCR=true;
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
                     Manifest.permission.CAMERA
@@ -186,7 +188,17 @@ public class HomeActivity extends AppCompatActivity {
             CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
         }
     }
-
+    // Hàm tạo task với 1 image
+    private void addTaskWithImage() {
+        isAddTaskWithImg=true;
+        if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
+                    Manifest.permission.CAMERA
+            }, REQUEST_CAMERA_CODE);
+        } else {
+            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
+        }
+    }
     //Hàm cập nhật task
     private void updateTask(TaskModel taskToUpdate) {
         UpdateTaskDialog updateTaskDialog = new UpdateTaskDialog(this, onlineUserID, taskToUpdate, taskTypeList);
@@ -297,11 +309,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && isAddTaskWithOCR) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 try {
+                    isAddTaskWithOCR=false;
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                     String description = getTextFromImage(bitmap);
                     AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList, description);
@@ -315,6 +331,25 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE & isAddTaskWithImg) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    isAddTaskWithImg=false;
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                    AddTaskDialog addTaskDialog =  new AddTaskDialog(this, onlineUserID, taskTypeList, "",bitmap);
+                    addTaskDialog.show();
+                    addTaskDialog.setOnDismissListener(dialogInterface -> {
+                        recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
+                                null, recyclerView.getLayoutManager().getItemCount());
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     private String getTextFromImage(Bitmap bitmap) {
