@@ -30,34 +30,39 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end">
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="15dp"
+            android:gravity="center">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_add_task_with_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:fabCustomSize="40dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/image_icon"
+                app:elevation="0dp"
                 android:backgroundTint="#fff"/>
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_add_task_from_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:fabCustomSize="40dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/scan_icon"
+                app:elevation="0dp"
                 android:backgroundTint="#fff"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:fabCustomSize="50dp"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/ic_add"
+                app:elevation="0dp"
                 android:backgroundTint="#fff"/>
         </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
