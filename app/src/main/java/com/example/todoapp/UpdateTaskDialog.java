@@ -108,18 +108,24 @@ public class UpdateTaskDialog extends AlertDialog {
             clearImage.setEnabled(false);
         });
 
+        // lấy hình từ storage, nếu có thì bỏ vô taskImage
         Utils.downloadImageFromStorage(onlineUserID, taskToUpdate.getId(), bitmap -> {
-            if (bitmap != null)
+            if (bitmap != null) {
                 taskImage.setImageBitmap(bitmap);
+                clearImage.setEnabled(true);
+            } else {
+                clearImage.setEnabled(false);
+            }
         });
 
         //Cập nhật lại các thông tin người dùng nhập
-        updateButton.setOnClickListener(view1 -> {
-            updateButtonOnClick();
-        });
+        updateButton.setOnClickListener(view1 -> updateButtonOnClick());
 
         //xóa task -> xóa data trong firebase
         delButton.setOnClickListener(view12 -> {
+
+            Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
+
             reference.child(taskToUpdate.getId()).removeValue().addOnCompleteListener(removeTask -> {
                 if (removeTask.isSuccessful()) {
                     Toast.makeText(context, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();

@@ -14,6 +14,11 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/taskImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
