@@ -166,6 +166,13 @@ public class HomeActivity extends AppCompatActivity {
         addTaskDialog.setOnDismissListener(dialogInterface -> {
             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
                     null, recyclerView.getLayoutManager().getItemCount());
+
+            // hình của task không nằm trong realtime database nên update xong nó ko tự động cập nhật, phải reload activity
+            // dùng adapter.notifyDataSetChanged(); không được, không hiểu tại sao :(
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
         });
     }
 
@@ -185,7 +192,12 @@ public class HomeActivity extends AppCompatActivity {
         UpdateTaskDialog updateTaskDialog = new UpdateTaskDialog(this, onlineUserID, taskToUpdate, taskTypeList);
         updateTaskDialog.show();
         updateTaskDialog.setOnDismissListener(dialogInterface -> {
-            adapter.notifyDataSetChanged();
+            // hình của task không nằm trong realtime database nên update xong nó ko tự động cập nhật, phải reload activity
+            // dùng adapter.notifyDataSetChanged(); không được, không hiểu tại sao :(
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(getIntent());
+            overridePendingTransition(0, 0);
         });
     }
 
@@ -206,10 +218,7 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setDescription(model.getDescription());
                 holder.setTaskType(model.getTaskType());
                 holder.setIsDone(model.isDone());
-
-                // lấy hình từ storage, để vô taskImage nếu có
-                ImageView taskImage = holder.mView.findViewById(R.id.taskImage);
-                Utils.downloadImageFromStorage(onlineUserID, model.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
+                Utils.downloadImageFromStorage(onlineUserID, model.getId(), bitmap1 -> holder.setImage(bitmap1));
 
                 //bấm vào background của task thì chuyển tới màn hình detail của task
                 holder.mView.setOnClickListener(v -> {

@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,8 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
         GoogleMap.OnCircleClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
     private TravellingTask travellingTask;
     private GoogleMap mMap;
-    private String task, description, date, place;
+    private String place;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +48,14 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
         travellingTask = (TravellingTask) intent.getSerializableExtra("task");
-        task = travellingTask.getTask();
-        description = travellingTask.getDescription();
-        date = travellingTask.getDate();
+        String userId = intent.getStringExtra("userId");
+
+        String task = travellingTask.getTask();
+        String description = travellingTask.getDescription();
+        String date = travellingTask.getDate();
         place = travellingTask.getPlace();
 
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView tvTask = findViewById(R.id.task);
         TextView tvDescription = findViewById(R.id.description);
         TextView tvDate = findViewById(R.id.date);
@@ -65,6 +70,7 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
             }
         });
 
+        Utils.downloadImageFromStorage(userId, travellingTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         tvTask.setText(task);
         tvDescription.setText(description);
         tvDate.setText(date);
@@ -140,8 +146,7 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
-        }
-        else {
+        } else {
             Toast.makeText(TravellingTaskDetail.this, "Travelling location is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -160,7 +165,7 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
             }
 
             Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
 
         } catch (IOException ex) {
             ex.printStackTrace();

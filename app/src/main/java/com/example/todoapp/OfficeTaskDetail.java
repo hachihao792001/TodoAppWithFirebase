@@ -15,13 +15,14 @@ import android.os.FileUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class OfficeTaskDetail extends AppCompatActivity {
-        OfficeTask thisTask;
+    OfficeTask thisTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +31,25 @@ public class OfficeTaskDetail extends AppCompatActivity {
         setContentView(R.layout.office_task_detail);
         Intent intent = getIntent();
         thisTask = (OfficeTask) intent.getSerializableExtra("task");
+        String userId = intent.getStringExtra("userId");
+
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView taskTextView = findViewById(R.id.task);
         TextView descTextView = findViewById(R.id.description);
         TextView dateTextView = findViewById(R.id.date);
+
+        Utils.downloadImageFromStorage(userId, thisTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         taskTextView.setText(thisTask.getTask());
         descTextView.setText(thisTask.getDescription());
         dateTextView.setText(thisTask.getDate());
 
     }
 
-    public void chooseFile(View view){
-        String sPath= Environment.getExternalStorageDirectory()+"/";
-        Uri uri=Uri.parse(sPath);
+    public void chooseFile(View view) {
+        String sPath = Environment.getExternalStorageDirectory() + "/";
+        Uri uri = Uri.parse(sPath);
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(uri,"*/*");
+        intent.setDataAndType(uri, "*/*");
         startActivity(intent);
     }
 }

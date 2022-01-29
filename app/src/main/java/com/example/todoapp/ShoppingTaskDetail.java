@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
         GoogleMap.OnCircleClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener {
     private ShoppingTask shoppingTask;
     private GoogleMap mMap;
-    private String task, description, date, productUrl, shoppingLocation;
+    private String shoppingLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +46,15 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
 
         Intent intent = getIntent();
         shoppingTask = (ShoppingTask) intent.getSerializableExtra("task");
-        task = shoppingTask.getTask();
-        description = shoppingTask.getDescription();
-        date = shoppingTask.getDate();
-        productUrl = shoppingTask.getProductUrl();
+        String userId = intent.getStringExtra("userId");
+
+        String task = shoppingTask.getTask();
+        String description = shoppingTask.getDescription();
+        String date = shoppingTask.getDate();
+        String productUrl = shoppingTask.getProductUrl();
         shoppingLocation = shoppingTask.getShoppingLocation();
 
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView tvTask = findViewById(R.id.task);
         TextView tvDescription = findViewById(R.id.description);
         TextView tvDate = findViewById(R.id.date);
@@ -73,6 +78,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
             }
         });
 
+        Utils.downloadImageFromStorage(userId, shoppingTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         tvTask.setText(task);
         tvDescription.setText(description);
         tvDate.setText(date);
@@ -108,8 +114,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
         Intent intent = new Intent(Intent.ACTION_VIEW, productPage);
         if (intent.resolveActivity(getPackageManager()) != null && url.startsWith("https://")) {
             startActivity(intent);
-        }
-        else {
+        } else {
             Toast.makeText(this, "Product url is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -161,8 +166,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
-        }
-        else {
+        } else {
             Toast.makeText(ShoppingTaskDetail.this, "Shopping location is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -181,7 +185,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
             }
 
             Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
 
         } catch (IOException ex) {
             ex.printStackTrace();

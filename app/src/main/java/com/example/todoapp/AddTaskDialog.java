@@ -31,7 +31,6 @@ public class AddTaskDialog extends AlertDialog {
 
     Context context;
     DatabaseReference reference;
-    StorageReference storageRef;
     String onlineUserID;
 
     ProgressDialog loader;
@@ -65,7 +64,6 @@ public class AddTaskDialog extends AlertDialog {
         super(context);
         this.context = context;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
-        this.storageRef = FirebaseStorage.getInstance().getReference();
         this.onlineUserID = onlineUserID;
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypes;

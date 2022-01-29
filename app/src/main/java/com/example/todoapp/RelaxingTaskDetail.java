@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RelaxingTaskDetail extends AppCompatActivity {
@@ -21,10 +22,15 @@ public class RelaxingTaskDetail extends AppCompatActivity {
         setContentView(R.layout.relaxing_task_detail);
         Intent intent = getIntent();
         thisTask = (RelaxingTask) intent.getSerializableExtra("task");
+        String userId = intent.getStringExtra("userId");
+
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView taskTextView = findViewById(R.id.task);
         TextView descTextView = findViewById(R.id.description);
         TextView dateTextView = findViewById(R.id.date);
         TextView songName = findViewById(R.id.songName);
+
+        Utils.downloadImageFromStorage(userId, thisTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         taskTextView.setText(thisTask.getTask());
         descTextView.setText(thisTask.getDescription());
         dateTextView.setText(thisTask.getDate());

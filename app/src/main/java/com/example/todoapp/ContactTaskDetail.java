@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +24,16 @@ public class ContactTaskDetail extends AppCompatActivity {
 
         Intent intent = getIntent();
         thisTask = (ContactTask) intent.getSerializableExtra("task");
+        String userId = intent.getStringExtra("userId");
 
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView taskTextView = findViewById(R.id.task);
         TextView descTextView = findViewById(R.id.description);
         TextView dateTextView = findViewById(R.id.date);
         TextView phoneNumberTextView = findViewById(R.id.phoneNumberText);
         TextView emailTextView = findViewById(R.id.emailText);
 
+        Utils.downloadImageFromStorage(userId, thisTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         taskTextView.setText(thisTask.getTask());
         descTextView.setText(thisTask.getDescription());
         dateTextView.setText(thisTask.getDate());

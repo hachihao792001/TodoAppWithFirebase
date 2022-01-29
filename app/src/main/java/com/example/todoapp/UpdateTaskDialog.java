@@ -27,7 +27,6 @@ import java.util.Calendar;
 
 public class UpdateTaskDialog extends AlertDialog {
     Context context;
-    StorageReference storageRef;
     DatabaseReference reference;
     String onlineUserID;
 
@@ -50,7 +49,6 @@ public class UpdateTaskDialog extends AlertDialog {
         this.context = context;
         this.taskToUpdate = taskToUpdate;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
-        this.storageRef = FirebaseStorage.getInstance().getReference();
         this.onlineUserID = onlineUserID;
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypeList;
@@ -197,11 +195,11 @@ public class UpdateTaskDialog extends AlertDialog {
         loader.setCanceledOnTouchOutside(false);
         loader.show();
 
-        if (taskImage.getDrawable() != null) {
-
-            Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
+        Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
+        if (bmp != null)
             Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp);
-        }
+        else
+            Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
 
         TaskModel model = null;
 
