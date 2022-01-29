@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,6 +62,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
@@ -94,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            // lấy theme user đã chọn trong THEME.txt để set up
+        // lấy theme user đã chọn trong THEME.txt để set up
         SharedPreferences sharedPreferences=getSharedPreferences("THEME.txt", Context.MODE_PRIVATE);
         int idtheme=sharedPreferences.getInt("theme",-1);
         Constant.theme=Constant.convert(idtheme);
@@ -126,8 +128,6 @@ public class HomeActivity extends AppCompatActivity {
         reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
 
 
-
-
         //Setup floating Button để người dùng tạo task mới
         floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(view -> addTask());
@@ -147,7 +147,30 @@ public class HomeActivity extends AppCompatActivity {
                 new TaskType(taskTypeNames[4], R.drawable.black_travelling_icon),
                 new TaskType(taskTypeNames[5], R.drawable.black_relaxing_icon)
         ));
+
+        //gắn drag & drop vào Recycler View
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+
+            //Cập nhật array tasks mới lên database
+            //...
+
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            //do nothing
+        }
+    };
 
     //Hàm tạo thêm 1 task
     private void addTask() {
