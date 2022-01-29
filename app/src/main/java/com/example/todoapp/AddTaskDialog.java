@@ -39,7 +39,7 @@ public class AddTaskDialog extends AlertDialog {
 
     View dialogView;
     Spinner taskTypeDropdown;
-    Bitmap bmChooseFromFile=null;
+    Bitmap bmChooseFromFile = null;
     //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -69,7 +69,8 @@ public class AddTaskDialog extends AlertDialog {
         this.taskTypeList = taskTypes;
         this.description = description;
     }
-    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description,Bitmap bitmap) {
+
+    protected AddTaskDialog(Context context, String onlineUserID, ArrayList<TaskType> taskTypes, String description, Bitmap bitmap) {
         super(context);
         this.context = context;
         this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
@@ -77,7 +78,7 @@ public class AddTaskDialog extends AlertDialog {
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypes;
         this.description = description;
-        this.bmChooseFromFile=(bitmap);
+        this.bmChooseFromFile = (bitmap);
     }
 
     @Override
@@ -93,12 +94,10 @@ public class AddTaskDialog extends AlertDialog {
         dateTv = dialogView.findViewById(R.id.date);
         Button pickDate = dialogView.findViewById(R.id.pickDateBtn);
 
-        Button chooseImageFromFile = dialogView.findViewById(R.id.chooseImageFromFile);
-        Button takeImage = dialogView.findViewById(R.id.takeImage);
         Button drawImage = dialogView.findViewById(R.id.drawImage);
         clearImage = dialogView.findViewById(R.id.removeImage);
         taskImage = dialogView.findViewById(R.id.taskImage);
-        if (this.bmChooseFromFile==null)
+        if (this.bmChooseFromFile == null)
             taskImage.setImageBitmap(null);
         else
             taskImage.setImageBitmap(bmChooseFromFile);

@@ -64,8 +64,6 @@ public class UpdateTaskDialog extends AlertDialog {
         mDate = dialogView.findViewById(R.id.mEditDate);
         Button updateDateBtn = dialogView.findViewById(R.id.pickUpdateDateBtn);
 
-        Button chooseImageFromFile = dialogView.findViewById(R.id.chooseImageFromFile);
-        Button takeImage = dialogView.findViewById(R.id.takeImage);
         Button drawImage = dialogView.findViewById(R.id.drawImage);
         clearImage = dialogView.findViewById(R.id.removeImage);
         taskImage = dialogView.findViewById(R.id.taskImage);

@@ -21,7 +21,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
-import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.vision.Frame;
@@ -39,11 +37,8 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -52,8 +47,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
@@ -75,8 +68,8 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-    private Boolean isAddTaskWithImg=false;
-    private Boolean isAddTaskWithOCR=false;
+    private Boolean isAddTaskWithImg = false;
+    private Boolean isAddTaskWithOCR = false;
 
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
@@ -123,10 +116,10 @@ public class HomeActivity extends AppCompatActivity {
 
         //Nút tạo một task từ ảnh
         addTaskFromCameraButton = findViewById(R.id.btn_add_task_from_camera);
-        addTaskFromCameraButton.setOnClickListener(view -> addTaskFromImage());
+        addTaskFromCameraButton.setOnClickListener(view -> addTaskWithOCR());
 
         //Tạo task với ảnh
-        addTaskWithImageButton=findViewById(R.id.btn_add_task_with_image);
+        addTaskWithImageButton = findViewById(R.id.btn_add_task_with_image);
         addTaskWithImageButton.setOnClickListener(view -> addTaskWithImage());
 
         //Danh sách các loại task mà pm hỗ trợ, mỗi loại kèm icon riêng
@@ -144,7 +137,6 @@ public class HomeActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-
 
 
     ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
@@ -178,9 +170,9 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    //Hàm tạo thêm 1 task từ image
-    private void addTaskFromImage() {
-        isAddTaskWithOCR=true;
+    //Hàm tạo thêm 1 task bằng việc scan chữ viết từ 1 image
+    private void addTaskWithOCR() {
+        isAddTaskWithOCR = true;
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
                     Manifest.permission.CAMERA
@@ -189,9 +181,10 @@ public class HomeActivity extends AppCompatActivity {
             CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
         }
     }
+
     // Hàm tạo task với 1 image
     private void addTaskWithImage() {
-        isAddTaskWithImg=true;
+        isAddTaskWithImg = true;
         if (ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
                     Manifest.permission.CAMERA
@@ -200,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
             CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
         }
     }
+
     //Hàm cập nhật task
     private void updateTask(TaskModel taskToUpdate) {
         UpdateTaskDialog updateTaskDialog = new UpdateTaskDialog(this, onlineUserID, taskToUpdate, taskTypeList);
@@ -317,13 +311,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && isAddTaskWithOCR) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 try {
-                    isAddTaskWithOCR=false;
+                    isAddTaskWithOCR = false;
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
                     String description = getTextFromImage(bitmap);
                     AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList, description);
@@ -342,9 +335,9 @@ public class HomeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 try {
-                    isAddTaskWithImg=false;
+                    isAddTaskWithImg = false;
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-                    AddTaskDialog addTaskDialog =  new AddTaskDialog(this, onlineUserID, taskTypeList, "",bitmap);
+                    AddTaskDialog addTaskDialog = new AddTaskDialog(this, onlineUserID, taskTypeList, "", bitmap);
                     addTaskDialog.show();
                     addTaskDialog.setOnDismissListener(dialogInterface -> {
                         recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,

@@ -82,7 +82,7 @@ public class Utils {
     }
 
     public static void downloadImageFromStorage(String userId, String taskId, DownloadImageFromStorageListener listener) {
-        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").getBytes(100000).addOnCompleteListener(task -> {
+        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").getBytes(10 * 1024 * 1024).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("firebase", "Error getting image or the task doesn't have an image", task.getException());
                 listener.onDownloadDone(null);

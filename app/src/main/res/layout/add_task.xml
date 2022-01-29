@@ -142,34 +142,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="0.5"
-                android:layout_height="wrap_content">
-                <Button
-                    android:id="@+id/chooseImageFromFile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:layout_weight="1.3"
-                    android:backgroundTint="?colorPrimary"
-                    android:textColorHint="#fff"
-                    android:textStyle="bold"
-                    app:icon="@drawable/folder_icon"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp" />
-
-                <Button
-                    android:id="@+id/takeImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1.3"
-                    android:backgroundTint="?colorPrimary"
-                    android:textColorHint="#fff"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:icon="@drawable/camera_icon"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp" />
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
 
                 <Button
                     android:id="@+id/drawImage"
@@ -192,10 +166,10 @@
                     android:layout_marginStart="4dp"
                     android:layout_weight="1.3"
                     android:backgroundTint="?colorPrimary"
+                    android:enabled="false"
                     android:textColorHint="#fff"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:enabled="false"
                     app:icon="@drawable/clear_icon"
                     app:iconGravity="textStart"
                     app:iconPadding="0dp" />
