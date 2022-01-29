@@ -145,6 +145,16 @@ public class Utils {
         });
     }
 
+    public interface DeleteTaskFromDatabaseListener {
+        void onFinishDeleteTask(boolean success);
+    }
+
+    public static void deleteTaskFromDatabase(String onlineUserID, String taskId, DeleteTaskFromDatabaseListener listener) {
+        FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID).child(taskId).removeValue().addOnCompleteListener(t -> {
+            listener.onFinishDeleteTask(t.isSuccessful());
+        });
+    }
+
     public static Class<?> getDetailClassFromTaskType(String taskTypeName) {
         Class<?> detailClass = MeetingTaskDetail.class;
         switch (taskTypeName) {

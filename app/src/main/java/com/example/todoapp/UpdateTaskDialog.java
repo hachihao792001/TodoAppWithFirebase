@@ -27,7 +27,6 @@ import java.util.Calendar;
 
 public class UpdateTaskDialog extends AlertDialog {
     Context context;
-    DatabaseReference reference;
     String onlineUserID;
 
     ProgressDialog loader;
@@ -48,7 +47,6 @@ public class UpdateTaskDialog extends AlertDialog {
         super(context);
         this.context = context;
         this.taskToUpdate = taskToUpdate;
-        this.reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
         this.onlineUserID = onlineUserID;
         this.loader = new ProgressDialog(context);
         this.taskTypeList = taskTypeList;
@@ -123,16 +121,9 @@ public class UpdateTaskDialog extends AlertDialog {
         delButton.setOnClickListener(view12 -> {
 
             Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
-
-            reference.child(taskToUpdate.getId()).removeValue().addOnCompleteListener(removeTask -> {
-                if (removeTask.isSuccessful()) {
-                    Toast.makeText(context, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    String err = removeTask.getException().toString();
-                    Toast.makeText(context, "Delete task failed!", Toast.LENGTH_SHORT).show();
-                }
+            Utils.deleteTaskFromDatabase(onlineUserID, taskToUpdate.getId(), (success) -> {
+                Toast.makeText(context, success ? "Task has been deleted successfully" : "Delete task failed!", Toast.LENGTH_SHORT).show();
             });
-
             dismiss();
         });
 
@@ -196,7 +187,6 @@ public class UpdateTaskDialog extends AlertDialog {
         loader.show();
 
         final TaskModel model;
-
         switch (newTaskType.name) {
             case "Meeting":
                 EditText etMeetingUrl = dialogView.findViewById(R.id.et_meetingUrl);
@@ -241,30 +231,18 @@ public class UpdateTaskDialog extends AlertDialog {
             // vì cập nhật database sẽ khiến recycler view cập nhật ngay, và lúc đó hình chưa upload lên kịp nên sẽ bị lấy lại hình cũ
             Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp, () -> {
                 //update lại data của firebase
-                reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(context, "Task has been updated", Toast.LENGTH_SHORT).show();
-                        loader.dismiss();
-                    } else {
-                        //String err = task.getException().toString();
-                        Toast.makeText(context, "Update task failed!", Toast.LENGTH_SHORT).show();
-                        loader.dismiss();
-                    }
+                Utils.updateTaskToDatabase(onlineUserID, model, (success) -> {
+                    Toast.makeText(context, success ? "Task has been updated" : "Update task failed!", Toast.LENGTH_SHORT).show();
+                    loader.dismiss();
                 });
                 dismiss();
             });
         } else {
             Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
             //update lại data của firebase
-            reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(context, "Task has been updated", Toast.LENGTH_SHORT).show();
-                    loader.dismiss();
-                } else {
-                    //String err = task.getException().toString();
-                    Toast.makeText(context, "Update task failed!", Toast.LENGTH_SHORT).show();
-                    loader.dismiss();
-                }
+            Utils.updateTaskToDatabase(onlineUserID, model, (success) -> {
+                Toast.makeText(context, success ? "Task has been updated" : "Update task failed!", Toast.LENGTH_SHORT).show();
+                loader.dismiss();
             });
             dismiss();
         }

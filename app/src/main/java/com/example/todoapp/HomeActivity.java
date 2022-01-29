@@ -246,13 +246,10 @@ public class HomeActivity extends AppCompatActivity {
                     Utils.getTaskFromDatabase(onlineUserID, model.getId(), (taskModel) -> {
                         taskModel.setDone(newDoneState);
                         Utils.updateTaskToDatabase(onlineUserID, taskModel, (success) -> {
-                            if (success) {
-                                Toast.makeText(HomeActivity.this,
-                                        "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done"),
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(HomeActivity.this,
+                                    success ?
+                                    "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done") :
+                                    "Update task failed!", Toast.LENGTH_SHORT).show();
                         });
                     });
                 });
