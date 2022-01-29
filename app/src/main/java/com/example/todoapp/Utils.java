@@ -59,7 +59,11 @@ public class Utils {
         }
     }
 
-    public static void uploadImageToStorage(String userId, String taskId, Bitmap bitmap) {
+    public interface UploadImageToStorageListener {
+        void onDoneUploading();
+    }
+
+    public static void uploadImageToStorage(String userId, String taskId, Bitmap bitmap, UploadImageToStorageListener listener) {
         //https://stackoverflow.com/a/4989543/13440955
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -67,7 +71,8 @@ public class Utils {
         byte[] byteArray = stream.toByteArray();
         bitmap.recycle();
 
-        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").putBytes(byteArray);
+        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").putBytes(byteArray).
+                addOnCompleteListener(task -> listener.onDoneUploading());
     }
 
     public interface DownloadImageFromStorageListener {

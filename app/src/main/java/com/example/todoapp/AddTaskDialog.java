@@ -182,62 +182,64 @@ public class AddTaskDialog extends AlertDialog {
 
         if (taskImage.getDrawable() != null) {
             Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
-            Utils.uploadImageToStorage(onlineUserID, newTaskID, bmp);
+            Utils.uploadImageToStorage(onlineUserID, newTaskID, bmp, () -> {
+                //Tùy vào từng loại task người dùng chọn tạo ra các model tương ứng
+                TaskModel model = null;
+                switch (newTaskTaskType.name) {
+                    case "Meeting":
+                        EditText etMeetingUrl = dialogView.findViewById(R.id.et_meetingUrl);
+                        EditText etMeetingLocation = dialogView.findViewById(R.id.et_location);
+                        String meetingUrl = etMeetingUrl.getText().toString().trim();
+                        String meetingLocation = etMeetingLocation.getText().toString().trim();
+                        model = new MeetingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
+                                meetingUrl, meetingLocation);
+                        break;
+                    case "Shopping":
+                        EditText etProductUrl = dialogView.findViewById(R.id.et_productUrl);
+                        EditText etShoppingLocation = dialogView.findViewById(R.id.et_shoppingLocation);
+                        String productUrl = etProductUrl.getText().toString().trim();
+                        String shoppingLocation = etShoppingLocation.getText().toString().trim();
+                        model = new ShoppingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
+                                productUrl, shoppingLocation);
+                        break;
+                    case "Office":
+                        model = new OfficeTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType);
+                        break;
+                    case "Contact":
+                        EditText phoneET = dialogView.findViewById(R.id.et_phoneNumber);
+                        EditText emailET = dialogView.findViewById(R.id.et_email);
+                        model = new ContactTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
+                                phoneET.getText().toString(), emailET.getText().toString());
+                        break;
+                    case "Travelling":
+                        EditText etPlace = dialogView.findViewById(R.id.et_place);
+                        model = new TravellingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
+                                etPlace.getText().toString().trim());
+                        break;
+                    case "Relaxing":
+                        Spinner chooseSongSpinner = dialogView.findViewById(R.id.chooseSongSpinner);
+                        model = new RelaxingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
+                                chooseSongSpinner.getSelectedItem().toString().trim());
+                        break;
+                }
+
+                //Thông báo kết quả tạo task thành công/ thất bại
+                reference.child(newTaskID).setValue(model).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(context, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                    } else {
+                        //String error = task.getException().toString();
+                        Toast.makeText(context, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                    }
+                });
+
+                dismiss();
+            });
         }
 
-        //Tùy vào từng loại task người dùng chọn tạo ra các model tương ứng
-        TaskModel model = null;
-        switch (newTaskTaskType.name) {
-            case "Meeting":
-                EditText etMeetingUrl = dialogView.findViewById(R.id.et_meetingUrl);
-                EditText etMeetingLocation = dialogView.findViewById(R.id.et_location);
-                String meetingUrl = etMeetingUrl.getText().toString().trim();
-                String meetingLocation = etMeetingLocation.getText().toString().trim();
-                model = new MeetingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
-                        meetingUrl, meetingLocation);
-                break;
-            case "Shopping":
-                EditText etProductUrl = dialogView.findViewById(R.id.et_productUrl);
-                EditText etShoppingLocation = dialogView.findViewById(R.id.et_shoppingLocation);
-                String productUrl = etProductUrl.getText().toString().trim();
-                String shoppingLocation = etShoppingLocation.getText().toString().trim();
-                model = new ShoppingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
-                        productUrl, shoppingLocation);
-                break;
-            case "Office":
-                model = new OfficeTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType);
-                break;
-            case "Contact":
-                EditText phoneET = dialogView.findViewById(R.id.et_phoneNumber);
-                EditText emailET = dialogView.findViewById(R.id.et_email);
-                model = new ContactTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
-                        phoneET.getText().toString(), emailET.getText().toString());
-                break;
-            case "Travelling":
-                EditText etPlace = dialogView.findViewById(R.id.et_place);
-                model = new TravellingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
-                        etPlace.getText().toString().trim());
-                break;
-            case "Relaxing":
-                Spinner chooseSongSpinner = dialogView.findViewById(R.id.chooseSongSpinner);
-                model = new RelaxingTask(newTaskName, newTaskDescription, newTaskID, newTaskDate, newTaskTaskType,
-                        chooseSongSpinner.getSelectedItem().toString().trim());
-                break;
-        }
 
-        //Thông báo kết quả tạo task thành công/ thất bại
-        reference.child(newTaskID).setValue(model).addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                Toast.makeText(context, "Task has been added successfully!", Toast.LENGTH_SHORT).show();
-                loader.dismiss();
-            } else {
-                //String error = task.getException().toString();
-                Toast.makeText(context, "Add task failed! Please try again!", Toast.LENGTH_SHORT).show();
-                loader.dismiss();
-            }
-        });
-
-        dismiss();
     }
 
     void updateTaskDetailFragment(int chosenTask) {

@@ -195,13 +195,7 @@ public class UpdateTaskDialog extends AlertDialog {
         loader.setCanceledOnTouchOutside(false);
         loader.show();
 
-        Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
-        if (bmp != null)
-            Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp);
-        else
-            Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
-
-        TaskModel model = null;
+        final TaskModel model;
 
         switch (newTaskType.name) {
             case "Meeting":
@@ -233,24 +227,47 @@ public class UpdateTaskDialog extends AlertDialog {
                         etPlace.getText().toString().trim());
                 break;
             case "Relaxing":
-                Spinner spinner = (Spinner) dialogView.findViewById(R.id.chooseSongSpinner);
+                Spinner spinner = dialogView.findViewById(R.id.chooseSongSpinner);
                 model = new RelaxingTask(newTask, newDescription, taskToUpdate.getId(), newDate, newTaskType,
                         spinner.getSelectedItem().toString());
                 break;
+            default:
+                model = null;
         }
-        //update lại data của firebase
-        reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(context, "Task has been updated", Toast.LENGTH_SHORT).show();
-                loader.dismiss();
-            } else {
-                //String err = task.getException().toString();
-                Toast.makeText(context, "Update task failed!", Toast.LENGTH_SHORT).show();
-                loader.dismiss();
-            }
-        });
 
-        dismiss();
+        Bitmap bmp = ((BitmapDrawable) taskImage.getDrawable()).getBitmap();
+        if (bmp != null) {
+            // phải upload hình lên xong mới cập nhật database
+            // vì cập nhật database sẽ khiến recycler view cập nhật ngay, và lúc đó hình chưa upload lên kịp nên sẽ bị lấy lại hình cũ
+            Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp, () -> {
+                //update lại data của firebase
+                reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Task has been updated", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                    } else {
+                        //String err = task.getException().toString();
+                        Toast.makeText(context, "Update task failed!", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                    }
+                });
+                dismiss();
+            });
+        } else {
+            Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
+            //update lại data của firebase
+            reference.child(taskToUpdate.getId()).setValue(model).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Task has been updated", Toast.LENGTH_SHORT).show();
+                    loader.dismiss();
+                } else {
+                    //String err = task.getException().toString();
+                    Toast.makeText(context, "Update task failed!", Toast.LENGTH_SHORT).show();
+                    loader.dismiss();
+                }
+            });
+            dismiss();
+        }
     }
 
     void updateTaskDetailFragment(int chosenTask) {

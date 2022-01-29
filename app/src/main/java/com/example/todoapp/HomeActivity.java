@@ -39,8 +39,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -50,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
@@ -167,12 +170,7 @@ public class HomeActivity extends AppCompatActivity {
             recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView,
                     null, recyclerView.getLayoutManager().getItemCount());
 
-            // hình của task không nằm trong realtime database nên update xong nó ko tự động cập nhật, phải reload activity
-            // dùng adapter.notifyDataSetChanged(); không được, không hiểu tại sao :(
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -192,12 +190,7 @@ public class HomeActivity extends AppCompatActivity {
         UpdateTaskDialog updateTaskDialog = new UpdateTaskDialog(this, onlineUserID, taskToUpdate, taskTypeList);
         updateTaskDialog.show();
         updateTaskDialog.setOnDismissListener(dialogInterface -> {
-            // hình của task không nằm trong realtime database nên update xong nó ko tự động cập nhật, phải reload activity
-            // dùng adapter.notifyDataSetChanged(); không được, không hiểu tại sao :(
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(getIntent());
-            overridePendingTransition(0, 0);
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -218,12 +211,12 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setDescription(model.getDescription());
                 holder.setTaskType(model.getTaskType());
                 holder.setIsDone(model.isDone());
-                Utils.downloadImageFromStorage(onlineUserID, model.getId(), bitmap1 -> holder.setImage(bitmap1));
+                holder.setImage(onlineUserID, model.getId());
 
                 //bấm vào background của task thì chuyển tới màn hình detail của task
                 holder.mView.setOnClickListener(v -> {
                     //lấy task từ database để putExtra vào intent
-                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                    reference.child(model.getId()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
                         } else {
@@ -276,7 +269,7 @@ public class HomeActivity extends AppCompatActivity {
                 Button editButton = holder.mView.findViewById(R.id.editButton);
                 editButton.setOnClickListener(v -> {
                     //lấy data từ database để cho hàm updateTask dùng
-                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(task -> {
+                    reference.child(model.getId()).get().addOnCompleteListener(task -> {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
                         } else {
@@ -314,7 +307,7 @@ public class HomeActivity extends AppCompatActivity {
                     boolean newDoneState = doneCheckBox.isChecked();
 
                     //lấy task từ database về, cập nhật isDone cho nó, rồi set lên database lại
-                    reference.child(getRef(position).getKey()).get().addOnCompleteListener(getDataTask -> {
+                    reference.child(model.getId()).get().addOnCompleteListener(getDataTask -> {
                         if (!getDataTask.isSuccessful()) {
                             Log.e("firebase", "Error getting data", getDataTask.getException());
                         } else {
@@ -342,7 +335,7 @@ public class HomeActivity extends AppCompatActivity {
                             }
 
                             receivedTask.setDone(newDoneState);
-                            reference.child(getRef(position).getKey()).setValue(receivedTask).addOnCompleteListener(t -> {
+                            reference.child(model.getId()).setValue(receivedTask).addOnCompleteListener(t -> {
                                 if (t.isSuccessful()) {
                                     Toast.makeText(HomeActivity.this,
                                             "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done"),

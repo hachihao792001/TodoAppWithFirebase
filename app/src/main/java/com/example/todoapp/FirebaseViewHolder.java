@@ -17,9 +17,12 @@ public class FirebaseViewHolder extends RecyclerView.ViewHolder {
         mView = itemView;
     }
 
-    public void setImage(Bitmap bitmap) {
-        ImageView taskImage = mView.findViewById(R.id.taskImage);
-        taskImage.setImageBitmap(bitmap);
+    public void setImage(String onlineUserID, String taskId) {
+
+        Utils.downloadImageFromStorage(onlineUserID, taskId, bitmap1 -> {
+            ImageView taskImage = mView.findViewById(R.id.taskImage);
+            taskImage.setImageBitmap(bitmap1);
+        });
     }
 
     public void setTask(String task) {
