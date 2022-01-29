@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.ByteArrayOutputStream;
@@ -95,5 +97,77 @@ public class Utils {
 
     public static void deleteImageFromStorage(String userId, String taskId) {
         FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").delete();
+    }
+
+    public interface GetTaskFromDatabaseListener {
+        void onGetTaskSuccessfully(TaskModel task);
+    }
+
+    public static void getTaskFromDatabase(String onlineUserID, String taskId, GetTaskFromDatabaseListener listener) {
+        FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID).child(taskId).get().addOnCompleteListener(tResult -> {
+            if (!tResult.isSuccessful()) {
+                Log.e("firebase", "Error getting data", tResult.getException());
+            } else {
+                TaskModel taskModel = tResult.getResult().getValue(TaskModel.class);
+                switch (taskModel.getTaskType().name) {
+                    case "Meeting":
+                        taskModel = tResult.getResult().getValue(MeetingTask.class);
+                        break;
+                    case "Shopping":
+                        taskModel = tResult.getResult().getValue(ShoppingTask.class);
+                        break;
+                    case "Office":
+                        taskModel = tResult.getResult().getValue(OfficeTask.class);
+                        break;
+                    case "Contact":
+                        taskModel = tResult.getResult().getValue(ContactTask.class);
+                        break;
+                    case "Travelling":
+                        taskModel = tResult.getResult().getValue(TravellingTask.class);
+                        break;
+                    case "Relaxing":
+                        taskModel = tResult.getResult().getValue(RelaxingTask.class);
+                        break;
+                }
+
+                listener.onGetTaskSuccessfully(taskModel);
+            }
+        });
+    }
+
+    public interface UpdateTaskToDatabaseListener {
+        void onFinishUpdateTask(boolean success);
+    }
+
+    public static void updateTaskToDatabase(String onlineUserID, TaskModel taskModel, UpdateTaskToDatabaseListener listener) {
+        FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID).child(taskModel.getId()).setValue(taskModel).addOnCompleteListener(t -> {
+            listener.onFinishUpdateTask(t.isSuccessful());
+        });
+    }
+
+    public static Class<?> getDetailClassFromTaskType(String taskTypeName) {
+        Class<?> detailClass = MeetingTaskDetail.class;
+        switch (taskTypeName) {
+            case "Meeting":
+                detailClass = MeetingTaskDetail.class;
+                break;
+            case "Shopping":
+                detailClass = ShoppingTaskDetail.class;
+                break;
+            case "Office":
+                detailClass = OfficeTaskDetail.class;
+                break;
+            case "Contact":
+                detailClass = ContactTaskDetail.class;
+                break;
+            case "Travelling":
+                detailClass = TravellingTaskDetail.class;
+                break;
+            case "Relaxing":
+                detailClass = RelaxingTaskDetail.class;
+                break;
+        }
+
+        return detailClass;
     }
 }

@@ -215,53 +215,15 @@ public class HomeActivity extends AppCompatActivity {
 
                 //bấm vào background của task thì chuyển tới màn hình detail của task
                 holder.mView.setOnClickListener(v -> {
-                    //lấy task từ database để putExtra vào intent
-                    reference.child(model.getId()).get().addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
-                        } else {
-                            Intent intent = null;
-                            switch (model.getTaskType().name) {
-                                case "Meeting":
-                                    MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
-                                    intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", meetingTask);
-                                    break;
-                                case "Shopping":
-                                    ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
-                                    intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", shoppingTask);
-                                    break;
-                                case "Office":
-                                    OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
-                                    intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", officeTask);
-                                    break;
-                                case "Contact":
-                                    ContactTask contactTask = task.getResult().getValue(ContactTask.class);
-                                    intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", contactTask);
-                                    break;
-                                case "Travelling":
-                                    TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
-                                    intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", travellingTask);
-                                    break;
-                                case "Relaxing":
-                                    RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
-                                    intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
-                                    intent.putExtra("userId", onlineUserID);
-                                    intent.putExtra("task", relaxingTask);
-                                    break;
-                            }
 
-                            startActivity(intent);
-                        }
+                    //lấy task từ database để putExtra vào intent
+                    Utils.getTaskFromDatabase(onlineUserID, model.getId(), (taskModel) -> {
+                        Intent intent = new Intent(HomeActivity.this, Utils.getDetailClassFromTaskType(
+                                model.getTaskType().name));
+                        intent.putExtra("userId", onlineUserID);
+                        intent.putExtra("task", taskModel);
+
+                        startActivity(intent);
                     });
                 });
 
@@ -269,34 +231,8 @@ public class HomeActivity extends AppCompatActivity {
                 Button editButton = holder.mView.findViewById(R.id.editButton);
                 editButton.setOnClickListener(v -> {
                     //lấy data từ database để cho hàm updateTask dùng
-                    reference.child(model.getId()).get().addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
-                        } else {
-                            TaskModel taskToEdit = null;
-                            switch (model.getTaskType().name) {
-                                case "Meeting":
-                                    taskToEdit = task.getResult().getValue(MeetingTask.class);
-                                    break;
-                                case "Shopping":
-                                    taskToEdit = task.getResult().getValue(ShoppingTask.class);
-                                    break;
-                                case "Office":
-                                    taskToEdit = task.getResult().getValue(OfficeTask.class);
-                                    break;
-                                case "Contact":
-                                    taskToEdit = task.getResult().getValue(ContactTask.class);
-                                    break;
-                                case "Travelling":
-                                    taskToEdit = task.getResult().getValue(TravellingTask.class);
-                                    break;
-                                case "Relaxing":
-                                    taskToEdit = task.getResult().getValue(RelaxingTask.class);
-                                    break;
-                            }
-
-                            updateTask(taskToEdit);
-                        }
+                    Utils.getTaskFromDatabase(onlineUserID, model.getId(), (taskModel) -> {
+                        updateTask(taskModel);
                     });
                 });
 
@@ -307,46 +243,18 @@ public class HomeActivity extends AppCompatActivity {
                     boolean newDoneState = doneCheckBox.isChecked();
 
                     //lấy task từ database về, cập nhật isDone cho nó, rồi set lên database lại
-                    reference.child(model.getId()).get().addOnCompleteListener(getDataTask -> {
-                        if (!getDataTask.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", getDataTask.getException());
-                        } else {
-                            TaskModel receivedTask = null;
-
-                            switch (model.getTaskType().name) {
-                                case "Meeting":
-                                    receivedTask = getDataTask.getResult().getValue(MeetingTask.class);
-                                    break;
-                                case "Shopping":
-                                    receivedTask = getDataTask.getResult().getValue(ShoppingTask.class);
-                                    break;
-                                case "Office":
-                                    receivedTask = getDataTask.getResult().getValue(OfficeTask.class);
-                                    break;
-                                case "Contact":
-                                    receivedTask = getDataTask.getResult().getValue(ContactTask.class);
-                                    break;
-                                case "Travelling":
-                                    receivedTask = getDataTask.getResult().getValue(TravellingTask.class);
-                                    break;
-                                case "Relaxing":
-                                    receivedTask = getDataTask.getResult().getValue(RelaxingTask.class);
-                                    break;
+                    Utils.getTaskFromDatabase(onlineUserID, model.getId(), (taskModel) -> {
+                        taskModel.setDone(newDoneState);
+                        Utils.updateTaskToDatabase(onlineUserID, taskModel, (success) -> {
+                            if (success) {
+                                Toast.makeText(HomeActivity.this,
+                                        "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done"),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
                             }
-
-                            receivedTask.setDone(newDoneState);
-                            reference.child(model.getId()).setValue(receivedTask).addOnCompleteListener(t -> {
-                                if (t.isSuccessful()) {
-                                    Toast.makeText(HomeActivity.this,
-                                            "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done"),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(HomeActivity.this, "Update task failed!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                        });
                     });
-
                 });
             }
 
