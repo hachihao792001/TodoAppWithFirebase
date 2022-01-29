@@ -87,4 +87,8 @@ public class Utils {
         });
 
     }
+
+    public static void deleteImageFromStorage(String userId, String taskId) {
+        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").delete();
+    }
 }

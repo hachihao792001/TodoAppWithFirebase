@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,8 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
 
     MeetingTask thisTask;
     private GoogleMap mMap;
-    private String task, description, date, meetingUrl, meetingLocation;
+
+    String meetingLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +45,22 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
 
         Intent intent = getIntent();
         thisTask = (MeetingTask) intent.getSerializableExtra("task");
+        String userId = intent.getStringExtra("userId");
 
+        ImageView taskImage = findViewById(R.id.taskImage);
         TextView taskTextView = findViewById(R.id.task);
         TextView descTextView = findViewById(R.id.description);
         TextView dateTextView = findViewById(R.id.date);
         TextView urlTextView = findViewById(R.id.meetingUrl);
         TextView locationTextView = findViewById(R.id.meetingLocation);
 
-        task = thisTask.getTask();
-        description = thisTask.getDescription();
-        date = thisTask.getDate();
-        meetingUrl = thisTask.getMeetingUrl();
+        String task = thisTask.getTask();
+        String description = thisTask.getDescription();
+        String date = thisTask.getDate();
+        String meetingUrl = thisTask.getMeetingUrl();
         meetingLocation = thisTask.getMeetingLocation();
 
+        Utils.downloadImageFromStorage(userId, thisTask.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
         taskTextView.setText(task);
         descTextView.setText(description);
         dateTextView.setText(date);
@@ -143,8 +148,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngPlace));
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
-        }
-        else {
+        } else {
             Toast.makeText(MeetingTaskDetail.this, "Meeting location is not valid!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -163,7 +167,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
             }
 
             Address location = address.get(0);
-            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
 
         } catch (IOException ex) {
             ex.printStackTrace();

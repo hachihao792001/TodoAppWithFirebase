@@ -2,7 +2,6 @@ package com.example.todoapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -12,21 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -36,23 +28,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.view.Change;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -71,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     Calendar myCalendar = Calendar.getInstance();
 
     Bitmap bitmap;
-    private static final  int REQUEST_CAMERA_CODE = 100;
+    private static final int REQUEST_CAMERA_CODE = 100;
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -86,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     int appTheme;
     int themeColor;
     int appColor;
-//    int idTheme=3;
+    //    int idTheme=3;
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
@@ -94,11 +81,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            // lấy theme user đã chọn trong THEME.txt để set up
-        SharedPreferences sharedPreferences=getSharedPreferences("THEME.txt", Context.MODE_PRIVATE);
-        int idtheme=sharedPreferences.getInt("theme",-1);
-        Constant.theme=Constant.convert(idtheme);
-        if (idtheme==-1)
+        // lấy theme user đã chọn trong THEME.txt để set up
+        SharedPreferences sharedPreferences = getSharedPreferences("THEME.txt", Context.MODE_PRIVATE);
+        int idtheme = sharedPreferences.getInt("theme", -1);
+        Constant.theme = Constant.convert(idtheme);
+        if (idtheme == -1)
             setTheme(Constant.convert(5));
         else
             setTheme(Constant.theme);
@@ -124,8 +111,6 @@ public class HomeActivity extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
         onlineUserID = mUser.getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("tasks").child(onlineUserID);
-
-
 
 
         //Setup floating Button để người dùng tạo task mới
@@ -165,8 +150,7 @@ public class HomeActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(HomeActivity.this, new String[]{
                     Manifest.permission.CAMERA
             }, REQUEST_CAMERA_CODE);
-        }
-        else {
+        } else {
             CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(HomeActivity.this);
         }
     }
@@ -175,7 +159,12 @@ public class HomeActivity extends AppCompatActivity {
     private void updateTask(TaskModel taskToUpdate) {
         UpdateTaskDialog updateTaskDialog = new UpdateTaskDialog(this, onlineUserID, taskToUpdate, taskTypeList);
         updateTaskDialog.show();
+        updateTaskDialog.setOnDismissListener(dialogInterface -> {
+            adapter.notifyDataSetChanged();
+        });
     }
+
+    FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder> adapter;
 
     @Override
     protected void onStart() {
@@ -184,7 +173,7 @@ public class HomeActivity extends AppCompatActivity {
         //Setup việc lấy data từ firebase và hiển thị vào recyclerview
 
         FirebaseRecyclerOptions<TaskModel> options = new FirebaseRecyclerOptions.Builder<TaskModel>().setQuery(reference, TaskModel.class).build();
-        FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder> adapter = new FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<TaskModel, FirebaseViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull FirebaseViewHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull final TaskModel model) {
                 holder.setDate(model.getDate());
@@ -192,6 +181,10 @@ public class HomeActivity extends AppCompatActivity {
                 holder.setDescription(model.getDescription());
                 holder.setTaskType(model.getTaskType());
                 holder.setIsDone(model.isDone());
+
+                // lấy hình từ storage, để vô taskImage nếu có
+                ImageView taskImage = holder.mView.findViewById(R.id.taskImage);
+                Utils.downloadImageFromStorage(onlineUserID, model.getId(), bitmap1 -> taskImage.setImageBitmap(bitmap1));
 
                 //bấm vào background của task thì chuyển tới màn hình detail của task
                 holder.mView.setOnClickListener(v -> {
@@ -205,31 +198,37 @@ public class HomeActivity extends AppCompatActivity {
                                 case "Meeting":
                                     MeetingTask meetingTask = task.getResult().getValue(MeetingTask.class);
                                     intent = new Intent(HomeActivity.this, MeetingTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", meetingTask);
                                     break;
                                 case "Shopping":
                                     ShoppingTask shoppingTask = task.getResult().getValue(ShoppingTask.class);
                                     intent = new Intent(HomeActivity.this, ShoppingTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", shoppingTask);
                                     break;
                                 case "Office":
                                     OfficeTask officeTask = task.getResult().getValue(OfficeTask.class);
                                     intent = new Intent(HomeActivity.this, OfficeTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", officeTask);
                                     break;
                                 case "Contact":
                                     ContactTask contactTask = task.getResult().getValue(ContactTask.class);
                                     intent = new Intent(HomeActivity.this, ContactTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", contactTask);
                                     break;
                                 case "Travelling":
                                     TravellingTask travellingTask = task.getResult().getValue(TravellingTask.class);
                                     intent = new Intent(HomeActivity.this, TravellingTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", travellingTask);
                                     break;
                                 case "Relaxing":
                                     RelaxingTask relaxingTask = task.getResult().getValue(RelaxingTask.class);
                                     intent = new Intent(HomeActivity.this, RelaxingTaskDetail.class);
+                                    intent.putExtra("userId", onlineUserID);
                                     intent.putExtra("task", relaxingTask);
                                     break;
                             }
@@ -328,7 +327,7 @@ public class HomeActivity extends AppCompatActivity {
             @NonNull
             @Override
             public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.retrieved_layout, parent, false);
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.firebase_recycler_item, parent, false);
                 return new FirebaseViewHolder(v);
             }
         };
@@ -354,7 +353,7 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.changeTheme:
-                Intent themeIntent=new Intent(HomeActivity.this, ChangeTheme.class);
+                Intent themeIntent = new Intent(HomeActivity.this, ChangeTheme.class);
                 startActivity(themeIntent);
                 break;
         }
@@ -389,8 +388,7 @@ public class HomeActivity extends AppCompatActivity {
         TextRecognizer recognizer = new TextRecognizer.Builder(this).build();
         if (!recognizer.isOperational()) {
             Toast.makeText(HomeActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             SparseArray<TextBlock> textBlockSparseArray = recognizer.detect(frame);
             StringBuilder stringBuilder = new StringBuilder();
