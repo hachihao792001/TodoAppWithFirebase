@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -262,8 +263,13 @@ public class HomeActivity extends AppCompatActivity {
                         Utils.updateTaskToDatabase(onlineUserID, taskModel, (success) -> {
                             Toast.makeText(HomeActivity.this,
                                     success ?
-                                    "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done") :
-                                    "Update task failed!", Toast.LENGTH_SHORT).show();
+                                            "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done") :
+                                            "Update task failed!", Toast.LENGTH_SHORT).show();
+
+                            if (newDoneState) {
+                                MediaPlayer mediaPlayer = MediaPlayer.create(HomeActivity.this, R.raw.ding);
+                                mediaPlayer.start();
+                            }
                         });
                     });
                 });
