@@ -69,16 +69,12 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
     private FloatingActionButton addTaskFromCameraButton;
+    private FloatingActionButton addTaskWithImageButton;
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String onlineUserID;
-    SharedPreferences sharedPreferences;
-    Constant constant;
-    int appTheme;
-    int themeColor;
-    int appColor;
-    //    int idTheme=3;
+
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
 
@@ -126,6 +122,9 @@ public class HomeActivity extends AppCompatActivity {
         addTaskFromCameraButton = findViewById(R.id.btn_add_task_from_camera);
         addTaskFromCameraButton.setOnClickListener(view -> addTaskFromImage());
 
+        //Tạo task với ảnh
+        addTaskWithImageButton=findViewById(R.id.btn_add_task_with_image);
+        addTaskWithImageButton.setOnClickListener(view -> addTaskWithImage());
 
         //Danh sách các loại task mà pm hỗ trợ, mỗi loại kèm icon riêng
         String[] taskTypeNames = getResources().getStringArray(R.array.task_types);
@@ -141,6 +140,9 @@ public class HomeActivity extends AppCompatActivity {
         //gắn drag & drop vào Recycler View
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void addTaskWithImage() {
     }
 
     ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {

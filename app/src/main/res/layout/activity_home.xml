@@ -33,7 +33,7 @@
             android:layout_gravity="bottom|end">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_add_task_from_image"
+                android:id="@+id/btn_add_task_with_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
