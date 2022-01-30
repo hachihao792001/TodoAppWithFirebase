@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -57,7 +58,6 @@ import java.util.stream.IntStream;
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
 
-
     //tạo DatePicker cho người dùng chọn ngày của công việc
     DateFormat fmtDate = DateFormat.getDateInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
     private String onlineUserID;
     private Boolean isAddTaskWithImg = false;
     private Boolean isAddTaskWithOCR = false;
+    private ProgressDialog loader;
 
     //Danh sách loại task
     ArrayList<TaskType> taskTypeList;
@@ -144,45 +145,70 @@ public class HomeActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    void swapItemAdapter(int from, int to) {
-        TaskModel temp = adapter.getItem(from);
-        adapter.getRef(from).setValue(adapter.getItem(to)).addOnCompleteListener(yesTo -> {
-            if (yesTo.isSuccessful()) {
-                adapter.getRef(to).setValue(temp).addOnCompleteListener(yesFrom -> {
-                    if (yesFrom.isSuccessful()) {
-                        //Toast.makeText(HomeActivity.this, "Update task successful" + from + "-" + to, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @RequiresApi(api = Build.VERSION_CODES.N)
+
+        List<Integer> order = new ArrayList<Integer>();
+
+        void swapItemAdapter() {
+            if (order.size() > 0) {
+                int from = order.get(0);
+                int to = order.get(1);
+                TaskModel temp = adapter.getItem(from);
+                adapter.getRef(from).setValue(adapter.getItem(to)).addOnCompleteListener(yesTo -> {
+                    if (yesTo.isSuccessful()) {
+                        adapter.getRef(to).setValue(temp).addOnCompleteListener(yesFrom -> {
+                            if (yesFrom.isSuccessful()) {
+                                if (order.isEmpty()) {
+                                    loader.dismiss();
+                                    recyclerView.setAdapter(adapter);
+                                    return;
+                                }
+                                else {
+                                    order.remove(0);
+                                    order.remove(0);
+                                    swapItemAdapter();
+                                }
+                            } else {
+                                Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                                loader.dismiss();
+                                return;
+                            }
+                        });
+                    } else {
+                        Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                        loader.dismiss();
+                        return;
+                    }
+                });
+            }
+            else {
+                loader.dismiss();
+                return;
+            }
+        }
+
         @Override
         public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
             super.clearView(recyclerView, viewHolder);
+            loader = new ProgressDialog(HomeActivity.this);
+            loader.setMessage("Updating...");
+            loader.setCanceledOnTouchOutside(false);
+            loader.show();
+            swapItemAdapter();
+        }
+
+        @Override
+        public void onMoved(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, int fromPos, @NonNull RecyclerView.ViewHolder target, int toPos, int x, int y) {
+            super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
+            order.add(fromPos);
+            order.add(toPos);
         }
 
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getAdapterPosition();
             int toPosition = target.getAdapterPosition();
-
-//            if (fromPosition < toPosition) {
-//                for (int i = fromPosition; i < toPosition; i++) {
-//                    swapItemAdapter(i, i + 1);
-//                }
-//            } else {
-//                for (int i = fromPosition; i > toPosition; i--) {
-//                    swapItemAdapter(i, i - 1);
-//                }
-//            }
-
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
             return true;
         }
