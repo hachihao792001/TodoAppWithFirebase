@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 
@@ -77,22 +83,39 @@ public class Utils {
                 addOnCompleteListener(task -> listener.onDoneUploading());
     }
 
+    interface CheckFileExistOnStorageListener {
+        void onDoneChecking(boolean exist);
+    }
+
+    public static void checkFileExistOnStorage(String path, CheckFileExistOnStorageListener listener) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+        storageRef.child(path).getDownloadUrl()
+                .addOnSuccessListener(uri -> listener.onDoneChecking(true))
+                .addOnFailureListener(exception -> listener.onDoneChecking(false));
+    }
+
     public interface DownloadImageFromStorageListener {
         void onDownloadDone(Bitmap bitmap);
     }
 
     public static void downloadImageFromStorage(String userId, String taskId, DownloadImageFromStorageListener listener) {
-        FirebaseStorage.getInstance().getReference().child(userId + "/" + taskId + ".png").getBytes(10 * 1024 * 1024).addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("firebase", "Error getting image or the task doesn't have an image", task.getException());
-                listener.onDownloadDone(null);
+        String path = userId + "/" + taskId + ".png";
+
+        checkFileExistOnStorage(path, (exist) -> {
+            if (exist) {
+                FirebaseStorage.getInstance().getReference().child(path).getBytes(50 * 1024 * 1024).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        byte[] byteArr = task.getResult();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+                        listener.onDownloadDone(bitmap);
+                    }
+                });
             } else {
-                byte[] byteArr = task.getResult();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
-                listener.onDownloadDone(bitmap);
+                Log.e("firebase", "File " + path + " doesn't exist");
+                listener.onDownloadDone(null);
             }
         });
-
     }
 
     public static void deleteImageFromStorage(String userId, String taskId) {

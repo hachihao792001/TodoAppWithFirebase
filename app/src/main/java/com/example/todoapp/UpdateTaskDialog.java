@@ -102,12 +102,14 @@ public class UpdateTaskDialog extends AlertDialog {
             clearImage.setEnabled(false);
         });
 
+        taskImage.setImageBitmap(null);
         // lấy hình từ storage, nếu có thì bỏ vô taskImage
         Utils.downloadImageFromStorage(onlineUserID, taskToUpdate.getId(), bitmap -> {
             if (bitmap != null) {
                 taskImage.setImageBitmap(bitmap);
                 clearImage.setEnabled(true);
             } else {
+                taskImage.setImageBitmap(null);
                 clearImage.setEnabled(false);
             }
         });
