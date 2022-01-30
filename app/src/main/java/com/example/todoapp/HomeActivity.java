@@ -2,6 +2,7 @@ package com.example.todoapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -19,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.SparseArray;
@@ -39,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -47,6 +50,9 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class HomeActivity extends AppCompatActivity {
     TextView dateTv; // Tv = text view
@@ -138,23 +144,60 @@ public class HomeActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+    void swapItemAdapter(int from, int to) {
+        TaskModel temp = adapter.getItem(from);
+        adapter.getRef(from).setValue(adapter.getItem(to)).addOnCompleteListener(yesTo -> {
+            if (yesTo.isSuccessful()) {
+                adapter.getRef(to).setValue(temp).addOnCompleteListener(yesFrom -> {
+                    if (yesFrom.isSuccessful()) {
+                        //Toast.makeText(HomeActivity.this, "Update task successful" + from + "-" + to, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-    ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, 0) {
+    ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+        }
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getAdapterPosition();
             int toPosition = target.getAdapterPosition();
+
+//            if (fromPosition < toPosition) {
+//                for (int i = fromPosition; i < toPosition; i++) {
+//                    swapItemAdapter(i, i + 1);
+//                }
+//            } else {
+//                for (int i = fromPosition; i > toPosition; i--) {
+//                    swapItemAdapter(i, i - 1);
+//                }
+//            }
+
             recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
-
-            //Cập nhật array tasks mới lên database
-            //...
-
-            return false;
+            return true;
         }
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            //do nothing
+            adapter.getRef(viewHolder.getAdapterPosition()).removeValue().addOnCompleteListener(task->{
+                        if (task.isSuccessful()) {
+                            Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //String err = task.getException().toString();
+                            Toast.makeText(HomeActivity.this, "Delete task failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
         }
     };
 
