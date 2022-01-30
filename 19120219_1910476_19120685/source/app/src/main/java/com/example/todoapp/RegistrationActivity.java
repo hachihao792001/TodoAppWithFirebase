@@ -95,7 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             }
                             else {
                                 String error = task.getException().toString();
-                                Toast.makeText(RegistrationActivity.this, "Registration failed! Please try again " + error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistrationActivity.this, "Registration failed. Please try again " + error, Toast.LENGTH_SHORT).show();
                             }
 
                             loader.dismiss();

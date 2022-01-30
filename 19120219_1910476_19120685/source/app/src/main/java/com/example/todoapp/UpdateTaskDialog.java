@@ -122,7 +122,7 @@ public class UpdateTaskDialog extends AlertDialog {
 
             Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
             Utils.deleteTaskFromDatabase(onlineUserID, taskToUpdate.getId(), (success) -> {
-                Toast.makeText(context, success ? "Task has been deleted successfully" : "Delete task failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, success ? "Task has been deleted successfully" : "Delete task failed", Toast.LENGTH_SHORT).show();
             });
             dismiss();
         });
@@ -232,7 +232,7 @@ public class UpdateTaskDialog extends AlertDialog {
             Utils.uploadImageToStorage(onlineUserID, taskToUpdate.getId(), bmp, () -> {
                 //update lại data của firebase
                 Utils.updateTaskToDatabase(onlineUserID, model, (success) -> {
-                    Toast.makeText(context, success ? "Task has been updated" : "Update task failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, success ? "Task has been updated" : "Update task failed", Toast.LENGTH_SHORT).show();
                     loader.dismiss();
                 });
                 dismiss();
@@ -241,7 +241,7 @@ public class UpdateTaskDialog extends AlertDialog {
             Utils.deleteImageFromStorage(onlineUserID, taskToUpdate.getId());
             //update lại data của firebase
             Utils.updateTaskToDatabase(onlineUserID, model, (success) -> {
-                Toast.makeText(context, success ? "Task has been updated" : "Update task failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, success ? "Task has been updated" : "Update task failed", Toast.LENGTH_SHORT).show();
                 loader.dismiss();
             });
             dismiss();

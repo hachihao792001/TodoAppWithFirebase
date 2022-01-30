@@ -97,7 +97,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
         if (intent.resolveActivity(getPackageManager()) != null && url.startsWith("https://")) {
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Meeting url is not valid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Meeting url is not valid", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -149,7 +149,7 @@ public class MeetingTaskDetail extends AppCompatActivity implements OnMapReadyCa
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
         } else {
-            Toast.makeText(MeetingTaskDetail.this, "Meeting location is not valid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingTaskDetail.this, "Meeting location is not valid", Toast.LENGTH_SHORT).show();
         }
     }
 

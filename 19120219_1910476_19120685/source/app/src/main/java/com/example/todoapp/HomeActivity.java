@@ -161,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (yesFrom.isSuccessful()) {
                                 if (order.isEmpty()) {
                                     loader.dismiss();
-                                    recyclerView.setAdapter(adapter);
+                                    //recyclerView.setAdapter(adapter);
                                     return;
                                 }
                                 else {
@@ -220,7 +220,7 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(HomeActivity.this, "Task has been deleted successfully", Toast.LENGTH_SHORT).show();
                         } else {
                             //String err = task.getException().toString();
-                            Toast.makeText(HomeActivity.this, "Delete task failed!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, "Delete task failed", Toast.LENGTH_SHORT).show();
                         }
                     }
             );
@@ -327,7 +327,7 @@ public class HomeActivity extends AppCompatActivity {
                             Toast.makeText(HomeActivity.this,
                                     success ?
                                             "Task " + model.getTask() + " " + (newDoneState ? "done" : "not done") :
-                                            "Update task failed!", Toast.LENGTH_SHORT).show();
+                                            "Update task failed", Toast.LENGTH_SHORT).show();
 
                             if (newDoneState) {
                                 MediaPlayer mediaPlayer = MediaPlayer.create(HomeActivity.this, R.raw.ding);
@@ -424,7 +424,7 @@ public class HomeActivity extends AppCompatActivity {
         String result = "";
         TextRecognizer recognizer = new TextRecognizer.Builder(this).build();
         if (!recognizer.isOperational()) {
-            Toast.makeText(HomeActivity.this, "An error occurred!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
         } else {
             Frame frame = new Frame.Builder().setBitmap(bitmap).build();
             SparseArray<TextBlock> textBlockSparseArray = recognizer.detect(frame);

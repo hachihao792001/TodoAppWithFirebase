@@ -147,7 +147,7 @@ public class TravellingTaskDetail extends AppCompatActivity implements OnMapRead
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
         } else {
-            Toast.makeText(TravellingTaskDetail.this, "Travelling location is not valid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TravellingTaskDetail.this, "Travelling location is not valid", Toast.LENGTH_SHORT).show();
         }
     }
 

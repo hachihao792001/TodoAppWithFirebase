@@ -115,7 +115,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
         if (intent.resolveActivity(getPackageManager()) != null && url.startsWith("https://")) {
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Product url is not valid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Product url is not valid", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -167,7 +167,7 @@ public class ShoppingTaskDetail extends AppCompatActivity implements OnMapReadyC
 
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarker.getPosition(), 16));
         } else {
-            Toast.makeText(ShoppingTaskDetail.this, "Shopping location is not valid!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ShoppingTaskDetail.this, "Shopping location is not valid", Toast.LENGTH_SHORT).show();
         }
     }
 
